@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
+
+body {
+    margin: 0;
+}
+
+#navbar {
+    background-color: #4CAF50;
+    padding: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+}
+
+#logo {
+    font-family: 'Faster One';
+    color: black;
+    font-size: 25px;
+}
+
+#search,
+#login,
+#profile {
+    float: right;
+    margin: 5px 10px;
+    font-weight: bolder;
+    font-size: 20px;
+    color: black;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#top {
+    background-color: #67da6b;
+    flex: 0.5;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+}
+
+#topform{
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+    width:100%;
+    height:100%;
+}
+
+#topform *{
+    font-size: 20px;
+}
+
+#center {
+    background-color: #b3b3b3;
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#bottom {
+    background-color: #4CAF50;
+    flex: 1;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+}
+
+td {
+    background-color: green;
+    padding: 35px;
+    border: 15px solid #b3b3b3;
+}
+
+.clickedCell {
+    background-color: rgb(0, 35, 0);
+}
+
+td.reserved {
+    background-color: rgb(203, 8, 8);
+}
+
+td.reserved.clickedCell{
+    background-color: rgb(139, 21, 21);
+}
