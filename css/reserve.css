@@ -2,6 +2,9 @@
 
 body {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 #navbar {
@@ -10,6 +13,7 @@ body {
     padding-left: 25px;
     padding-right: 25px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+    min-height: 10px;
 }
 
 #logo {
@@ -31,7 +35,8 @@ body {
 #main {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    flex: 1;
+    overflow: auto;
 }
 
 #top {
@@ -40,15 +45,19 @@ body {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
 }
 
-#topform{
-    display:flex;
-    align-items:center;
+#topForm {
+    display: flex;
+    align-items: center;
     justify-content: space-around;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
 }
 
-#topform *{
+td {
+    text-align: center;
+}
+
+#topForm * {
     font-size: 20px;
 }
 
@@ -61,25 +70,101 @@ body {
 }
 
 #bottom {
-    background-color: #4CAF50;
+    background-color: #b3b3b3;
     flex: 1;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+    display: flex;
 }
 
-td {
+.seat {
     background-color: green;
     padding: 35px;
     border: 15px solid #b3b3b3;
 }
 
-.clickedCell {
+.clickedSeat {
     background-color: rgb(0, 35, 0);
 }
 
-td.reserved {
+td.reservedSeat {
     background-color: rgb(203, 8, 8);
 }
 
-td.reserved.clickedCell{
+td.reservedSeat.clickedSeat {
     background-color: rgb(139, 21, 21);
+}
+
+#bottom.hidden {
+    background-color: #4CAF50;
+}
+
+.slot {
+    background-color: green;
+    padding: 17px;
+    border: 2px solid #b3b3b3;
+}
+
+#bottomDetails {
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 20px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    justify-content: center;
+    min-width: 12%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#bottomTableContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-weight: bolder;
+}
+
+.reservedSlot {
+    background-color: rgb(203, 8, 8);
+}
+
+.reservedSlot.clickedSlot{
+    background-color: rgb(139, 21, 21);
+}
+
+.selectingSlot{
+    background-color: rgb(0, 35, 0);
+}
+
+.clickedSlot{
+    background-color:aqua;
+}
+
+#bottomForm {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-weight: bolder;
+    margin:auto;
+    
+}
+
+#submit{
+    font-size: 20px;
+    margin:10px;
+    margin-bottom:2px;
+}
+
+#checkboxContainer{
+    font-size:17px;
+    margin:10px;
+    margin-top:2px;
+    display:flex;
+    justify-content: center;
+}
+
+
+#anonymous{
+    position:relative;
+    right:9px;
 }
