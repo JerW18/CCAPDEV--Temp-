@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src="js/index.js"></script>
+    <script src="js/index.js" defer></script> 
     <link rel="stylesheet" href="css/index.css">
     <title>Computer Lab Reservation</title>
 </head>
@@ -16,17 +16,18 @@
                 <span>Computer Lab Reservation</span>
             </div>
 
-            <form class="register">
-                <input type="text" placeholder="Email Address"/>
-                <input type="password" placeholder="Password"/>
-                <input type="password" placeholder="Re-type Password"/>
-                <button>create</button>
+            <form id="register">
+                <input type="text" name="regEmail" id="regEmail-field" placeholder="Email Address"/>
+                <input type="password" name="regPassword" id="regPassword-field" placeholder="Password"/>
+                <input type="password" name="regConfirmPassword" id="regConfirmPassword-field" placeholder="Re-type Password"/>
+                <input type="submit" value="Register" id="register-form-submit">
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
-            <form class="login">
-                <input type="text" placeholder="Email"/>
-                <input type="password" placeholder="Password"/>
-                <button>login</button>
+
+            <form id="login">
+                <input type="text" name="logEmail" id="logEmail-field" placeholder="Email"/>
+                <input type="password" name="logPassword" id="logPassword-field" placeholder="Password"/>
+                <input type="submit" value="Login" id="login-form-submit">
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>
         </div>
