@@ -274,8 +274,10 @@ function updateBottomReserved() {
         if (clickedSeat != null) {
             if (clickedSeat.id == r.seat) {
                 if (r.date == (new FormData(topForm)).get("dateForm")) {
-                    for (let i = r.start; i <= r.end; i++) {
-                        document.getElementById(`S${i}`).classList.add("reservedSlot");
+                    if (r.lab == (new FormData(topForm)).get("labForm")) {
+                        for (let i = r.start; i <= r.end; i++) {
+                            document.getElementById(`S${i}`).classList.add("reservedSlot");
+                        }
                     }
                 }
             }
@@ -331,7 +333,7 @@ function updateBottomClicked(clickedSlot) {
             }
         }
         document.getElementById("submit").disabled = true;
-    } 
+    }
     /* If the slot clicked is NOT a reserved slot and they HAVEN'T selected a slot (dark green) before... */
     else if (document.querySelector(".selectingSlot") == null) {
         document.getElementById(`S${clickedSlot}`).classList.add("selectingSlot");
@@ -341,7 +343,7 @@ function updateBottomClicked(clickedSlot) {
         document.getElementById("reserver").innerHTML = "None";
         document.getElementById("submit").disabled = true;
     }
-    /* If the slot clicked is NOT a reserved slot and they HAVE selected a slot (dark green) before... */ 
+    /* If the slot clicked is NOT a reserved slot and they HAVE selected a slot (dark green) before... */
     else {
         let lastSelected = document.querySelector(".selectingSlot").id.slice(1);
         document.querySelector(".selectingSlot").classList.remove("selectingSlot");
