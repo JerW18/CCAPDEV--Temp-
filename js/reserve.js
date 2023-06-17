@@ -10,27 +10,27 @@ let reservations0 = [["Tyler Tan", "2023-6-11", "24", "30", "0", "011"],
 let reservations = [
     {
         reserver: "Tyler Tan", technician: null, anonymous: false,
-        date: "2023-6-11", start: "24", end: "30", lab: "1", seat: "011"
+        date: "2023-6-17", start: "24", end: "30", lab: "1", seat: "011"
     },
     {
         reserver: "Jeremy Wang", technician: null, anonymous: true,
-        date: "2023-6-11", start: "17", end: "30", lab: "0", seat: "122"
+        date: "2023-6-17", start: "17", end: "30", lab: "0", seat: "122"
     },
     {
         reserver: "Lanz Lim", technician: "Lab Tech 1", anonymous: false,
-        date: "2023-6-10", start: "17", end: "35", lab: "1", seat: "033"
+        date: "2023-6-17", start: "17", end: "35", lab: "1", seat: "033"
     },
     {
         reserver: "Johann Uytanlet", technician: null, anonymous: false,
-        date: "2023-6-10", start: "20", end: "25", lab: "0", seat: "011"
+        date: "2023-6-18", start: "20", end: "25", lab: "0", seat: "011"
     },
     {
         reserver: "Tyra Tan", technician: null, anonymous: false,
-        date: "2023-6-10", start: "27", end: "30", lab: "0", seat: "011"
+        date: "2023-6-18", start: "27", end: "30", lab: "0", seat: "011"
     },
     {
         reserver: "Texas", technician: "Lappland", anonymous: false,
-        date: "2023-6-10", start: "25", end: "31", lab: "0", seat: "022"
+        date: "2023-6-18", start: "25", end: "31", lab: "0", seat: "022"
     }
 ];
 
@@ -198,6 +198,8 @@ function updateCenterClicked(clickedPosition) {
     }
 }
 
+/* Initialize the EventListener for clicking outside the seats but still within
+the center. This should cause the bottom panel to be hidden from view. */
 function initializeCenterListener() {
     let center = document.getElementById("center");
     center.addEventListener("click", (e) => {
@@ -208,20 +210,35 @@ function initializeCenterListener() {
     });
 }
 
+/* Delete contents of "bottom" and hide it. */
 function hideBottom() {
     document.getElementById("bottom").innerHTML = "";
     document.getElementById("bottom").classList.add("hidden");
 }
 
+/* Update contents of "bottom" based on the seat clicked in the center panel and the clicked timeslot. */
 function updateBottom(clickedSlot) {
+
     hideBottom();
     document.getElementById("bottom").classList.remove("hidden");
+
+    updateBottomTables();
+    updateBottomReserved();
+    updateBottomListeners();
+    updateBottomClicked(clickedSlot);
+
+}
+
+/* Create and insert all html code for the content in the bottom panel. */
+function updateBottomTables() {
     let insert = "";
 
+    /* First, add the details on the left side of the bottom panel. */
     insert += `<div id = "bottomDetails"><div>Seat No. ${document.querySelector(`.clickedSeat`).id}</div>`;
     insert += `<div>Lab Room ${labNames[(new FormData(topForm).get("labForm"))]}</div>`;
     insert += `<div>Date: ${(new FormData(topForm).get("dateForm"))}</div></div>`;
 
+    /* Then, add the table in the center to represent the slots of that seat. */
     insert += `<div id = "bottomTableContainer"><table><tr>`;
     // Start at 8AM and end at 8PM.
     for (let t = 8; t < 20; t++) {
@@ -239,14 +256,19 @@ function updateBottom(clickedSlot) {
     for (let t = 16; t < 40; t++) {
         insert += `<td id = "S${t}" class = "slot"></td>`;
     }
-
     insert += `</tr><tr><td colspan = "24">Reserved By: <span id = "reserver">None</span></td></tr>`;
     insert += `</tr></table></div>`;
+
+    /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
     insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
     insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
     insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
-    document.getElementById("bottom").innerHTML += insert;
 
+    document.getElementById("bottom").innerHTML += insert;
+}
+
+/* Based on current reservations, mark all reserved slots as "reservedSlots" to make them red. */
+function updateBottomReserved() {
     for (let r of reservations) {
         let clickedSeat = document.querySelector(".clickedSeat");
         if (clickedSeat != null) {
@@ -259,25 +281,27 @@ function updateBottom(clickedSlot) {
             }
         }
     }
-
-    let allSlots = document.querySelectorAll(".slot");
-
-    allSlots.forEach((element) => {
-        element.addEventListener("click", (e) => {
-            updateBottomSlots(element.id.slice(1));
-        });
-    });
-
-    updateBottomSlots(clickedSlot);
-
 }
 
+/* Create the EventListeners for all slots in the table. */
+function updateBottomListeners() {
+    let allSlots = document.querySelectorAll(".slot");
+    allSlots.forEach((element) => {
+        element.addEventListener("click", (e) => {
+            updateBottomClicked(element.id.slice(1));
+        });
+    });
+}
 
-function updateBottomSlots(clickedSlot) {
+/* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */
+function updateBottomClicked(clickedSlot) {
+    /* If the slot clicked is a reserved slot... */
     if (document.getElementById(`S${clickedSlot}`).classList.contains("reservedSlot")) {
+        /* Remove all currently "clicked" and "selecting" slots. */
         document.querySelectorAll(".clickedSlot, .selectingSlot").forEach((element) => {
             element.classList.remove("clickedSlot", "selectingSlot");
         });
+        /* Find the reservation that matches the clicked slot. */
         for (let r of reservations) {
             if (document.querySelector(".clickedSeat").id == r.seat) {
                 // Check if same date...
@@ -307,14 +331,18 @@ function updateBottomSlots(clickedSlot) {
             }
         }
         document.getElementById("submit").disabled = true;
-    } else if (document.querySelector(".selectingSlot") == null) {
+    } 
+    /* If the slot clicked is NOT a reserved slot and they HAVEN'T selected a slot (dark green) before... */
+    else if (document.querySelector(".selectingSlot") == null) {
         document.getElementById(`S${clickedSlot}`).classList.add("selectingSlot");
         document.querySelectorAll(".clickedSlot").forEach((element) => {
             element.classList.remove("clickedSlot");
         });
         document.getElementById("reserver").innerHTML = "None";
         document.getElementById("submit").disabled = true;
-    } else {
+    }
+    /* If the slot clicked is NOT a reserved slot and they HAVE selected a slot (dark green) before... */ 
+    else {
         let lastSelected = document.querySelector(".selectingSlot").id.slice(1);
         document.querySelector(".selectingSlot").classList.remove("selectingSlot");
         if (lastSelected < clickedSlot) {
