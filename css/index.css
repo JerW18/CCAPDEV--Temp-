@@ -39,7 +39,7 @@ body {
     font-size: 14px;
 }
 
-.login-form button {
+.login-form #login-form-submit, .login-form #register-form-submit {
     text-transform: uppercase;
     outline: 0;
     background: #4CAF50;
@@ -53,7 +53,11 @@ body {
     cursor: pointer;
 }
 
-.login-form button:hover,.login-form button:active,.login-form button:focus {
+.login-form #login-form-submit:hover, .login-form #login-form-submit:active, .login-form #login-form-submit:focus {
+    background: #43A047;
+}
+
+.login-form #register-form-submit:hover, .login-form #register-form-submit:active, .login-form #register-form-submit:focus {
     background: #43A047;
 }
 
@@ -68,6 +72,6 @@ body {
     text-decoration: none;
 }
 
-.login-form .register {
+.login-form #register {
     display: none;
 }
