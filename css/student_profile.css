@@ -69,6 +69,51 @@ table {
     background-color: #f2f2f2;
   }
 
+
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-box{
+    display:flex;
+    align-items: center;
+    background: #76b852;
+    padding: 2em;
+  }
+  
+  .profile-box img {
+    border-radius: 50%;
+    width: 20%;
+    height: 20%;
+    object-fit: cover;
+  }
+  
+  .details {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin-right: 10px;
+  }
+  
+  .logout-btn {
+    background-color: darkolivegreen;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: red;
+    color: white;
+  }
+
 footer{
     height: 50px;
     background: #FFFFFF;
