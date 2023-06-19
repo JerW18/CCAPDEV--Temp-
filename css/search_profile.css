@@ -37,6 +37,19 @@ body {
     font-size: 20px;
     color: black;
 }
+.center{
+    text-align: center;
+}
 table,tr,th{
     border: 1px solid purple;
+}
+#icon{
+    border-radius: 50%;
+    scale: 50%;
+    margin-top: 0;
+}
+#icondiv{
+    background-color: red;
+    display: flex;
+    width: 500px;
 }
