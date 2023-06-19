@@ -63,7 +63,7 @@ loginButton.addEventListener("click", (e) => {
         loginForm.logEmail.value = "";
         loginForm.logPassword.value = "";
         
-        window.location.assign("/html/reserve.html");
+        window.location.assign("html/reserve.html");
     } else {
         alert("Invalid username or password.");
     }
