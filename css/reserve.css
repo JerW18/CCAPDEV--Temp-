@@ -8,39 +8,6 @@ body {
     height: 100vh;
 }
 
-#navbar {
-    background-color: #4CAF50;
-    padding: 15px;
-    padding-left: 25px;
-    padding-right: 25px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
-    min-height: 10px;
-}
-
-#logo {
-    font-family: 'Faster One', sans-serif;
-    color: black;
-    font-size: 25px;
-}
-
-#search:hover,
-#login:hover,
-#profile:hover {
-    cursor:pointer;
-    /*COLOR HIGHLIGHT CHANGE ME MAKE PURPLE FOR NOW*/
-    color:purple;
-}
-
-#search,
-#login,
-#profile {
-    float: right;
-    margin: 5px 10px;
-    font-weight: bolder;
-    font-size: 20px;
-    color: black;
-}
-
 #main {
     display: flex;
     flex-direction: column;
