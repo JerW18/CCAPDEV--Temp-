@@ -43,17 +43,17 @@ function initializeResTable() {
     for (let i of reservations) {
         insert += "<tr>";
         for (const j in i) {
-            insert += "<th>"
+            insert += "<th>";
             //to print and format time
             if(j == "start" || j == "end"){
                 let time = parseInt(i[j]);
-                let morning=true    
+                let morning = true;    
                 let minutes = time % 2;
-                time/=2;
-                time=Math.floor(time);
-                if(time>12){
-                    time-=12;
-                    morning=false;
+                time /= 2;
+                time = Math.floor(time);
+                if(time > 12){
+                    time -= 12;
+                    morning = false;
                 }
                 time = time.toString();
                 if(minutes == 0){

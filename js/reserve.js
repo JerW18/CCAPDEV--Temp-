@@ -172,7 +172,7 @@ function updateCenterListeners() {
 function updateCenterReserved() {
 
     /* Remove all currently reserved seats. */
-    allReserved = document.querySelectorAll("reservedSeat");
+    const allReserved = document.querySelectorAll("reservedSeat");
     allReserved.forEach((element) => {
         element.classList.remove("reservedSeat");
     });
@@ -199,7 +199,7 @@ function updateCenterClicked(clickedPosition) {
     // 0 is a special value indicating to do nothing.
 
     if (clickedPosition == -1) {
-        pastClicked = document.querySelectorAll("clickedSeat");
+        const pastClicked = document.querySelectorAll("clickedSeat");
         pastClicked.forEach((element) => {
             element.classList.remove("clickedSeat");
         });
@@ -329,7 +329,7 @@ function updateBottomClicked(clickedSlot) {
                                 let now = document.getElementById(`S${i}`);
                                 now.classList.add("clickedSlot");
                             }
-                            if (r.anonymous == true) {
+                            if (r.anonymous) {
                                 document.getElementById("reserver").innerHTML = "Anonymous";
                             } else {
                                 if (r.technician == null) {
