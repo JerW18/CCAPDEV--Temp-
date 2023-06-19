@@ -30,6 +30,33 @@ let reservations = [
         start: "20", 
         end: "26"
     },
+    {
+        res_code: "R#10104",
+        room: "G304",
+        seat: "010",
+        requested: "2023-6-19",
+        reserved: "2023-6-25",  
+        start: "20", 
+        end: "26"
+    },
+    {
+        res_code: "R#10104",
+        room: "G304",
+        seat: "010",
+        requested: "2023-6-19",
+        reserved: "2023-6-25",  
+        start: "20", 
+        end: "26"
+    },
+    {
+        res_code: "R#10104",
+        room: "G304",
+        seat: "010",
+        requested: "2023-6-19",
+        reserved: "2023-6-25",  
+        start: "20", 
+        end: "26"
+    }
 ];
 
 
@@ -81,5 +108,19 @@ function initializeResTable() {
     }
     table.innerHTML+=insert;
 }
+initializeNavBarButtons();
 
-initializeResTable();
+
+/* initialize navbar buttons*/
+function initializeNavBarButtons(){
+    const searchButton=document.getElementById("search");
+    const profileButton=document.getElementById("profile");
+    searchButton.addEventListener("click",(e)=>{
+        window.location.assign("search_profile.html");
+    })
+    profileButton.addEventListener("click",(e)=>{
+        window.location.assign("student_profile_reservations.html");
+    })
+}
+
+

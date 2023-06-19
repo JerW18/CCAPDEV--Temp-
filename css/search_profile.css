@@ -15,12 +15,68 @@ table,tr,th{
 
 #icon{
     border-radius: 50%;
-    scale: 50%;
-    margin-top: 0;
+    scale: 75%;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
-
-#icondiv{
-    background-color: red;
+#descBody{
     display: flex;
-    width: 500px;
+    flex-direction: row;
+    background-color: rgb(190, 190, 190);
+    width: 1500px;
+    margin: auto;
+    border-radius: 10px;
+}
+#descRight{
+    position:relative;
+}
+#writtendesc{
+    background-color: white;
+    margin: auto;
+    margin: 15px;
+    border-radius: 5px;
+    margin-left: 0px;
+    position:absolute;
+    bottom: 0;
+    padding:10px
+}
+#searchusername{
+    line-height: 0px;
+    
+}
+#icondiv{
+    margin:0px;
+    padding: 0px;
+}
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+bottom: .5em;
+}
+#reservations{
+    margin: auto;
+}
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+    width:1200px;
+    }
+.table-wrapper-scroll-y {
+    display: block;
+}
+table{
+    width: 300px;
+}
+thead{
+    position:sticky;
+    background-color: rgba(98, 226, 119, 1);
+    top: 0px;
 }
