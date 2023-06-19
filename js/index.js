@@ -57,6 +57,7 @@ loginButton.addEventListener("click", (e) => {
     if (isLogin) {
         alert("You have successfully logged in.");
         location.reload();
+        window.location.assign("../html/reserve.html");
     } else {
         alert("Invalid username or password.");
     }

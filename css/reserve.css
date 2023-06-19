@@ -22,6 +22,14 @@ body {
     font-size: 25px;
 }
 
+#search:hover,
+#login:hover,
+#profile:hover {
+    cursor:pointer;
+    /*COLOR HIGHLIGHT CHANGE ME MAKE PURPLE FOR NOW*/
+    color:purple;
+}
+
 #search,
 #login,
 #profile {
