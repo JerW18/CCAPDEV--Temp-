@@ -33,7 +33,7 @@ let users = [
 ];
 
 // Animation of Forms
-$('.message a').click(function(){
+$('#registerMessage a').click(function(){
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 });
 
@@ -55,8 +55,9 @@ loginButton.addEventListener("click", (e) => {
     }
 
     if (isLogin) {
-        alert("You have successfully logged in.");
-        location.reload();
+        loginForm.logEmail.value = "";
+        loginForm.logPassword.value = "";
+        
         window.location.assign("../html/reserve.html");
     } else {
         alert("Invalid username or password.");

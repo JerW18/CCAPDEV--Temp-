@@ -10,26 +10,31 @@
     <title>Computer Lab Reservation</title>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-form">
-            <div class="login-text">
-                <span>Computer Lab Reservation</span>
+    <div class="background">
+        <div class="login-container">
+            <div class="login-form">
+                <div class="login-text">
+                    <span>Arrow Laboratory</span>
+                </div>
+    
+                <form id="register">
+                    <input type="text" name="regEmail" id="regEmail-field" placeholder="Email Address"/>
+                    <input type="password" name="regPassword" id="regPassword-field" placeholder="Password"/>
+                    <input type="password" name="regConfirmPassword" id="regConfirmPassword-field" placeholder="Re-type Password"/>
+                    <input type="submit" value="Register" class="formBtn" id="register-form-submit">
+                    <p class="message" id="registerMessage">Already registered? <a href="#">Sign In</a></p>
+                </form>
+    
+                <form id="login">
+                    <input type="text" name="logEmail" id="logEmail-field" placeholder="Email"/>
+                    <input type="password" name="logPassword" id="logPassword-field" placeholder="Password"/>
+                    <input type="submit" value="Login" class="formBtn" id="login-form-submit">
+                    <input type="checkbox" value="lsRememberMe" id="rememberMe"><label for="rememberMe">Remember Me?</label>
+                    <br><br>
+                    <p class="message" id="guestMessage">Guest? <a href="#">Guest Login</a></p>
+                    <p class="message" id="registerMessage">Not registered? <a href="#">Create an account</a></p>
+                </form>
             </div>
-
-            <form id="register">
-                <input type="text" name="regEmail" id="regEmail-field" placeholder="Email Address"/>
-                <input type="password" name="regPassword" id="regPassword-field" placeholder="Password"/>
-                <input type="password" name="regConfirmPassword" id="regConfirmPassword-field" placeholder="Re-type Password"/>
-                <input type="submit" value="Register" id="register-form-submit">
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
-
-            <form id="login">
-                <input type="text" name="logEmail" id="logEmail-field" placeholder="Email"/>
-                <input type="password" name="logPassword" id="logPassword-field" placeholder="Password"/>
-                <input type="submit" value="Login" id="login-form-submit">
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
-            </form>
         </div>
     </div>
 </body>
