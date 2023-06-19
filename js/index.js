@@ -37,6 +37,11 @@ $('#registerMessage a').click(function(){
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 });
 
+// Guest Log In
+$('#guestMessage a').click(function(){
+    window.location.assign("../html/temp_reserve_guest.html");;
+});
+
 // Login Form
 const loginForm = document.getElementById("login");
 const loginButton = document.getElementById("login-form-submit");
