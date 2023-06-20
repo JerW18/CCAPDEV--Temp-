@@ -26,58 +26,63 @@
     </nav>
 
     <!-- Main -->
-    <h1 id="PageTitle">Search User</h1>
-    <hr id="searchLine">
-    <div class="center">
-        <form action="">
-            <label for="username">username:</label>
-            <input type="text" id="username" name="fname" placeholder="TYPEBITCH" value="PunkGirl26">
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-
-    <div id="userinfo">
-        <div id="description">
-            <div id="descHead">
-                <h3 >Description</h3>
-                <hr id="descLine">
-            </div>
-            <div id="descBody">
-                <div id="icondiv">
-                    <img id="icon" src="../images/profile.png"/>
+    <div class="container light-style flex-grow-1 container-p-y">
+        
+        <br>
+        
+        <h3 class="font-weight-bold py-3 mb-4 font">
+            Search User
+        </h3>
+        <hr id="searchLine">
+        <div class="center">
+            <form action="">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="fname" placeholder="Username" value="tyler_tan">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+    
+        <div id="userinfo">
+            <div id="description">
+                <div id="descHead">
+                    <h4 class="font-weight-bold py-3 mb-4 font">
+                        Description
+                    </h4>
+                    <hr id="descLine">
                 </div>
-                <div id="descRight">
-                    <h2>Gwen Stacy</h2>
-                    <p id="searchusername">@PunkGirl26</p>
-                    <div id="writtendesc">
-                        <pre>Hi! my name is gwen stacy im from Earth 6969 and my I watched my bestfriend
-turn into a giant lizard. He got into an accident and went sleepy for forever.
-I meant this weird kid in another universe tho his name is Miles Morales.
-
-                        </pre>
+                <div id="descBody">
+                    <div id="icondiv">
+                        <img id="icon" src="../images/profile.png"/>
+                    </div>
+                    <div id="descRight">
+                        <h2>Tyler Tan</h2>
+                        <p id="searchusername">@tyler_tan</p>
+                        <div id="writtendesc">
+                            <p>Hello, I am Tyler Tan. Studying BSMS in DLSU.</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            <h4 class="font-weight-bold py-3 mb-4 font">
+                Reservation
+            </h4>
+            <hr id="resLine">  
+            <div id="reservations" class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table id="table" class="table table-bordered table-striped mb-0">
+                    <thead>
+                        <tr class="sticky">
+                            <th class="th-sm">Reservation</th>
+                            <th class="th-sm">Room</th>
+                            <th class="th-sm">Seat</th>
+                            <th class="th-sm">Date Requested</th>
+                            <th class="th-sm">Date Reserved</th>
+                            <th class="th-sm"></th>
+                            <th class="th-sm"></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-        <h3>Reservation</h3>
-        <hr id="resLine">  
-        <div id="reservations" class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table id="table" class="table table-bordered table-striped mb-0">
-                <thead>
-                    <tr class="sticky">
-                        <th class="th-sm">Reservation</th>
-                        <th class="th-sm">Room</th>
-                        <th class="th-sm">Seat</th>
-                        <th class="th-sm">Date Requested</th>
-                        <th class="th-sm">Date Reserved</th>
-                        <th class="th-sm"></th>
-                        <th class="th-sm"></th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-
     </div>
 
 

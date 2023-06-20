@@ -2,6 +2,7 @@
 //add rows to the reservation information column when there is a reservation,
 //make it scrollable.
 
+// Hardcoded Values
 let reservations = [
     {
         res_code: "R#10104",
@@ -59,7 +60,8 @@ let reservations = [
     }
 ];
 
-
+// Main JS
+initializeResTable();
 
 function initializeResTable() {
   //one reservation=1 row
@@ -107,20 +109,6 @@ function initializeResTable() {
         insert += "</tr>";
     }
     table.innerHTML+=insert;
-}
-initializeNavBarButtons();
-
-
-/* initialize navbar buttons*/
-function initializeNavBarButtons(){
-    const searchButton=document.getElementById("search");
-    const profileButton=document.getElementById("profile");
-    searchButton.addEventListener("click",(e)=>{
-        window.location.assign("search_profile.html");
-    })
-    profileButton.addEventListener("click",(e)=>{
-        window.location.assign("student_profile_reservations.html");
-    })
 }
 
 

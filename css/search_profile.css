@@ -3,6 +3,7 @@
 body {
     margin: 0;
     padding: 0;
+    height: 160vh;
 }
 
 .center{
@@ -19,35 +20,40 @@ table,tr,th{
     padding-bottom: 0px;
     margin-bottom: 0px;
 }
+
 #descBody{
     display: flex;
     flex-direction: row;
     background-color: rgb(190, 190, 190);
-    width: 1500px;
+    width: 100%;
     margin: auto;
     border-radius: 10px;
 }
+
 #descRight{
     position:relative;
 }
+
 #writtendesc{
     background-color: white;
-    margin: auto;
     margin: 15px;
     border-radius: 5px;
     margin-left: 0px;
     position:absolute;
     bottom: 0;
-    padding:10px
+    padding:10px;
+    width: 500px;
 }
+
 #searchusername{
     line-height: 0px;
-    
 }
+
 #icondiv{
-    margin:0px;
+    margin: 0px;
     padding: 0px;
 }
+
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:after,
@@ -58,23 +64,28 @@ table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_desc:before,
 table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
-bottom: .5em;
+    bottom: .5em;
 }
+
 #reservations{
     margin: auto;
 }
+
 .my-custom-scrollbar {
     position: relative;
-    height: 200px;
+    height: 250px;
     overflow: auto;
     width:1200px;
-    }
+}
+
 .table-wrapper-scroll-y {
     display: block;
 }
+
 table{
     width: 300px;
 }
+
 thead{
     position:sticky;
     background-color: rgba(98, 226, 119, 1);
