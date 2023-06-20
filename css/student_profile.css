@@ -118,126 +118,16 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     border-radius: 50%;
 }
 
-/* body {
-    margin: 0;
-    padding: 0;
-    background: #4CAF50;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Roboto', sans-serif;
+table{
+    width: 300px;
 }
 
-header{
+thead{
     position: sticky;
-    top: 0;
-    padding: 1em;
-    background: #76b852;
-    color: #FFFFFF;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    font-size: 40px;
-}
-
-.container{
-    height: 600px;
-    display: flex;
-}
-
-.side {
-    flex: 1;
-    border-right: 2px solid black; 
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    padding: 2em;
-}
-
-.content {
-    padding: 2em;
-    flex: 4;   
-}
-
-hr {
-    width: 80%;
-}
-
-.reservations{
-    background: white;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-family: Arial, sans-serif;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-    color: #333;
-    text-transform: uppercase;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f2f2f2;
+    background-color: rgba(98, 226, 119, 1);
+    top: 0px;
 }
 
 a > img{
     width: 2em;
 }
-.profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile-box{
-    display:flex;
-    align-items: center;
-    background: #76b852;
-    padding: 2em;
-}
-
-.profile-box img {
-    border-radius: 50%;
-    width: 20%;
-    height: 20%;
-    object-fit: cover;
-}
-
-.details {
-    margin-top: 10px;
-    text-align: center;
-}
-
-.buttons {
-    margin-top: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    margin-right: 10px;
-}
-
-.logout-btn {
-    background-color: darkolivegreen;
-    color: white;
-}
-
-.delete-btn {
-    background-color: red;
-    color: white;
-}
-
-footer{
-    height: 50px;
-    background: #FFFFFF;
-} */
