@@ -51,7 +51,7 @@ function initializeNavBarButtons(){
         window.location.assign("search_profile.html");
     })
     profileButton.addEventListener("click",(e)=>{
-        window.location.assign("student_profile_reservations.html");
+        window.location.assign("student_profile.html");
     })
 }
 

@@ -41,20 +41,6 @@ let topForm = document.forms.topForm;
 initializeTopForm();
 updateCenter(0);
 initializeCenterListener();
-initializeNavBarButtons();
-
-
-/* initialize navbar buttons*/
-function initializeNavBarButtons(){
-    const searchButton=document.getElementById("search");
-    const profileButton=document.getElementById("profile");
-    searchButton.addEventListener("click",(e)=>{
-        window.location.assign("search_profile.html");
-    })
-    profileButton.addEventListener("click",(e)=>{
-        window.location.assign("student_profile_reservations.html");
-    })
-}
 
 /* Initialize Options for TopForm */
 function initializeTopForm() {
