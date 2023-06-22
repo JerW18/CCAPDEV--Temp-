@@ -60,10 +60,10 @@ loginButton.addEventListener("click", (e) => {
 
             loginForm.logEmail.value = "";
             loginForm.logPassword.value = "";
-        }
-
-        if (user.isAdmin === true) {
-            isAdmin = true;
+            
+            if (user.isAdmin === true) {
+                isAdmin = true;
+            }
         }
     }
 
