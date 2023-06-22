@@ -61,42 +61,54 @@ reservations
 - reserver
 - technician
 - isAnonymous
-function labs(labCode){
+
+*/
+
+function Lab(labCode){
     this.labCode=labCode;
 }
-function tables(tableID, rows, columns){
-    this.tableID=tableID
-    this.rows=rows
-    this.columns=columns
-}
-function users(email, password, isAdmin, name, picture, bio){
-    this.email=email
-    this.passowrd=password
-    this.isAdmin=isAdmin
-    this.name=name
-    this.picture=picture
-    this.bio=bio
-}
-function users-reservations(email, reservationID){
-    this.email=email
-    this.reservationID=reservationID
-}
-function reservations(reservationID, lab, seat, reservationDate, startTime, endTime, reservedDate, reserver, technician, isAnonymous){
-    this.reservationID=reservationID
-    this.lab=lab
-    this.seat=seat
-    this.reservationDate=reservationDate
-    this.startTime=startTime
-    this.endTime=endTime
-    this.reservedDate=reservedDate
-    this.reserver=reserver;
-    this.technician=technician;
-    this.isAnonymous=isAnonymous;
-}
- */
 
+function Table(tableID, rows, columns){
+    this.tableID=tableID;
+    this.rows=rows;
+    this.columns=columns;
+}
 
+function User(email, password, isAdmin, name, picture, bio){
+    this.email = email;
+    this.passowrd = password;
+    this.isAdmin = isAdmin;
+    this.name = name;
+    this.picture = picture;
+    this.bio = bio;
+}
 
+function UserReservation(email, reservationID){
+    this.email = email;
+    this.reservationID = reservationID;
+}
+
+function DateAndTime(date, startTime, endTime){
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.date = date;
+}
+
+function LabSeat(lab, seat){
+    this.lab = lab;
+    this.seat = seat;
+}
+
+function Reservation(reservationID, labSeat, reservationDate, reservedDateAndTime, reserver, technician, isAnonymous){
+    this.reservationID = reservationID;
+    this.labSeat = labSeat;
+    this.reservationDate = reservationDate;
+
+    this.reservedDate = reservedDate;
+    this.reserver = reserver;
+    this.technician = technician;
+    this.isAnonymous = isAnonymous;
+}
 
 /* Global Values */
 let topForm = document.forms.topForm;
