@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/navbar.js" defer></script>
-    <script src="../js/search_profile.js" defer></script>
+    <script src="../js/search_profile.js" type="module" defer></script>
 </head>
 
 <body>
@@ -35,10 +35,10 @@
         </h3>
         <hr id="searchLine">
         <div class="center">
-            <form action="">
+            <form action="" id="searchForm">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="fname" placeholder="Username" value="tyler_tan">
-                <input type="submit" value="Search">
+                <input type="text" id="username" name="fname" placeholder="Username" value="tyler_tan@dlsu.edu.ph">
+                <input type="submit" id="searchButton" value="Search">
             </form>
         </div>
     
@@ -69,17 +69,7 @@
             <hr id="resLine">  
             <div id="reservations" class="table-wrapper-scroll-y my-custom-scrollbar">
                 <table id="table" class="table table-bordered table-striped mb-0">
-                    <thead>
-                        <tr class="sticky">
-                            <th class="th-sm">Reservation</th>
-                            <th class="th-sm">Room</th>
-                            <th class="th-sm">Seat</th>
-                            <th class="th-sm">Date Requested</th>
-                            <th class="th-sm">Date Reserved</th>
-                            <th class="th-sm"></th>
-                            <th class="th-sm"></th>
-                        </tr>
-                    </thead>
+                    
                 </table>
             </div>
         </div>

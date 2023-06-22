@@ -1,141 +1,99 @@
+import { labs, tables, users, reservations } from "./db.js";
+
 const saveChangesButton = document.getElementById("saveBtn");
 const cancelButton = document.getElementById("cancelBtn");
 const logoutButton = document.getElementById("logoutBtn");
 const deleteButton = document.getElementById("deleteBtn");
 const bioText = document.getElementById("bioText");
 
-bioText.addEventListener("click",(e)=>{
+bioText.addEventListener("click", (e) => {
     saveChangesButton.removeAttribute("hidden");
     cancelButton.removeAttribute("hidden");
-    logoutButton.setAttribute("hidden",true);
-    deleteButton.setAttribute("hidden",true);
+    logoutButton.setAttribute("hidden", true);
+    deleteButton.setAttribute("hidden", true);
 });
 
-cancelButton.addEventListener("click",(e)=>{
-    saveChangesButton.setAttribute("hidden",true);
-    cancelButton.setAttribute("hidden",true);
+cancelButton.addEventListener("click", (e) => {
+    saveChangesButton.setAttribute("hidden", true);
+    cancelButton.setAttribute("hidden", true);
     logoutButton.removeAttribute("hidden");
     deleteButton.removeAttribute("hidden");
 });
 
-// Hardcoded Values
-let reservations = [
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-23",
-        start: "20", 
-        end: "26" 
-    },
-    {
-        res_code: "R#10105",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-24",
-        start: "20",
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    }
-];
-
 // Print Reservations
-initializeResTable();
+updateResTable();
 
-function initializeResTable() {
-  //one reservation=1 row
-  //one detail of reservation=1col
-    let insert = "";
+function updateResTable() {
+    //one reservation=1 row
+    //one detail of reservation=1col
+    let insert = `<thead>
+                        <tr class="sticky">
+                            <th class="th-sm">Reservation</th>
+                            <th class="th-sm">Room</th>
+                            <th class="th-sm">Seat</th>
+                            <th class="th-sm" colspan = "2">Date And Time Requested</th>
+                            <th class="th-sm" colspan = "3">Date And Time Reserved</th>
+                        </tr>
+                    </thead>`;
     const table = document.getElementById("table");
-    
-    for (let i of reservations) {
-        insert += "<tr>";
-        for (const j in i) {
-            insert += "<th>";
-            //to print and format time
-            if(j == "start" || j == "end"){
-                let time = parseInt(i[j]);
-                let morning = true;    
-                let minutes = time % 2;
-                time /= 2;
-                time = Math.floor(time);
 
-                if(time > 12){
-                    time -= 12;
+    for (let i of reservations) {
+        if (i.email == "tyler_tan@dlsu.edu.ph") {
+            console.log("sdfsd");
+            insert += "<tr>";
+
+            insert += "<td>" + i["reservationID"] + "</td>";
+            insert += "<td>" + i["labSeat"].lab + "</td>";
+            insert += "<td>" + i["labSeat"].seat + "</td>";
+            insert += "<td>" + i["requestDateAndTime"].date + "</td>";
+            insert += "<td>" + i["requestDateAndTime"].startTime + "</td>";
+            insert += "<td>" + i["reservedDateAndTime"].date + "</td>";
+
+            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime)];
+            for (let i = 0; i < 2; i++) {
+                insert += "<td>";
+                let morning = true;
+                let minutes = time[i] % 2;
+                time[i] /= 2;
+                time[i] = Math.floor(time[i]);
+                if (time[i] > 12) {
+                    time[i] -= 12;
                     morning = false;
                 }
+                time[i] = time[i].toString();
+                if (minutes == 0) {
+                    time[i] += ":00";
+                }
+                else {
+                    time[i] += ":30";
+                }
+                if (!morning) {
+                    time[i] += " PM";
+                }
+                else {
+                    time[i] += " AM";
+                }
+                insert += time[i];
+                insert += "</td>";
 
-                time = time.toString();
-
-                if(minutes == 0){
-                    time += ":00";
-                }
-                else{
-                    time += ":30";
-                }
-
-                if(!morning){
-                    time+="PM";
-                }
-                else{
-                    time+="AM";
-                }
-                insert += time;
             }
-            else{
-                insert += i[j];    
-            }
-
-            insert+="</th>";
+            insert += "</tr>";
+/* TODO: Tried fitting in anonymous pero di na kasya so kung kaya ayusin thru css go lang XD
+            if (i["anonymous"])
+                insert += "<td> Yes </td>";
+            else
+                insert += "<td> No </td>";
+                */
         }
-        insert += `<th><a href="reserve.html"><img src = "../images/edit.png"> </a></th>`;
-        insert += `<th><a href="#" class="deleteResBtn" data-confirm="Are you sure you want to delete this reservation?"><img src = "../images/delete.png"> </a></th>`;
-        insert += "</tr>";
+        table.innerHTML = insert;
     }
-    table.innerHTML+=insert;
+
 }
 
 // Confirm Delete Account Popup
 const deleteBtn = document.getElementById("deleteBtn");
 
-deleteBtn.addEventListener('click', function(e) {
+deleteBtn.addEventListener('click', function (e) {
     e.preventDefault();
 
     confirm("Are you sure you want to delete your account?");

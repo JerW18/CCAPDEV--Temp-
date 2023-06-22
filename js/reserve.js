@@ -1,114 +1,4 @@
-/* Hardcoded Values */
-let labNames = ["G503", "A2493", "Y021"];
-let labSizes = [[[4, 3], [4, 3], [3, 4]], [[4, 10]], [[4, 6], [4, 6]]];
-
-let reservations = [
-    {
-        reserver: "Tyler Tan", technician: null, anonymous: false,
-        date: "2023-6-17", start: "24", end: "30", lab: "1", seat: "011"
-    },
-    {
-        reserver: "Jeremy Wang", technician: null, anonymous: true,
-        date: "2023-6-17", start: "17", end: "30", lab: "0", seat: "122"
-    },
-    {
-        reserver: "Lanz Lim", technician: "Lab Tech 1", anonymous: false,
-        date: "2023-6-17", start: "17", end: "35", lab: "1", seat: "033"
-    },
-    {
-        reserver: "Johann Uytanlet", technician: null, anonymous: false,
-        date: "2023-6-18", start: "20", end: "25", lab: "0", seat: "011"
-    },
-    {
-        reserver: "Tyra Tan", technician: null, anonymous: false,
-        date: "2023-6-18", start: "27", end: "30", lab: "0", seat: "011"
-    },
-    {
-        reserver: "Texas", technician: "Lappland", anonymous: false,
-        date: "2023-6-18", start: "25", end: "31", lab: "0", seat: "022"
-    }
-];
-
-/**
- * labs
-- labCode*
-
-tables
-- tableID*
-- rows
-- columns
-
-users
-- email*
-- password
-- isAdmin
-- name
-- picture
-- bio
-
-users-reservations
-- email*
-- reservationID*
-
-reservations
-- reservationID*
-- lab
-- seat
-- reservationDate
-- startTime
-- endTime
-- reservedDate
-- reserver
-- technician
-- isAnonymous
-
-*/
-
-function Lab(labCode){
-    this.labCode=labCode;
-}
-
-function Table(tableID, rows, columns){
-    this.tableID=tableID;
-    this.rows=rows;
-    this.columns=columns;
-}
-
-function User(email, password, isAdmin, name, picture, bio){
-    this.email = email;
-    this.passowrd = password;
-    this.isAdmin = isAdmin;
-    this.name = name;
-    this.picture = picture;
-    this.bio = bio;
-}
-
-function UserReservation(email, reservationID){
-    this.email = email;
-    this.reservationID = reservationID;
-}
-
-function DateAndTime(date, startTime, endTime){
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.date = date;
-}
-
-function LabSeat(lab, seat){
-    this.lab = lab;
-    this.seat = seat;
-}
-
-function Reservation(reservationID, labSeat, reservationDate, reservedDateAndTime, reserver, technician, isAnonymous){
-    this.reservationID = reservationID;
-    this.labSeat = labSeat;
-    this.reservationDate = reservationDate;
-
-    this.reservedDate = reservedDate;
-    this.reserver = reserver;
-    this.technician = technician;
-    this.isAnonymous = isAnonymous;
-}
+import { labs, tables, users, reservations } from "./db.js";
 
 /* Global Values */
 let topForm = document.forms.topForm;
@@ -130,8 +20,8 @@ function initializeTopFormLab() {
 
     /* Add Options Based on Labs in DB */
     document.getElementById("labForm").innerHTML = "";
-    for (let i = 0; i < labNames.length; i++) {
-        document.getElementById("labForm").innerHTML += `<option value = "${i}">${labNames[i]}</option>`;
+    for(let lab of labs){
+        document.getElementById("labForm").innerHTML += `<option value = "${lab.labCode}">${lab.labCode}</option>`;
     }
 
     /* Add EventListener to Change Center and Reserved */
@@ -196,15 +86,20 @@ function updateCenter(clickedPosition) {
 /* Create the Tables that will Represent the Seatings */
 function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
-    let labSize = labSizes[(new FormData(topForm)).get("labForm")];
-    for (let t = 0; t < labSize.length; t++) {
+    let tablesToAdd = [];
+    for(let t of tables){
+        if(t.lab == (new FormData(topForm)).get("labForm")){
+            tablesToAdd.push(t);
+        }
+    }
+    for (let t = 0; t < tablesToAdd.length; t++) {
         let insert = "";
         insert += "<table>";
 
-        let table = labSize[t];
-        for (let r = 0; r < table[0]; r++) {
+        let table = tablesToAdd[t];
+        for (let r = 0; r < table.rows; r++) {
             insert += "<tr>";
-            for (let c = 0; c < table[1]; c++) {
+            for (let c = 0; c < table.columns; c++) {
                 insert += `<td id = "${t}${r}${c}" class= "seat"></td>`;
             }
             insert += "</tr>";
@@ -217,11 +112,16 @@ function updateCenterTables() {
 
 /* Create the EventListeners for Each Seat in the Display */
 function updateCenterListeners() {
-    let labSize = labSizes[(new FormData(topForm)).get("labForm")];
-    for (let t = 0; t < labSize.length; t++) {
-        let table = labSize[t];
-        for (let r = 0; r < table[0]; r++) {
-            for (let c = 0; c < table[1]; c++) {
+    let tablesToAdd = [];
+    for(let t of tables){
+        if(t.lab == (new FormData(topForm)).get("labForm")){
+            tablesToAdd.push(t);
+        }
+    }
+    for (let t = 0; t < tablesToAdd.length; t++) {
+        let table = tablesToAdd[t];
+        for (let r = 0; r < table.rows; r++) {
+            for (let c = 0; c < table.columns; c++) {
                 document.getElementById(`${t}${r}${c}`).addEventListener("click", (e) => {
                     updateCenter([t, r, c]);
                     updateBottom((new FormData(topForm).get("timeForm")));
@@ -243,12 +143,12 @@ function updateCenterReserved() {
     /* For each reservation, check if they apply then color red if applicable. */
     for (let r of reservations) {
         // Check if same date...
-        if ((new FormData(topForm)).get("dateForm") == r.date) {
+        if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
             // Check if same time...
-            if ((new FormData(topForm).get("timeForm")) >= r.start && (new FormData(topForm).get("timeForm")) <= r.end) {
+            if ((new FormData(topForm).get("timeForm")) >= r.reservedDateAndTime.startTime && (new FormData(topForm).get("timeForm")) <= r.reservedDateAndTime.endTime) {
                 // Check if same lab...
-                if ((new FormData(topForm)).get("labForm") == r.lab) {
-                    let now = document.getElementById(`${r.seat}`);
+                if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                    let now = document.getElementById(`${r.labSeat.seat}`);
                     now.classList.add("reservedSeat");
                 }
             }
@@ -311,7 +211,7 @@ function updateBottomTables() {
 
     /* First, add the details on the left side of the bottom panel. */
     insert += `<div id = "bottomDetails"><div>Seat No. ${document.querySelector(`.clickedSeat`).id}</div>`;
-    insert += `<div>Lab Room ${labNames[(new FormData(topForm).get("labForm"))]}</div>`;
+    insert += `<div>Lab Room ${(new FormData(topForm).get("labForm"))}</div>`;
     insert += `<div>Date: ${(new FormData(topForm).get("dateForm"))}</div></div>`;
 
     /* Then, add the table in the center to represent the slots of that seat. */
@@ -348,10 +248,10 @@ function updateBottomReserved() {
     for (let r of reservations) {
         let clickedSeat = document.querySelector(".clickedSeat");
         if (clickedSeat != null) {
-            if (clickedSeat.id == r.seat) {
-                if (r.date == (new FormData(topForm)).get("dateForm")) {
-                    if (r.lab == (new FormData(topForm)).get("labForm")) {
-                        for (let i = r.start; i <= r.end; i++) {
+            if (clickedSeat.id == r.labSeat.seat) {
+                if (r.reservedDateAndTime.date == (new FormData(topForm)).get("dateForm")) {
+                    if (r.labSeat.lab == (new FormData(topForm)).get("labForm")) {
+                        for (let i = r.reservedDateAndTime.startTime; i <= r.reservedDateAndTime.endTime; i++) {
                             document.getElementById(`S${i}`).classList.add("reservedSlot");
                         }
                     }
@@ -381,25 +281,25 @@ function updateBottomClicked(clickedSlot) {
         });
         /* Find the reservation that matches the clicked slot. */
         for (let r of reservations) {
-            if (document.querySelector(".clickedSeat").id == r.seat) {
+            if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
                 // Check if same date...
-                if ((new FormData(topForm)).get("dateForm") == r.date) {
+                if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
                     // Check if same time...
-                    if (clickedSlot >= r.start && clickedSlot <= r.end) {
+                    if (clickedSlot >= r.reservedDateAndTime.startTime && clickedSlot <= r.reservedDateAndTime.endTime) {
                         // Check if same lab...
-                        if ((new FormData(topForm)).get("labForm") == r.lab) {
-                            for (let i = r.start; i <= r.end; i++) {
+                        if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                            for (let i = r.reservedDateAndTime.startTime; i <= r.reservedDateAndTime.endTime; i++) {
                                 let now = document.getElementById(`S${i}`);
                                 now.classList.add("clickedSlot");
                             }
-                            if (r.anonymous) {
+                            if (r.isAnonymous) {
                                 document.getElementById("reserver").innerHTML = "Anonymous";
                             } else {
-                                if (r.technician == null) {
+                                if (r.walkInStudent == null) {
                                     // TODO: Add link to other page here.
-                                    document.getElementById("reserver").innerHTML = `<a>${r.reserver}</a>`;
+                                    document.getElementById("reserver").innerHTML = `<a>${r.email}</a>`;
                                 } else {
-                                    document.getElementById("reserver").innerHTML = `${r.reserver} (${r.technician})`;
+                                    document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }
                             }
                             break;

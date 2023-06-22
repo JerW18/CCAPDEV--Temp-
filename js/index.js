@@ -1,4 +1,6 @@
-// Hardcoded Values
+import { labs, tables, users, reservations } from "./db.js";
+
+/*/ Hardcoded Values
 let users = [
     {
         email: "tyler_tan@dlsu.edu.ph", 
@@ -31,7 +33,7 @@ let users = [
         isAdmin: true
     }
 ];
-
+*/
 // Animation of Forms
 $('#registerMessage a').click(function(){
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
