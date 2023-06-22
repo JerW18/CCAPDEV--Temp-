@@ -296,8 +296,7 @@ function updateBottomClicked(clickedSlot) {
                                 document.getElementById("reserver").innerHTML = "Anonymous";
                             } else {
                                 if (r.walkInStudent == null) {
-                                    // TODO: Add link to other page here.
-                                    document.getElementById("reserver").innerHTML = `<a>${r.email}</a>`;
+                                    document.getElementById("reserver").innerHTML = `<a href = search_profile.html?username=${r.email}>${r.email}</a>`;
                                 } else {
                                     document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }

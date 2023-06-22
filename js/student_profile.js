@@ -39,7 +39,6 @@ function updateResTable() {
 
     for (let i of reservations) {
         if (i.email == "tyler_tan@dlsu.edu.ph") {
-            console.log("sdfsd");
             insert += "<tr>";
 
             insert += "<td>" + i["reservationID"] + "</td>";

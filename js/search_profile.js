@@ -6,6 +6,12 @@ import { labs, tables, users, reservations } from "./db.js";
 
 const searchForm = document.forms.searchForm;
 
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get("username");
+if(username != null){
+    document.getElementById("username").value = username;
+}
+
 // Main JS
 updateResTable();
 
@@ -29,9 +35,7 @@ function updateResTable() {
     const table = document.getElementById("table");
 
     for (let i of reservations) {
-        console.log(!i.isAnonymous, " ", i.email == (new FormData(searchForm).get("fname")));
         if (!i.isAnonymous && i.email == (new FormData(searchForm).get("fname"))) {
-            console.log("sdfsd");
             insert += "<tr>";
 
             insert += "<td>" + i["reservationID"] + "</td>";
