@@ -103,6 +103,5 @@ registerButton.addEventListener("click", (e) => {
     if (isRegister) {
         users.push({ username: username, password: password, isAdmin: false});
         alert("You have successfully registered.");
-        console.log(users);
     }
 })

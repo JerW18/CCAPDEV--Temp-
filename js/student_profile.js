@@ -126,8 +126,18 @@ function initializeResTable() {
             insert+="</th>";
         }
         insert += `<th><a href="reserve.html"><img src = "../images/edit.png"> </a></th>`;
-        insert += `<th><a href="reserve.html"><img src = "../images/delete.png"> </a></th>`;
+        insert += `<th><a href="#" class="deleteResBtn" data-confirm="Are you sure you want to delete this reservation?"><img src = "../images/delete.png"> </a></th>`;
         insert += "</tr>";
     }
     table.innerHTML+=insert;
 }
+
+// Confirm Delete Account Popup
+const deleteBtn = document.getElementById("deleteBtn");
+
+deleteBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    confirm("Are you sure you want to delete your account?");
+});
+
