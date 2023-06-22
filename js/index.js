@@ -52,18 +52,25 @@ loginButton.addEventListener("click", (e) => {
     const username = loginForm.logEmail.value;
     const password = loginForm.logPassword.value;
     let isLogin = false;
+    let isAdmin = false;
 
     for (const user of users) {
         if (user.email === username && user.password === password) {
             isLogin = true;
+
+            loginForm.logEmail.value = "";
+            loginForm.logPassword.value = "";
+        }
+
+        if (user.isAdmin === true) {
+            isAdmin = true;
         }
     }
 
-    if (isLogin) {
-        loginForm.logEmail.value = "";
-        loginForm.logPassword.value = "";
-        
+    if (isLogin && !isAdmin) {
         window.location.assign("html/reserve.html");
+    } else if (isLogin && isAdmin) {
+        window.location.assign("html/temp_admin_reserve.html");
     } else {
         alert("Invalid username or password.");
     }
