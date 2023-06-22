@@ -1,12 +1,7 @@
 /* Hardcoded Values */
 let labNames = ["G503", "A2493", "Y021"];
 let labSizes = [[[4, 3], [4, 3], [3, 4]], [[4, 10]], [[4, 6], [4, 6]]];
-/*
-let reservations0 = [["Tyler Tan", "2023-6-11", "24", "30", "0", "011"],
-["Jeremy Wang", "2023-6-11", "17", "30", "0", "122"],
-["Lanz Lim", "2023-6-10", "17", "35", "1", "033"],
-["Johann Uytanlet", "2023-6-10", "20", "30", "0", "011"]];;
-*/
+
 let reservations = [
     {
         reserver: "Tyler Tan", technician: null, anonymous: false,
@@ -33,6 +28,75 @@ let reservations = [
         date: "2023-6-18", start: "25", end: "31", lab: "0", seat: "022"
     }
 ];
+
+/**
+ * labs
+- labCode*
+
+tables
+- tableID*
+- rows
+- columns
+
+users
+- email*
+- password
+- isAdmin
+- name
+- picture
+- bio
+
+users-reservations
+- email*
+- reservationID*
+
+reservations
+- reservationID*
+- lab
+- seat
+- reservationDate
+- startTime
+- endTime
+- reservedDate
+- reserver
+- technician
+- isAnonymous
+function labs(labCode){
+    this.labCode=labCode;
+}
+function tables(tableID, rows, columns){
+    this.tableID=tableID
+    this.rows=rows
+    this.columns=columns
+}
+function users(email, password, isAdmin, name, picture, bio){
+    this.email=email
+    this.passowrd=password
+    this.isAdmin=isAdmin
+    this.name=name
+    this.picture=picture
+    this.bio=bio
+}
+function users-reservations(email, reservationID){
+    this.email=email
+    this.reservationID=reservationID
+}
+function reservations(reservationID, lab, seat, reservationDate, startTime, endTime, reservedDate, reserver, technician, isAnonymous){
+    this.reservationID=reservationID
+    this.lab=lab
+    this.seat=seat
+    this.reservationDate=reservationDate
+    this.startTime=startTime
+    this.endTime=endTime
+    this.reservedDate=reservedDate
+    this.reserver=reserver;
+    this.technician=technician;
+    this.isAnonymous=isAnonymous;
+}
+ */
+
+
+
 
 /* Global Values */
 let topForm = document.forms.topForm;
