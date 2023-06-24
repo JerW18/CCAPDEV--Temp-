@@ -34,7 +34,11 @@ function initializeTopFormLab() {
 /* Add Form Options for "Date" */
 function initializeTopFormDate() {
     document.getElementById("dateForm").innerHTML = "";
-    const today = new Date();
+    
+    /* NOTE: Temporarily changed to static dates for MCO1.
+    const today = new Date();*/
+    const today = new Date("2023-06-23");
+
     for (let i = 0; i <= 7; i++) {
         let result = new Date(today);
         result.setDate(result.getDate() + i);
