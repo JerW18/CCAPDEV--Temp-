@@ -43,7 +43,7 @@ table,tr,th{
 
 #displayName {
     padding-left: 10px;
-    padding-top: 30px;
+    padding-top: 25px;
 }
 
 #writtendesc{
@@ -54,13 +54,13 @@ table,tr,th{
     margin-left: 0px;
     position:absolute;
     bottom: 0;
-    padding:10px;
+    padding: 15px;
     height: 130px;
     width: 500px;
 }
 
 #searchusername{
-    line-height: 0px;
+    line-height: 15px;
 }
 
 #icondiv{
