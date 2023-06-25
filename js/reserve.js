@@ -20,7 +20,7 @@ function initializeTopFormLab() {
 
     /* Add Options Based on Labs in DB */
     document.getElementById("labForm").innerHTML = "";
-    for(let lab of labs){
+    for (let lab of labs) {
         document.getElementById("labForm").innerHTML += `<option value = "${lab.labCode}">${lab.labCode}</option>`;
     }
 
@@ -34,7 +34,7 @@ function initializeTopFormLab() {
 /* Add Form Options for "Date" */
 function initializeTopFormDate() {
     document.getElementById("dateForm").innerHTML = "";
-    
+
     /* NOTE: Temporarily changed to static dates for MCO1.
     const today = new Date();*/
     const today = new Date("2023-06-23");
@@ -91,8 +91,8 @@ function updateCenter(clickedPosition) {
 function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
     let tablesToAdd = [];
-    for(let t of tables){
-        if(t.lab == (new FormData(topForm)).get("labForm")){
+    for (let t of tables) {
+        if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
     }
@@ -117,8 +117,8 @@ function updateCenterTables() {
 /* Create the EventListeners for Each Seat in the Display */
 function updateCenterListeners() {
     let tablesToAdd = [];
-    for(let t of tables){
-        if(t.lab == (new FormData(topForm)).get("labForm")){
+    for (let t of tables) {
+        if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
     }

@@ -20,7 +20,7 @@ function initializeTopFormLab() {
 
     /* Add Options Based on Labs in DB */
     document.getElementById("labForm").innerHTML = "";
-    for(let lab of labs){
+    for (let lab of labs) {
         document.getElementById("labForm").innerHTML += `<option value = "${lab.labCode}">${lab.labCode}</option>`;
     }
 
@@ -34,7 +34,7 @@ function initializeTopFormLab() {
 /* Add Form Options for "Date" */
 function initializeTopFormDate() {
     document.getElementById("dateForm").innerHTML = "";
-    
+
     /* NOTE: Temporarily changed to static dates for MCO1.
     const today = new Date();*/
     const today = new Date("2023-06-23");
@@ -91,8 +91,8 @@ function updateCenter(clickedPosition) {
 function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
     let tablesToAdd = [];
-    for(let t of tables){
-        if(t.lab == (new FormData(topForm)).get("labForm")){
+    for (let t of tables) {
+        if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
     }
@@ -117,8 +117,8 @@ function updateCenterTables() {
 /* Create the EventListeners for Each Seat in the Display */
 function updateCenterListeners() {
     let tablesToAdd = [];
-    for(let t of tables){
-        if(t.lab == (new FormData(topForm)).get("labForm")){
+    for (let t of tables) {
+        if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
     }
@@ -240,9 +240,11 @@ function updateBottomTables() {
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
-    insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
-    insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
-    insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+    insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`;
+    insert += `<div id = "walkInContainer"><label for = "walkIn">Walk-In Student: </label>`;
+    insert += `<input type = "textbox" name = "walkIn" id = "walkIn"></div>`;
+    insert += `<div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`;
+    insert += `<label for = "anonymous">Anonymous?</label></div></form>`;
 
     document.getElementById("bottom").innerHTML += insert;
 }
@@ -300,7 +302,7 @@ function updateBottomClicked(clickedSlot) {
                                 document.getElementById("reserver").innerHTML = "Anonymous";
                             } else {
                                 if (r.walkInStudent == null) {
-                                    document.getElementById("reserver").innerHTML = `<a href = search_profile.html?username=${r.email}>${r.email}</a>`;
+                                    document.getElementById("reserver").innerHTML = `<a href = temp_admin_search_profile.html?username=${r.email}>${r.email}</a>`;
                                 } else {
                                     document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }

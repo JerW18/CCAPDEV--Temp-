@@ -8,17 +8,20 @@ const searchForm = document.forms.searchForm;
 
 const urlParams = new URLSearchParams(window.location.search);
 const username = urlParams.get("username");
-if(username != null){
-    document.getElementById("username").value = username;
+if (username != null) {
+    document.getElementById("textSearch").value = username;
 }
+
+console.log(document.getElementById("textSearch").value);
 
 // Main JS
 updateResTable();
 processTextForm();
-/*document.getElementById("searchButton").addEventListener("click", e => {
+
+searchButton.addEventListener("click", (e) => {
     e.preventDefault();
-    updateResTable();
-})*/
+    processTextForm();
+})
 
 function updateResTable() {
     //one reservation=1 row
@@ -36,7 +39,8 @@ function updateResTable() {
 
     for (let i of reservations) {
 
-        if (!i.isAnonymous && i.email == (new FormData(searchForm).get("fname"))) {
+        if (!i.isAnonymous && (i.email == (new FormData(searchForm).get("fname"))
+            || i.walkInStudent == (new FormData(searchForm).get("fname")))) {
 
             insert += "<tr>";
 
@@ -47,7 +51,7 @@ function updateResTable() {
             insert += "<td>" + i["requestDateAndTime"].startTime + "</td>";
             insert += "<td>" + i["reservedDateAndTime"].date + "</td>";
 
-            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime)];
+            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime) + 1];
             for (let i = 0; i < 2; i++) {
                 insert += "<td>";
                 let morning = true;
@@ -83,30 +87,22 @@ function updateResTable() {
 
 }
 
-function processTextForm(){
-    
-
-    searchButton.addEventListener("click",(e)=>{
-        e.preventDefault();
-        
-        const searchForm=document.getElementById("searchForm");
-        const searchButton=document.getElementById("searchButton");
-        let username=searchForm.fname.value;
-        for (const user of users){
-            if(user.email==username){
-                updateResTable();
-                const displayName=document.getElementById("displayName");
-                const usertag=document.getElementById("username");
-                const bio=document.getElementById("writtendesc");
-                const img=document.getElementById("icon");
-                bio.textContent=user.bio;
-                let loc=user.email.search("@");
-                usertag.textContent="@"+user.email.substring(0,loc);
-                displayName.textContent=user.name;
-                img.src=user.picture;
-                console.log(user.picture);
-            }
+function processTextForm() {
+    const searchForm = document.getElementById("searchForm");
+    const searchButton = document.getElementById("searchButton");
+    let username = searchForm.fname.value;
+    for (const user of users) {
+        if (user.email == username) {
+            updateResTable();
+            const displayName = document.getElementById("displayName");
+            const usertag = document.getElementById("username");
+            const bio = document.getElementById("writtendesc");
+            const img = document.getElementById("icon");
+            bio.textContent = user.bio;
+            let loc = user.email.search("@");
+            usertag.textContent = "@" + user.email.substring(0, loc);
+            displayName.textContent = user.name;
+            img.src = user.picture;
         }
-    })
-    
+    }
 }

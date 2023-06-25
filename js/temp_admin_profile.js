@@ -1,165 +1,154 @@
-// Hardcoded Values
-let reservations = [
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-23",
-        start: "20", 
-        end: "26" 
-    },
-    {
-        res_code: "R#10105",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-24",
-        start: "20",
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    },
-    {
-        res_code: "R#10104",
-        room: "G304",
-        seat: "010",
-        requested: "2023-6-19",
-        reserved: "2023-6-25",  
-        start: "20", 
-        end: "26"
-    }
-];
+import { labs, tables, users, reservations } from "./db.js";
+
+const logoutButton = document.getElementById("logoutBtn");
+
 
 // Print Reservations
-initializeViewResTable();
-initializeDeleteResTable();
+updateViewResTable();
+updateDeleteResTable();
 
-function initializeViewResTable() {
-  //one reservation=1 row
-  //one detail of reservation=1col
-    let insert = "";
+
+function updateViewResTable() {
+    let insert = `<thead>
+                        <tr class="sticky">
+                            <th class="th-sm">Reservation</th>
+                            <th class="th-sm">Room</th>
+                            <th class="th-sm">Seat</th>
+                            <th class="th-sm">Requested At</th>
+                            <th class="th-sm">Reserved For</th>
+                            <th class="th-sm">Anonymous?</th>
+                            <th class="th-sm"></th>
+                        </tr>
+                    </thead>`;
     const table = document.getElementById("viewTable");
-    
-    for (let i of reservations) {
-        insert += "<tr>";
-        for (const j in i) {
-            insert += "<th>";
-            //to print and format time
-            if(j == "start" || j == "end"){
-                let time = parseInt(i[j]);
-                let morning = true;    
-                let minutes = time % 2;
-                time /= 2;
-                time = Math.floor(time);
 
-                if(time > 12){
-                    time -= 12;
+    for (let i of reservations) {
+        if (i.email == "tyler_tan@dlsu.edu.ph" || i.walkInStudent == "tyler_tan@dlsu.edu.ph") {
+            insert += "<tr>";
+
+            insert += "<td>" + i["reservationID"] + "</td>";
+            insert += "<td>" + i["labSeat"].lab + "</td>";
+            insert += "<td>" + i["labSeat"].seat + "</td>";
+            insert += "<td>" + i["requestDateAndTime"].date + "<br>" + i["requestDateAndTime"].startTime + "</td>";
+            insert += "<td>" + i["reservedDateAndTime"].date + "<br>";
+
+            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime) + 1];
+            for (let i = 0; i < 2; i++) {
+                let morning = true;
+                let minutes = time[i] % 2;
+                time[i] /= 2;
+                time[i] = Math.floor(time[i]);
+                if (time[i] > 12) {
+                    time[i] -= 12;
                     morning = false;
                 }
+                time[i] = time[i].toString();
+                if (minutes == 0) {
+                    time[i] += ":00";
+                }
+                else {
+                    time[i] += ":30";
+                }
+                if (!morning) {
+                    time[i] += " PM";
+                }
+                else {
+                    time[i] += " AM";
+                }
+                insert += time[i];
+                if (i == 0)
+                    insert += " to ";
 
-                time = time.toString();
-
-                if(minutes == 0){
-                    time += ":00";
-                }
-                else{
-                    time += ":30";
-                }
-
-                if(!morning){
-                    time+="PM";
-                }
-                else{
-                    time+="AM";
-                }
-                insert += time;
             }
-            else{
-                insert += i[j];    
+            if (i.anonymous) {
+                insert += `<td>Yes!</td>`;
+            } else {
+                insert += `<td>No!</td>`;
             }
-
-            insert+="</th>";
+            insert += `<td><a href="reserve.html"><img src = "../images/edit.png"> </a></td>`;
+            insert += "</tr>";
         }
-        insert += `<th><a href="reserve.html"><img src = "../images/edit.png"> </a></th>`;
-        insert += "</tr>";
+        table.innerHTML = insert;
     }
-    table.innerHTML+=insert;
 }
 
-function initializeDeleteResTable() {
-    //one reservation=1 row
-    //one detail of reservation=1col
-    let insert = "";
+function updateDeleteResTable() {
+    let insert = `<thead>
+                        <tr class="sticky">
+                            <th class="th-sm">Reservation</th>
+                            <th class="th-sm">Room</th>
+                            <th class="th-sm">Seat</th>
+                            <th class="th-sm">Requested At</th>
+                            <th class="th-sm">Reserved For</th>
+                            <th class="th-sm">Anonymous?</th>
+                            <th class="th-sm"></th>
+                        </tr>
+                    </thead>`;
     const table = document.getElementById("deleteTable");
-    
-    for (let i of reservations) {
-        insert += "<tr>";
-        for (const j in i) {
-            insert += "<th>";
-            //to print and format time
-            if(j == "start" || j == "end"){
-                let time = parseInt(i[j]);
-                let morning = true;    
-                let minutes = time % 2;
-                time /= 2;
-                time = Math.floor(time);
 
-                if(time > 12){
-                    time -= 12;
+    for (let i of reservations) {
+        if (i.email == "tyler_tan@dlsu.edu.ph" || i.walkInStudent == "tyler_tan@dlsu.edu.ph") {
+            insert += "<tr>";
+
+            insert += "<td>" + i["reservationID"] + "</td>";
+            insert += "<td>" + i["labSeat"].lab + "</td>";
+            insert += "<td>" + i["labSeat"].seat + "</td>";
+            insert += "<td>" + i["requestDateAndTime"].date + "<br>" + i["requestDateAndTime"].startTime + "</td>";
+            insert += "<td>" + i["reservedDateAndTime"].date + "<br>";
+
+            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime) + 1];
+            for (let i = 0; i < 2; i++) {
+                let morning = true;
+                let minutes = time[i] % 2;
+                time[i] /= 2;
+                time[i] = Math.floor(time[i]);
+                if (time[i] > 12) {
+                    time[i] -= 12;
                     morning = false;
                 }
+                time[i] = time[i].toString();
+                if (minutes == 0) {
+                    time[i] += ":00";
+                }
+                else {
+                    time[i] += ":30";
+                }
+                if (!morning) {
+                    time[i] += " PM";
+                }
+                else {
+                    time[i] += " AM";
+                }
+                insert += time[i];
+                if (i == 0)
+                    insert += " to ";
 
-                time = time.toString();
-
-                if(minutes == 0){
-                    time += ":00";
-                }
-                else{
-                    time += ":30";
-                }
-
-                if(!morning){
-                    time+="PM";
-                }
-                else{
-                    time+="AM";
-                }
-                insert += time;
             }
-            else{
-                insert += i[j];    
+            if (i.anonymous) {
+                insert += `<td>Yes!</td>`;
+            } else {
+                insert += `<td>No!</td>`;
             }
-
-            insert+="</th>";
+            insert += `<td><a href="reserve.html"><img src = "../images/delete.png"> </a></td>`;
+            insert += "</tr>";
         }
-        insert += `<th><a href="reserve.html"><img src = "../images/delete.png"> </a></th>`;
-        insert += "</tr>";
+        table.innerHTML = insert;
     }
-    table.innerHTML+=insert;
 }
+
+// Confirm Delete Account Popup
+const deleteBtn = document.getElementById("deleteBtn");
+
+deleteBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    confirm("Are you sure you want to delete your account?");
+});
+
+logoutButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    let result = confirm("Are you sure you want to log out?");
+    if (result == true) {
+        window.location.assign("../index.html");
+    }
+})

@@ -24,33 +24,32 @@ cancelButton.addEventListener("click", (e) => {
 updateResTable();
 
 function updateResTable() {
-    //one reservation=1 row
-    //one detail of reservation=1col
     let insert = `<thead>
                         <tr class="sticky">
                             <th class="th-sm">Reservation</th>
                             <th class="th-sm">Room</th>
                             <th class="th-sm">Seat</th>
-                            <th class="th-sm" colspan = "2">Date And Time Requested</th>
-                            <th class="th-sm" colspan = "3">Date And Time Reserved</th>
+                            <th class="th-sm">Requested At</th>
+                            <th class="th-sm">Reserved For</th>
+                            <th class="th-sm">Anonymous?</th>
+                            <th class="th-sm"></th>
+                            <th class="th-sm"></th>
                         </tr>
                     </thead>`;
     const table = document.getElementById("table");
 
     for (let i of reservations) {
-        if (i.email == "tyler_tan@dlsu.edu.ph") {
+        if (i.email == "tyler_tan@dlsu.edu.ph" || i.walkInStudent == "tyler_tan@dlsu.edu.ph") {
             insert += "<tr>";
 
             insert += "<td>" + i["reservationID"] + "</td>";
             insert += "<td>" + i["labSeat"].lab + "</td>";
             insert += "<td>" + i["labSeat"].seat + "</td>";
-            insert += "<td>" + i["requestDateAndTime"].date + "</td>";
-            insert += "<td>" + i["requestDateAndTime"].startTime + "</td>";
-            insert += "<td>" + i["reservedDateAndTime"].date + "</td>";
+            insert += "<td>" + i["requestDateAndTime"].date + "<br>" + i["requestDateAndTime"].startTime + "</td>";
+            insert += "<td>" + i["reservedDateAndTime"].date + "<br>";
 
-            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime)];
+            let time = [parseInt(i["reservedDateAndTime"].startTime), parseInt(i["reservedDateAndTime"].endTime) + 1];
             for (let i = 0; i < 2; i++) {
-                insert += "<td>";
                 let morning = true;
                 let minutes = time[i] % 2;
                 time[i] /= 2;
@@ -73,16 +72,18 @@ function updateResTable() {
                     time[i] += " AM";
                 }
                 insert += time[i];
-                insert += "</td>";
-
+                if (i == 0)
+                    insert += " to ";
             }
+            insert += `</td>`;
+            if (i.anonymous) {
+                insert += `<td>Yes!</td>`;
+            } else {
+                insert += `<td>No!</td>`;
+            }
+            insert += `<td><a href="reserve.html"><img src = "../images/edit.png"> </a></td>`;
+            insert += `<td><a href="reserve.html"><img src = "../images/delete.png"> </a></td>`;
             insert += "</tr>";
-/* TODO: Tried fitting in anonymous pero di na kasya so kung kaya ayusin thru css go lang XD
-            if (i["anonymous"])
-                insert += "<td> Yes </td>";
-            else
-                insert += "<td> No </td>";
-                */
         }
         table.innerHTML = insert;
     }
@@ -100,11 +101,10 @@ deleteBtn.addEventListener('click', function (e) {
 
 
 
-logoutButton.addEventListener('click',function (e){
+logoutButton.addEventListener('click', function (e) {
     e.preventDefault();
-    let result=confirm("Are you sure you want to log out?");
-    console.log(result);
-    if(result==true){
+    let result = confirm("Are you sure you want to log out?");
+    if (result == true) {
         window.location.assign("../index.html");
     }
 })

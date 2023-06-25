@@ -1,20 +1,20 @@
-const item = 
-`<a id="logo" href="temp_admin_reserve.html">Arrow Laboratory</a>
+const item =
+    `<a id="logo" href="temp_admin_reserve.html">Arrow Laboratory</a>
 <a id="profile">Profile</a>
-<a id="search">Search User</a>`
+<a id="search">Search User</a>`;
 
 document.getElementById("navbar").innerHTML = item;
 
 initializeNavBarButtons();
 
 /* initialize navbar buttons*/
-function initializeNavBarButtons(){
+function initializeNavBarButtons() {
     const searchButton = document.getElementById("search");
     const profileButton = document.getElementById("profile");
-    searchButton.addEventListener("click",(e)=>{
+    searchButton.addEventListener("click", (e) => {
         window.location.assign("temp_admin_search_profile.html");
     })
-    profileButton.addEventListener("click",(e)=>{
+    profileButton.addEventListener("click", (e) => {
         window.location.assign("temp_admin_profile.html");
     })
 }

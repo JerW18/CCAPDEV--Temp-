@@ -1,7 +1,7 @@
 const item =
-    `<a id="logo" href="reserve.html">Arrow Laboratory</a>
-<a id="profile">Profile</a>
-<a id="search">Search User</a>`
+    `<a id="logo" href="temp_guest_reserve.html">Arrow Laboratory</a>
+<a id="profile">Login</a>
+<a id="search">Search User</a>`;
 
 document.getElementById("navbar").innerHTML = item;
 
@@ -12,9 +12,9 @@ function initializeNavBarButtons() {
     const searchButton = document.getElementById("search");
     const profileButton = document.getElementById("profile");
     searchButton.addEventListener("click", (e) => {
-        window.location.assign("search_profile.html");
+        window.location.assign("temp_guest_search_profile.html");
     })
     profileButton.addEventListener("click", (e) => {
-        window.location.assign("student_profile.html");
+        window.location.assign("../index.html");
     })
 }

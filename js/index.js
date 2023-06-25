@@ -1,39 +1,5 @@
 import { labs, tables, users, reservations } from "./db.js";
 
-/*/ Hardcoded Values
-let users = [
-    {
-        email: "tyler_tan@dlsu.edu.ph", 
-        password: "tyler_tan",
-        isAdmin: false
-    },
-    {
-        email: "jeremy_wang@dlsu.edu.ph", 
-        password: "jeremy_wang",
-        isAdmin: false
-    },
-    {
-        email: "lanz_lim@dlsu.edu.ph", 
-        password: "lanz_lim",
-        isAdmin: false
-    },
-    {
-        email: "admin1@dlsu.edu.ph", 
-        password: "admin1",
-        isAdmin: true
-    },
-    {
-        email: "admin2@dlsu.edu.ph", 
-        password: "admin2",
-        isAdmin: true
-    },
-    {
-        email: "admin3@dlsu.edu.ph", 
-        password: "admin3",
-        isAdmin: true
-    }
-];
-*/
 // Animation of Forms
 $('#registerMessage a').click(function(){
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
@@ -41,7 +7,7 @@ $('#registerMessage a').click(function(){
 
 // Guest Log In
 $('#guestMessage a').click(function(){
-    window.location.assign("../html/temp_reserve_guest.html");;
+    window.location.assign("../html/temp_guest_reserve.html");;
 });
 
 // Login Form

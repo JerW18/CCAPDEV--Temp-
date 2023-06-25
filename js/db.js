@@ -81,9 +81,8 @@ tables.push(new Table("A2493", "T0004", 4, 10));
 tables.push(new Table("Y021", "T0005", 4, 6));
 tables.push(new Table("Y021", "T0006", 4, 6));
 
-// TODO: Make imgs and bios
 let users = [];
-users.push(new User("lanz_lim@dlsu.edu.ph", "lanz_lim", false, "Lanz Lim", "../images/lanz_lim.jpg", "Hi, I'm Lanz, 19 years old, never learned how to fucking read."));
+users.push(new User("lanz_lim@dlsu.edu.ph", "lanz_lim", false, "Lanz Lim", "../images/lanz_lim.jpg", "Hi, I'm Lanz, 19 years old, never learned how to read."));
 users.push(new User("tyler_tan@dlsu.edu.ph", "tyler_tan", false, "Tyler Tan", "../images/tyler_tan.jpg", "My name is Tyler currently learning japanesse and watashiwa playing 4.5 gachas currently."));
 users.push(new User("johann_uytanlet@dlsu.edu.ph", "johann_uytanlet", false, "Johann Uytanlet", "../images/johann_uytanlet.jpg", "Hi, I'm Johann and I wish my grades would go ap, dev. Crying into my notes if you wanna find me."));
 users.push(new User("jeremy_wang@dlsu.edu.ph", "jeremy_wang", false, "Jeremy Wang", "../images/jeremy_wang.jpg", "Yes I am disguised toast, ask me for money if you need some. I am very rich."));
@@ -95,7 +94,6 @@ users.push(new User("admin3@dlsu.edu.ph", "admin3", true, "Hayase Yuuka", "img/a
 users.push(new User("admin4@dlsu.edu.ph", "admin4", true, "Koyanskaya of Light", "img/admin4.png", null));
 users.push(new User("admin5@dlsu.edu.ph", "admin5", true, "Silverwolf", "img/admin5.png", null));
 
-//TODO: Remove extra s.
 let reservations = [];
 reservations.push(new Reservation("admin2@dlsu.edu.ph", "R0000001", new LabSeat("A2493", "033"),
     new DateAndTime("2023-6-23", "11:03PM"), new DateAndTime("2023-6-25", 17, 35), "lanz_lim@dlsu.edu.ph", false));
