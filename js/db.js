@@ -83,12 +83,12 @@ tables.push(new Table("Y021", "T0006", 4, 6));
 
 // TODO: Make imgs and bios
 let users = [];
-users.push(new User("lanz_lim@dlsu.edu.ph", "lanz_lim", false, "Lanz Lim", "images/lanz_lim.jpg", "Hi, I'm Lanz, 19 years old, never learned how to fucking read."));
+users.push(new User("lanz_lim@dlsu.edu.ph", "lanz_lim", false, "Lanz Lim", "../images/lanz_lim.jpg", "Hi, I'm Lanz, 19 years old, never learned how to fucking read."));
 users.push(new User("tyler_tan@dlsu.edu.ph", "tyler_tan", false, "Tyler Tan", "../images/tyler_tan.jpg", "My name is Tyler currently learning japanesse and watashiwa playing 4.5 gachas currently."));
-users.push(new User("johann_uytanlet@dlsu.edu.ph", "johann_uytanlet", false, "Johann Uytanlet", "img/johann_uytanlet.jpg", "Hi, I'm Johann and I wish my grades would go ap, dev. Crying into my notes if you wanna find me."));
-users.push(new User("jeremy_wang@dlsu.edu.ph", "jeremy_wang", false, "Jeremy Wang", "img/jeremy_wang.jpg", "Yes I am disguised toast, ask me for money if you need some. I am very rich."));
-users.push(new User("cellinia_texas@dlsu.edu.ph", "cellinia_texas", false, "Cellinia Texas", "img/cellinia_texas.png", "Hi! I'm Cellinia or you can call me Cell. I'm funnily enough I am a cowboy this has no correlation to my last name. Actually my parents disapprove very much they are very serious business people who have casted me out because of my choice of career"));
-users.push(new User("gwen_stacy@dlsu.edu.ph", "gwen_stacy", false, "Gwen Stacy", "img/gwen_stacy.png", "Hi! My name is Gwen Stacy im from earth 6969 and I watched my bestfriend turn into a giant lizard. He got into an acc and went sleepy for forever. I met this weird kid in another universe tho his name is Miles Morales."));
+users.push(new User("johann_uytanlet@dlsu.edu.ph", "johann_uytanlet", false, "Johann Uytanlet", "../images/johann_uytanlet.jpg", "Hi, I'm Johann and I wish my grades would go ap, dev. Crying into my notes if you wanna find me."));
+users.push(new User("jeremy_wang@dlsu.edu.ph", "jeremy_wang", false, "Jeremy Wang", "../images/jeremy_wang.jpg", "Yes I am disguised toast, ask me for money if you need some. I am very rich."));
+users.push(new User("cellinia_texas@dlsu.edu.ph", "cellinia_texas", false, "Cellinia Texas", "../images/cellinia_texas.png", "Hi! I'm Cellinia or you can call me Cell. I'm funnily enough I am a cowboy this has no correlation to my last name. Actually my parents disapprove very much they are very serious business people who have casted me out because of my choice of career"));
+users.push(new User("gwen_stacy@dlsu.edu.ph", "gwen_stacy", false, "Gwen Stacy", "../images/gwen_stacy.png", "Hi! My name is Gwen Stacy im from earth 6969 and I watched my bestfriend turn into a giant lizard. He got into an acc and went sleepy for forever. I met this weird kid in another universe tho his name is Miles Morales."));
 users.push(new User("admin1@dlsu.edu.ph", "admin1", true, "Lappland Saluzzo", "img/admin1.png", null));
 users.push(new User("admin2@dlsu.edu.ph", "admin2", true, "Tendou Alice", "img/admin2.png", null));
 users.push(new User("admin3@dlsu.edu.ph", "admin3", true, "Hayase Yuuka", "img/admin3.png", null));

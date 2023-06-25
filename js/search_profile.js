@@ -15,10 +15,10 @@ if(username != null){
 // Main JS
 updateResTable();
 processTextForm();
-document.getElementById("searchButton").addEventListener("click", e => {
+/*document.getElementById("searchButton").addEventListener("click", e => {
     e.preventDefault();
     updateResTable();
-})
+})*/
 
 function updateResTable() {
     //one reservation=1 row
@@ -87,24 +87,26 @@ function processTextForm(){
     
 
     searchButton.addEventListener("click",(e)=>{
+        e.preventDefault();
+        
         const searchForm=document.getElementById("searchForm");
         const searchButton=document.getElementById("searchButton");
         let username=searchForm.fname.value;
-        console.log(username);
         for (const user of users){
-        if(user.email==username){
-            const displayName=document.getElementById("displayName");
-            const usertag=document.getElementById("username");
-            const bio=document.getElementById("writtendesc");
-            const img=document.getElementById("icon");
-            bio.textContent=user.bio;
-            let loc=user.email.search("@");
-            usertag.textContent="@"+user.email.substring(0,loc);
-            displayName.textContent=user.name;
-            img.src=user.picture;
-            console.log(user.picture);
+            if(user.email==username){
+                updateResTable();
+                const displayName=document.getElementById("displayName");
+                const usertag=document.getElementById("username");
+                const bio=document.getElementById("writtendesc");
+                const img=document.getElementById("icon");
+                bio.textContent=user.bio;
+                let loc=user.email.search("@");
+                usertag.textContent="@"+user.email.substring(0,loc);
+                displayName.textContent=user.name;
+                img.src=user.picture;
+                console.log(user.picture);
+            }
         }
-    }
     })
     
 }
