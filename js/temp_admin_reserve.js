@@ -1,38 +1,4 @@
-/* Hardcoded Values */
-let labNames = ["G503", "A2493", "Y021"];
-let labSizes = [[[4, 3], [4, 3], [3, 4]], [[4, 10]], [[4, 6], [4, 6]]];
-/*
-let reservations0 = [["Tyler Tan", "2023-6-11", "24", "30", "0", "011"],
-["Jeremy Wang", "2023-6-11", "17", "30", "0", "122"],
-["Lanz Lim", "2023-6-10", "17", "35", "1", "033"],
-["Johann Uytanlet", "2023-6-10", "20", "30", "0", "011"]];;
-*/
-let reservations = [
-    {
-        reserver: "Tyler Tan", technician: null, anonymous: false,
-        date: "2023-6-17", start: "24", end: "30", lab: "1", seat: "011"
-    },
-    {
-        reserver: "Jeremy Wang", technician: null, anonymous: true,
-        date: "2023-6-17", start: "17", end: "30", lab: "0", seat: "122"
-    },
-    {
-        reserver: "Lanz Lim", technician: "Lab Tech 1", anonymous: false,
-        date: "2023-6-17", start: "17", end: "35", lab: "1", seat: "033"
-    },
-    {
-        reserver: "Johann Uytanlet", technician: null, anonymous: false,
-        date: "2023-6-18", start: "20", end: "25", lab: "0", seat: "011"
-    },
-    {
-        reserver: "Tyra Tan", technician: null, anonymous: false,
-        date: "2023-6-18", start: "27", end: "30", lab: "0", seat: "011"
-    },
-    {
-        reserver: "Texas", technician: "Lappland", anonymous: false,
-        date: "2023-6-18", start: "25", end: "31", lab: "0", seat: "022"
-    }
-];
+import { labs, tables, users, reservations } from "./db.js";
 
 /* Global Values */
 let topForm = document.forms.topForm;
@@ -41,16 +7,6 @@ let topForm = document.forms.topForm;
 initializeTopForm();
 updateCenter(0);
 initializeCenterListener();
-initializeNavBarButtons();
-
-
-/* initialize navbar buttons*/
-function initializeNavBarButtons(){
-    const loginButton = document.getElementById("login");
-    loginButton.addEventListener("click",(e)=>{
-        window.location.assign("../index.html");
-    })
-}
 
 /* Initialize Options for TopForm */
 function initializeTopForm() {
@@ -64,8 +20,8 @@ function initializeTopFormLab() {
 
     /* Add Options Based on Labs in DB */
     document.getElementById("labForm").innerHTML = "";
-    for (let i = 0; i < labNames.length; i++) {
-        document.getElementById("labForm").innerHTML += `<option value = "${i}">${labNames[i]}</option>`;
+    for(let lab of labs){
+        document.getElementById("labForm").innerHTML += `<option value = "${lab.labCode}">${lab.labCode}</option>`;
     }
 
     /* Add EventListener to Change Center and Reserved */
@@ -78,7 +34,11 @@ function initializeTopFormLab() {
 /* Add Form Options for "Date" */
 function initializeTopFormDate() {
     document.getElementById("dateForm").innerHTML = "";
-    const today = new Date();
+    
+    /* NOTE: Temporarily changed to static dates for MCO1.
+    const today = new Date();*/
+    const today = new Date("2023-06-23");
+
     for (let i = 0; i <= 7; i++) {
         let result = new Date(today);
         result.setDate(result.getDate() + i);
@@ -130,15 +90,20 @@ function updateCenter(clickedPosition) {
 /* Create the Tables that will Represent the Seatings */
 function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
-    let labSize = labSizes[(new FormData(topForm)).get("labForm")];
-    for (let t = 0; t < labSize.length; t++) {
+    let tablesToAdd = [];
+    for(let t of tables){
+        if(t.lab == (new FormData(topForm)).get("labForm")){
+            tablesToAdd.push(t);
+        }
+    }
+    for (let t = 0; t < tablesToAdd.length; t++) {
         let insert = "";
         insert += "<table>";
 
-        let table = labSize[t];
-        for (let r = 0; r < table[0]; r++) {
+        let table = tablesToAdd[t];
+        for (let r = 0; r < table.rows; r++) {
             insert += "<tr>";
-            for (let c = 0; c < table[1]; c++) {
+            for (let c = 0; c < table.columns; c++) {
                 insert += `<td id = "${t}${r}${c}" class= "seat"></td>`;
             }
             insert += "</tr>";
@@ -151,11 +116,16 @@ function updateCenterTables() {
 
 /* Create the EventListeners for Each Seat in the Display */
 function updateCenterListeners() {
-    let labSize = labSizes[(new FormData(topForm)).get("labForm")];
-    for (let t = 0; t < labSize.length; t++) {
-        let table = labSize[t];
-        for (let r = 0; r < table[0]; r++) {
-            for (let c = 0; c < table[1]; c++) {
+    let tablesToAdd = [];
+    for(let t of tables){
+        if(t.lab == (new FormData(topForm)).get("labForm")){
+            tablesToAdd.push(t);
+        }
+    }
+    for (let t = 0; t < tablesToAdd.length; t++) {
+        let table = tablesToAdd[t];
+        for (let r = 0; r < table.rows; r++) {
+            for (let c = 0; c < table.columns; c++) {
                 document.getElementById(`${t}${r}${c}`).addEventListener("click", (e) => {
                     updateCenter([t, r, c]);
                     updateBottom((new FormData(topForm).get("timeForm")));
@@ -177,12 +147,12 @@ function updateCenterReserved() {
     /* For each reservation, check if they apply then color red if applicable. */
     for (let r of reservations) {
         // Check if same date...
-        if ((new FormData(topForm)).get("dateForm") == r.date) {
+        if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
             // Check if same time...
-            if ((new FormData(topForm).get("timeForm")) >= r.start && (new FormData(topForm).get("timeForm")) <= r.end) {
+            if ((new FormData(topForm).get("timeForm")) >= r.reservedDateAndTime.startTime && (new FormData(topForm).get("timeForm")) <= r.reservedDateAndTime.endTime) {
                 // Check if same lab...
-                if ((new FormData(topForm)).get("labForm") == r.lab) {
-                    let now = document.getElementById(`${r.seat}`);
+                if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                    let now = document.getElementById(`${r.labSeat.seat}`);
                     now.classList.add("reservedSeat");
                 }
             }
@@ -245,7 +215,7 @@ function updateBottomTables() {
 
     /* First, add the details on the left side of the bottom panel. */
     insert += `<div id = "bottomDetails"><div>Seat No. ${document.querySelector(`.clickedSeat`).id}</div>`;
-    insert += `<div>Lab Room ${labNames[(new FormData(topForm).get("labForm"))]}</div>`;
+    insert += `<div>Lab Room ${(new FormData(topForm).get("labForm"))}</div>`;
     insert += `<div>Date: ${(new FormData(topForm).get("dateForm"))}</div></div>`;
 
     /* Then, add the table in the center to represent the slots of that seat. */
@@ -270,14 +240,11 @@ function updateBottomTables() {
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
-    insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Log In" disabled>`
-    
+    insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+    insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
+    insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+
     document.getElementById("bottom").innerHTML += insert;
-    const resLogin=document.getElementById("submit");
-    resLogin.addEventListener("click",(e)=>{
-    e.preventDefault();
-    window.location.assign("../index.html");
-})
 }
 
 /* Based on current reservations, mark all reserved slots as "reservedSlots" to make them red. */
@@ -285,10 +252,10 @@ function updateBottomReserved() {
     for (let r of reservations) {
         let clickedSeat = document.querySelector(".clickedSeat");
         if (clickedSeat != null) {
-            if (clickedSeat.id == r.seat) {
-                if (r.date == (new FormData(topForm)).get("dateForm")) {
-                    if (r.lab == (new FormData(topForm)).get("labForm")) {
-                        for (let i = r.start; i <= r.end; i++) {
+            if (clickedSeat.id == r.labSeat.seat) {
+                if (r.reservedDateAndTime.date == (new FormData(topForm)).get("dateForm")) {
+                    if (r.labSeat.lab == (new FormData(topForm)).get("labForm")) {
+                        for (let i = r.reservedDateAndTime.startTime; i <= r.reservedDateAndTime.endTime; i++) {
                             document.getElementById(`S${i}`).classList.add("reservedSlot");
                         }
                     }
@@ -318,25 +285,24 @@ function updateBottomClicked(clickedSlot) {
         });
         /* Find the reservation that matches the clicked slot. */
         for (let r of reservations) {
-            if (document.querySelector(".clickedSeat").id == r.seat) {
+            if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
                 // Check if same date...
-                if ((new FormData(topForm)).get("dateForm") == r.date) {
+                if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
                     // Check if same time...
-                    if (clickedSlot >= r.start && clickedSlot <= r.end) {
+                    if (clickedSlot >= r.reservedDateAndTime.startTime && clickedSlot <= r.reservedDateAndTime.endTime) {
                         // Check if same lab...
-                        if ((new FormData(topForm)).get("labForm") == r.lab) {
-                            for (let i = r.start; i <= r.end; i++) {
+                        if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                            for (let i = r.reservedDateAndTime.startTime; i <= r.reservedDateAndTime.endTime; i++) {
                                 let now = document.getElementById(`S${i}`);
                                 now.classList.add("clickedSlot");
                             }
-                            if (r.anonymous) {
+                            if (r.isAnonymous) {
                                 document.getElementById("reserver").innerHTML = "Anonymous";
                             } else {
-                                if (r.technician == null) {
-                                    // TODO: Add link to other page here.
-                                    document.getElementById("reserver").innerHTML = `<a>${r.reserver}</a>`;
+                                if (r.walkInStudent == null) {
+                                    document.getElementById("reserver").innerHTML = `<a href = search_profile.html?username=${r.email}>${r.email}</a>`;
                                 } else {
-                                    document.getElementById("reserver").innerHTML = `${r.reserver} (${r.technician})`;
+                                    document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }
                             }
                             break;

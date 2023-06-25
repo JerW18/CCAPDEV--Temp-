@@ -14,7 +14,7 @@ if(username != null){
 
 // Main JS
 updateResTable();
-
+processTextForm();
 document.getElementById("searchButton").addEventListener("click", e => {
     e.preventDefault();
     updateResTable();
@@ -35,7 +35,9 @@ function updateResTable() {
     const table = document.getElementById("table");
 
     for (let i of reservations) {
+
         if (!i.isAnonymous && i.email == (new FormData(searchForm).get("fname"))) {
+
             insert += "<tr>";
 
             insert += "<td>" + i["reservationID"] + "</td>";
@@ -76,8 +78,33 @@ function updateResTable() {
             insert += "</tr>";
         }
         table.innerHTML = insert;
+
     }
 
 }
 
+function processTextForm(){
+    
 
+    searchButton.addEventListener("click",(e)=>{
+        const searchForm=document.getElementById("searchForm");
+        const searchButton=document.getElementById("searchButton");
+        let username=searchForm.fname.value;
+        console.log(username);
+        for (const user of users){
+        if(user.email==username){
+            const displayName=document.getElementById("displayName");
+            const usertag=document.getElementById("username");
+            const bio=document.getElementById("writtendesc");
+            const img=document.getElementById("icon");
+            bio.textContent=user.bio;
+            let loc=user.email.search("@");
+            usertag.textContent="@"+user.email.substring(0,loc);
+            displayName.textContent=user.name;
+            img.src=user.picture;
+            console.log(user.picture);
+        }
+    }
+    })
+    
+}

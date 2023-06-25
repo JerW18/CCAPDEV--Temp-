@@ -1,5 +1,5 @@
 const item = 
-`<a id="logo" href="reserve.html">Arrow Laboratory</a>
+`<a id="logo" href="temp_admin_reserve.html">Arrow Laboratory</a>
 <a id="profile">Profile</a>
 <a id="search">Search User</a>`
 
@@ -12,7 +12,7 @@ function initializeNavBarButtons(){
     const searchButton = document.getElementById("search");
     const profileButton = document.getElementById("profile");
     searchButton.addEventListener("click",(e)=>{
-        window.location.assign("search_profile.html");
+        window.location.assign("temp_admin_search_profile.html");
     })
     profileButton.addEventListener("click",(e)=>{
         window.location.assign("temp_admin_profile.html");

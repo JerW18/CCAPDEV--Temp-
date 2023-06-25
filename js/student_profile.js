@@ -98,3 +98,13 @@ deleteBtn.addEventListener('click', function (e) {
     confirm("Are you sure you want to delete your account?");
 });
 
+
+
+logoutButton.addEventListener('click',function (e){
+    e.preventDefault();
+    let result=confirm("Are you sure you want to log out?");
+    console.log(result);
+    if(result==true){
+        window.location.assign("../index.html");
+    }
+})
