@@ -13,7 +13,7 @@ A Computer Laboratory Reservation System web application made with HTML, CSS, an
 
 Note:
 It is recommended to use Google Chrome to open this website. If opening the files automatically goes to another browser, 
-you may want to change your default browser to chrome for this website.
+you may want to copy the url and open it on chrome.
 
 All files prefixed with a "temp" will be removed with MCO2's backend implementation.
 The design of the main "reserve" page is still currently temporary, as we plan to spruce up its design in MCO2.<br>
@@ -21,7 +21,6 @@ If there are any problems, please don't hesitate to contact anyone from our grou
 
 ## What to do in the Website
 - To Login
-  - Go to db.js and find "users" array
   - Use the "email" followed by the "password" to log in as a student or admin
   - The current hard-coded values for user logins are
       email                       password
