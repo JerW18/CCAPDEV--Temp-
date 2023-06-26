@@ -25,6 +25,7 @@ If there are any problems, please don't hesitate to contact anyone from our grou
   - The current hard-coded values for user logins are
 
     | Email      | Password |
+    | --- | --- |
     | lanz_lim@dlsu.edu.ph        | lanz_lim      |
     |   tyler_tan@dlsu.edu.ph    |    tyler_tan    |
     |  jeremy_wang@dlsu.edu.ph  |     jeremy_wang    |
@@ -48,6 +49,7 @@ If there are any problems, please don't hesitate to contact anyone from our grou
     - admin4@dlsu.edu.ph          admin4
     - admin5@dlsu.edu.ph          admin5
     | Email      | Password |
+    | --- | --- |
     |admin1@dlsu.edu.ph | admin1  |
     |admin2@dlsu.edu.ph | admin2  |
     |admin3@dlsu.edu.ph | admin3  |
