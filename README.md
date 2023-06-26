@@ -23,7 +23,17 @@ If there are any problems, please don't hesitate to contact anyone from our grou
 - To Login
   - Use the "email" followed by the "password" to log in as a student or admin
   - The current hard-coded values for user logins are
-      email                       password
+
+    | Email      | Password |
+    | lanz_lim@dlsu.edu.ph        | lanz_lim      |
+    |   tyler_tan@dlsu.edu.ph    |    tyler_tan    |
+    |  jeremy_wang@dlsu.edu.ph  |     jeremy_wang    |
+    |johann_uytanlet@dlsu.edu.ph | johann_uytanlet|
+    | gwen_stacy@dlsu.edu.ph|gwen_stacy |
+    |cellinia_texas@dlsu.edu.ph |cellinia_texas |
+
+
+      Email: email@gmail.com password: password
     - lanz_lim@dlsu.edu.ph        lanz_lim
     - tyler_tan@dlsu.edu.ph       tyler_tan
     - jeremy_wang@dlsu.edu.ph     jeremy_wang
@@ -37,6 +47,13 @@ If there are any problems, please don't hesitate to contact anyone from our grou
     - admin3@dlsu.edu.ph          admin3
     - admin4@dlsu.edu.ph          admin4
     - admin5@dlsu.edu.ph          admin5
+    | Email      | Password |
+    |admin1@dlsu.edu.ph | admin1  |
+    |admin2@dlsu.edu.ph | admin2  |
+    |admin3@dlsu.edu.ph | admin3  |
+    |admin4@dlsu.edu.ph | admin4  |
+    |admin5@dlsu.edu.ph | admin5  |
+
 ---
 
 Created by: Lanz Lim, Tyler Tan, Jeremy Wang, and Johann Uytanlet
