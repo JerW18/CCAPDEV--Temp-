@@ -48,7 +48,8 @@ If there are any problems, please don't hesitate to contact anyone from our grou
     - admin3@dlsu.edu.ph          admin3
     - admin4@dlsu.edu.ph          admin4
     - admin5@dlsu.edu.ph          admin5
-    | Email      | Password |
+    
+    | Email | Password |
     | --- | --- |
     |admin1@dlsu.edu.ph | admin1  |
     |admin2@dlsu.edu.ph | admin2  |
