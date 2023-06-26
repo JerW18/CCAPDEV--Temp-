@@ -65,7 +65,7 @@ function updateViewResTable() {
             } else {
                 insert += `<td>No!</td>`;
             }
-            insert += `<td><a href="reserve.html"><img src = "../images/edit.png"> </a></td>`;
+            insert += `<td><a href="temp_admin_reserve.html"><img src = "../images/edit.png"> </a></td>`;
             insert += "</tr>";
         }
         table.innerHTML = insert;
@@ -129,7 +129,7 @@ function updateDeleteResTable() {
             } else {
                 insert += `<td>No!</td>`;
             }
-            insert += `<td><a href="reserve.html"><img src = "../images/delete.png"> </a></td>`;
+            insert += `<td><a href="temp_admin_reserve.html"><img src = "../images/delete.png"> </a></td>`;
             insert += "</tr>";
         }
         table.innerHTML = insert;
