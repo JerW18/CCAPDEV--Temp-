@@ -11,6 +11,10 @@ A Computer Laboratory Reservation System web application made with HTML, CSS, an
 4. Open index.html still within VSCode
 5. Right-click on the code window of index.html and find the "Open with Live Server" button to start running the website
 
+Note:
+It is recommended to use Google Chrome to open this website. If opening the files automatically goes to another browser, 
+you may want to change your default browser to chrome for this website.
+
 All files prefixed with a "temp" will be removed with MCO2's backend implementation.
 The design of the main "reserve" page is still currently temporary, as we plan to spruce up its design in MCO2.<br>
 If there are any problems, please don't hesitate to contact anyone from our group.
