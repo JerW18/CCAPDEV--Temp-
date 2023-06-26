@@ -1,10 +1,24 @@
 # CCAPDEV-LabReservation
 **CCAPDEV Major Course Output: Lab Reservation System**
 
-Please open with a live server, preferably Visual Studio Code's "Live Server" addon.
+A Computer Laboratory Reservation System web application made with HTML, CSS, and Javascript provides an efficient and user-friendly platform for students and faculty to schedule and manage their computer lab usage.
+
+
+## How to Run
+1. Download the files and place them in the same folder.
+2. Open the files in VSCode.
+3. Download the extension "Live Server" by Ritwick Dey.
+4. Open index.html
+5. Right-click on the code window and find the "Open with Live Server" button to start running the website
+
 All files prefixed with a "temp" will be removed with MCO2's backend implementation.
-The design of the main "reserve" page is still currently temporary, as we plan to spruce up its design in MCO2.
+The design of the main "reserve" page is still currently temporary, as we plan to spruce up its design in MCO2.<br>
 If there are any problems, please don't hesitate to contact anyone from our group.
+
+## What to do in the Website
+- To Login
+  - Go to db.js and find "users" array
+  - Use the "email" followed by the "password" to log in as a student or admin
 
 ---
 
