@@ -360,7 +360,6 @@ function updateBottomClicked(clickedSlot) {
 }
 
 function formatTime(t) {
-    console.log(t);
     let hour = Math.floor(t / 2) % 12;
     if (hour == 0)
         hour = 12;
