@@ -98,17 +98,16 @@ function updateCenterTables() {
     }
     for (let t = 0; t < tablesToAdd.length; t++) {
         let insert = "";
-        insert += "<table>";
-
         let table = tablesToAdd[t];
+
+        insert += `<div class = "centerTable" style = "grid-template-columns: repeat(${table.columns}, 1fr);">`;
+
         for (let r = 0; r < table.rows; r++) {
-            insert += "<tr>";
             for (let c = 0; c < table.columns; c++) {
-                insert += `<td id = "${t}${r}${c}" class= "seat"></td>`;
+                insert += `<div id = "${t}${r}${c}" class= "seat"></div>`;
             }
-            insert += "</tr>";
         }
-        insert += "</table>";
+        insert += "</div>";
 
         document.getElementById("center").innerHTML += insert;
     }
@@ -236,7 +235,8 @@ function updateBottomTables() {
     for (let t = 16; t < 40; t++) {
         insert += `<td id = "S${t}" class = "slot"></td>`;
     }
-    insert += `</tr><tr><td colspan = "24">Reserved By: <span id = "reserver">None</span></td></tr>`;
+    insert += `</tr><tr><td colspan = "12"><span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></td>`;
+    insert += `<td colspan = "12">Reserved By: <span id = "reserver">None</span></td></tr>`;
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
@@ -275,6 +275,7 @@ function updateBottomListeners() {
     });
 }
 
+
 /* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */
 function updateBottomClicked(clickedSlot) {
     /* If the slot clicked is a reserved slot... */
@@ -305,6 +306,8 @@ function updateBottomClicked(clickedSlot) {
                                     document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }
                             }
+                            document.getElementById("startTime").innerHTML = formatTime(r.reservedDateAndTime.startTime);
+                            document.getElementById("endTime").innerHTML = formatTime(r.reservedDateAndTime.endTime + 1);
                             break;
                         }
                     }
@@ -321,27 +324,53 @@ function updateBottomClicked(clickedSlot) {
         });
         document.getElementById("reserver").innerHTML = "None";
         document.getElementById("submit").disabled = true;
+        document.getElementById("startTime").innerHTML = "--:-- --";
+        document.getElementById("endTime").innerHTML = "--:-- --";
     }
     /* If the slot clicked is NOT a reserved slot and they HAVE selected a slot (dark green) before... */
     else {
         let lastSelected = document.querySelector(".selectingSlot").id.slice(1);
         document.querySelector(".selectingSlot").classList.remove("selectingSlot");
         if (lastSelected < clickedSlot) {
+            let actualEnd = 0;
             for (let i = lastSelected; i <= clickedSlot; i++) {
                 if (document.getElementById(`S${i}`).classList.contains("reservedSlot")) {
                     break;
                 }
                 document.getElementById(`S${i}`).classList.add("clickedSlot");
+                actualEnd = i;
             }
+            document.getElementById("startTime").innerHTML = formatTime(lastSelected);
+            document.getElementById("endTime").innerHTML = formatTime(parseInt(actualEnd) + 1);
         } else {
+            let actualEnd = 0;
             for (let i = lastSelected; i >= clickedSlot; i--) {
                 if (document.getElementById(`S${i}`).classList.contains("reservedSlot")) {
                     break;
                 }
                 document.getElementById(`S${i}`).classList.add("clickedSlot");
+                actualEnd = i;
             }
+            document.getElementById("startTime").innerHTML = formatTime(actualEnd);
+            document.getElementById("endTime").innerHTML = formatTime(parseInt(lastSelected) + 1);
         }
         document.getElementById("reserver").innerHTML = "None";
         document.getElementById("submit").disabled = false;
     }
+}
+
+function formatTime(t) {
+    console.log(t);
+    let hour = Math.floor(t / 2) % 12;
+    if (hour == 0)
+        hour = 12;
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    let minute = (t % 2) * 30;
+    if (minute == 0) {
+        minute = "00";
+    }
+    let ampm = (Math.floor(t / 2) < 12) ? "AM" : "PM";
+    return "" + hour + ":" + minute + " " + ampm;
 }

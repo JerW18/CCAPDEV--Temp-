@@ -62,11 +62,11 @@ td {
     background-color: rgb(0, 35, 0);
 }
 
-td.reservedSeat {
+div.reservedSeat {
     background-color: rgb(203, 8, 8);
 }
 
-td.reservedSeat.clickedSeat {
+div.reservedSeat.clickedSeat {
     background-color: rgb(139, 21, 21);
 }
 
@@ -104,16 +104,16 @@ td.reservedSeat.clickedSeat {
     background-color: rgb(203, 8, 8);
 }
 
-.reservedSlot.clickedSlot{
+.reservedSlot.clickedSlot {
     background-color: rgb(139, 21, 21);
 }
 
-.selectingSlot{
+.selectingSlot {
     background-color: rgb(0, 35, 0);
 }
 
-.clickedSlot{
-    background-color:aqua;
+.clickedSlot {
+    background-color: aqua;
 }
 
 #bottomForm {
@@ -121,36 +121,40 @@ td.reservedSeat.clickedSeat {
     align-items: center;
     height: 100%;
     font-weight: bolder;
-    margin:auto;
-    
+    margin: auto;
+
 }
 
-#submit{
+#submit {
     font-size: 20px;
-    margin:10px;
-    margin-bottom:2px;
+    margin: 10px;
+    margin-bottom: 2px;
 }
 
-#checkboxContainer{
-    font-size:17px;
-    margin:10px;
-    margin-top:2px;
-    display:flex;
+#checkboxContainer {
+    font-size: 17px;
+    margin: 10px;
+    margin-top: 2px;
+    display: flex;
     justify-content: center;
 }
 
-#walkInContainer{
-    font-size:17px;
-    margin:10px;
-    margin-top:2px;
-    display:flex;
+#walkInContainer {
+    font-size: 17px;
+    margin: 10px;
+    margin-top: 2px;
+    display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
 
-#anonymous{
-    position:relative;
-    right:9px;
+#anonymous {
+    position: relative;
+    right: 9px;
+}
+
+.centerTable {
+    display: grid;
 }
