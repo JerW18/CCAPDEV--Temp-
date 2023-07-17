@@ -73,11 +73,34 @@ function initializeTopFormTime() {
         }
         let ampm = (Math.floor(t / 2) < 12) ? "AM" : "PM";
         document.getElementById("timeForm").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
+    }
+    for (let t = 16; t < 40; t++) {
+        let hour = Math.floor((t + 1) / 2) % 12;
+        if (hour == 0)
+            hour = 12;
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+        let minute = ((t + 1) % 2) * 30;
+        if (minute == 0) {
+            minute = "00";
+        }
+        let ampm = (Math.floor((t + 1) / 2) < 12) ? "AM" : "PM";
         document.getElementById("timeFormEnd").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
     }
     document.getElementById("timeForm").addEventListener("change", (e) => {
         updateCenter(-1);
         hideBottom();
+        if (document.getElementById("timeFormEnd").value < document.getElementById("timeForm").value) {
+            document.getElementById("timeFormEnd").value = document.getElementById("timeForm").value;
+        }
+    });
+    document.getElementById("timeFormEnd").addEventListener("change", (e) => {
+        updateCenter(-1);
+        hideBottom();
+        if (document.getElementById("timeFormEnd").value < document.getElementById("timeForm").value) {
+            document.getElementById("timeForm").value = document.getElementById("timeFormEnd").value;
+        }
     });
 }
 
@@ -129,7 +152,7 @@ function updateCenterListeners() {
             for (let c = 0; c < table.columns; c++) {
                 document.getElementById(`${t}${r}${c}`).addEventListener("click", (e) => {
                     updateCenter([t, r, c]);
-                    updateBottom((new FormData(topForm).get("timeForm")));
+                    updateBottom((new FormData(topForm).get("timeForm")), (new FormData(topForm).get("timeFormEnd")));
                 })
             }
         }
@@ -198,7 +221,7 @@ function hideBottom() {
 }
 
 /* Update contents of "bottom" based on the seat clicked in the center panel and the clicked timeslot. */
-function updateBottom(clickedSlot) {
+function updateBottom(clickedSlotStart, clickedSlotEnd) {
 
     hideBottom();
     document.getElementById("bottom").classList.remove("hidden");
@@ -206,7 +229,26 @@ function updateBottom(clickedSlot) {
     updateBottomTables();
     updateBottomReserved();
     updateBottomListeners();
-    updateBottomClicked(clickedSlot);
+
+    /* Check if interval has reserved seat. */
+    let clickedSlotReserved = -1;
+    for (let x = clickedSlotStart; x <= clickedSlotEnd; x++) {
+        if (document.getElementById(`S${x}`).classList.contains("reservedSlot")) {
+            clickedSlotReserved = x;
+            break;
+        };
+    }
+
+    /* If it doesn't, click the start and end slots. */
+    if (clickedSlotReserved == -1) {
+        console.log(clickedSlotStart + " " + clickedSlotEnd);
+        updateBottomClicked(clickedSlotStart);
+        updateBottomClicked(clickedSlotEnd);
+    }
+    /* If it does, click the reserved slot. */
+    else {
+        updateBottomClicked(clickedSlotReserved);
+    }
 
 }
 
