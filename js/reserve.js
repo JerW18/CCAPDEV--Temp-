@@ -58,6 +58,7 @@ function initializeTopFormDate() {
 /* Add Form Options for "Time" */
 function initializeTopFormTime() {
     document.getElementById("timeForm").innerHTML = "";
+    document.getElementById("timeFormEnd").innerHTML = "";
     // Start at 8AM and end at 8PM.
     for (let t = 16; t < 40; t++) {
         let hour = Math.floor(t / 2) % 12;
@@ -72,6 +73,7 @@ function initializeTopFormTime() {
         }
         let ampm = (Math.floor(t / 2) < 12) ? "AM" : "PM";
         document.getElementById("timeForm").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
+        document.getElementById("timeFormEnd").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
     }
     document.getElementById("timeForm").addEventListener("change", (e) => {
         updateCenter(-1);
