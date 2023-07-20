@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
+
+#navbar {
+    background-color: #4CAF50;
+    padding: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+    min-height: 10px;
+}
+
+#logo {
+    font-family: 'Faster One', sans-serif;
+    color: black;
+    font-size: 25px;
+}
+
+#search:hover,
+#login:hover,
+#profile:hover {
+    cursor:pointer;
+    /*COLOR HIGHLIGHT CHANGE ME MAKE PURPLE FOR NOW*/
+    color:purple;
+}
+
+#search,
+#login,
+#profile {
+    float: right;
+    margin: 5px 10px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    color: black;
+}

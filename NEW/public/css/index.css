@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("../images/index_bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.background {
+    background-color: #76b852a9;
+    height: 100vh;
+}
+
+.login-container {
+    width: 25rem;
+    height: 30rem;
+    margin: auto;
+    padding: 8% 0 0;
+}
+
+.login-form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 25rem;
+    margin: 0 auto 100px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.login-text {
+    font-family: 'Faster One', sans-serif;
+    color: rgb(38, 38, 38);
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+}
+
+.login-form input {
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.login-form .formBtn {
+    text-transform: uppercase;
+    outline: 0;
+    background: #4CAF50;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.login-form .formBtn:hover, .login-form .formBtn:active, .login-form .formBtn:focus {
+    background: #43A047;
+}
+
+.login-form input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+}
+
+.login-form label {
+    font-size: 12px;
+    color: #b3b3b3;
+    padding-left: 5px;
+}
+
+.login-form .message {
+    margin: 8px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.login-form .message a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+
+.login-form #register {
+    display: none;
+}

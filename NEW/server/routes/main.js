@@ -4,10 +4,9 @@ const path = require('path');
 parentDIR = path.dirname(__filename);
 parentDIR = path.dirname(parentDIR);
 parentDIR = path.dirname(parentDIR);
-
 // Routes
 router.get('/', (req, res) => {
-    res.sendFile(path.join(parentDIR, '/index.html'));
+    res.sendFile(path.join(parentDIR, 'public/index.html'));
 
     }
 );
