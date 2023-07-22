@@ -13,3 +13,11 @@ router.get('/', (req, res) => {
 
 
 module.exports = router;
+
+
+
+const initialize=require('../initializedb.js');
+
+//README: Uncomment the lines below to initialize the database
+//initialize.createUser();
+//initialize.createReservations();
