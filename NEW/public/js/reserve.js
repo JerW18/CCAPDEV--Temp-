@@ -1,25 +1,34 @@
-import { labs, tables, users, reservations } from "./db.js";
+
 
 /* Global Values */
 let topForm = document.forms.topForm;
+let protol=await fetch("/getLabs");
+let labs=await protol.json();
+
+let protor=await fetch("/getReservations");
+let reservations=await protor.json();
+console.log(reservations);
+
+pageStartUp();
 
 /* Start Up the Page */
-initializeTopForm();
-updateCenter(0);
-initializeCenterListener();
-
+async function pageStartUp() {
+    await initializeTopForm();
+    await updateCenter(0);
+    initializeCenterListener();
+}
 /* Initialize Options for TopForm */
-function initializeTopForm() {
-    initializeTopFormLab();
+async function initializeTopForm() {
+    await initializeTopFormLab();
     initializeTopFormDate();
     initializeTopFormTime();
 }
 
 /* Add Form Options for "Lab" */
-function initializeTopFormLab() {
-
+async function initializeTopFormLab() {
     /* Add Options Based on Labs in DB */
     document.getElementById("labForm").innerHTML = "";
+
     for (let lab of labs) {
         document.getElementById("labForm").innerHTML += `<option value = "${lab.labCode}">${lab.labCode}</option>`;
     }
@@ -28,7 +37,9 @@ function initializeTopFormLab() {
     document.getElementById("labForm").addEventListener("change", (e) => {
         updateCenter(-1);
         hideBottom();
+        
     });
+  //  updateCenter(-1);//TODO: check if this is needed, if not remove,see if when we make other functions here async if rendering gets delayed
 }
 
 /* Add Form Options for "Date" */
@@ -104,23 +115,32 @@ function initializeTopFormTime() {
     });
 }
 
+
+
 /* Update the Center Seating Display */
-function updateCenter(clickedPosition) {
-    updateCenterTables();
-    updateCenterListeners();
+async function updateCenter(clickedPosition) {
+    await updateCenterTables();
+    await updateCenterListeners();
     updateCenterClicked(clickedPosition);
-    updateCenterReserved();
+    await updateCenterReserved();
 }
 
 /* Create the Tables that will Represent the Seatings */
-function updateCenterTables() {
+async function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
     let tablesToAdd = [];
+    for(let l of labs){
+        if(l.labCode==new FormData(topForm).get("labForm")){
+            tablesToAdd=l.labTables;
+        }
+    }
+
+    /*tables of a specific lab
     for (let t of tables) {
         if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
-    }
+    }*/
     for (let t = 0; t < tablesToAdd.length; t++) {
         let insert = "";
         let table = tablesToAdd[t];
@@ -139,19 +159,29 @@ function updateCenterTables() {
 }
 
 /* Create the EventListeners for Each Seat in the Display */
-function updateCenterListeners() {
+async function updateCenterListeners() {
     let tablesToAdd = [];
+    for(let l of labs){
+        if(l.labCode==new FormData(topForm).get("labForm")){
+            tablesToAdd=l.labTables;
+        }
+    }
+
+   // let proto=await fetch("/getLab?labCode="+new FormData(topForm).get("labForm")+"");
+    //let lab=await proto.json();
+    //let tablesToAdd=lab.labTables;
+    /*let tablesToAdd = [];
     for (let t of tables) {
         if (t.lab == (new FormData(topForm)).get("labForm")) {
             tablesToAdd.push(t);
         }
-    }
+    }*/
     for (let t = 0; t < tablesToAdd.length; t++) {
         let table = tablesToAdd[t];
         for (let r = 0; r < table.rows; r++) {
             for (let c = 0; c < table.columns; c++) {
-                document.getElementById(`${t}${r}${c}`).addEventListener("click", (e) => {
-                    updateCenter([t, r, c]);
+                document.getElementById(`${t}${r}${c}`).addEventListener("click", async (e) => {
+                    await updateCenter([t, r, c]);
                     updateBottom((new FormData(topForm).get("timeForm")), (new FormData(topForm).get("timeFormEnd")));
                 })
             }
@@ -160,8 +190,10 @@ function updateCenterListeners() {
 }
 
 /* Update the Reserved Seats to be Red */
-function updateCenterReserved() {
-
+async function updateCenterReserved() {
+    /*let proto=await fetch("/getReservations");
+    let reservations=await proto.json();
+    console.log(reservations);*/
     /* Remove all currently reserved seats. */
     const allReserved = document.querySelectorAll("reservedSeat");
     allReserved.forEach((element) => {
@@ -221,13 +253,13 @@ function hideBottom() {
 }
 
 /* Update contents of "bottom" based on the seat clicked in the center panel and the clicked timeslot. */
-function updateBottom(clickedSlotStart, clickedSlotEnd) {
+async function updateBottom(clickedSlotStart, clickedSlotEnd) {
 
     hideBottom();
     document.getElementById("bottom").classList.remove("hidden");
 
     updateBottomTables();
-    updateBottomReserved();
+    await updateBottomReserved();
     updateBottomListeners();
 
     /* Check if interval has reserved seat. */
@@ -241,13 +273,12 @@ function updateBottom(clickedSlotStart, clickedSlotEnd) {
 
     /* If it doesn't, click the start and end slots. */
     if (clickedSlotReserved == -1) {
-        console.log(clickedSlotStart + " " + clickedSlotEnd);
-        updateBottomClicked(clickedSlotStart);
-        updateBottomClicked(clickedSlotEnd);
+        await updateBottomClicked(clickedSlotStart);
+        await updateBottomClicked(clickedSlotEnd);
     }
     /* If it does, click the reserved slot. */
     else {
-        updateBottomClicked(clickedSlotReserved);
+        await updateBottomClicked(clickedSlotReserved);
     }
 
 }
@@ -292,7 +323,11 @@ function updateBottomTables() {
 }
 
 /* Based on current reservations, mark all reserved slots as "reservedSlots" to make them red. */
-function updateBottomReserved() {
+async function updateBottomReserved() {
+    /*let proto=await fetch("/getReservations");
+    let reservations=await proto.json();
+    console.log(reservations);*/
+
     for (let r of reservations) {
         let clickedSeat = document.querySelector(".clickedSeat");
         if (clickedSeat != null) {
@@ -321,7 +356,10 @@ function updateBottomListeners() {
 
 
 /* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */
-function updateBottomClicked(clickedSlot) {
+async function updateBottomClicked(clickedSlot) {
+    /*let proto=await fetch("/getReservations");
+    let reservations=await proto.json();
+    console.log(reservations);*/
     /* If the slot clicked is a reserved slot... */
     if (document.getElementById(`S${clickedSlot}`).classList.contains("reservedSlot")) {
         /* Remove all currently "clicked" and "selecting" slots. */

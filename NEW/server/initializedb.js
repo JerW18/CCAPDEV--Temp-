@@ -1,5 +1,6 @@
 const User=require('./models/user.js');
 const Reservation=require('./models/reservation.js');
+const Lab=require('./models/lab.js');
 function createUser(){
     User.insertMany([
         {
@@ -92,11 +93,11 @@ function createReservations(){
                 lab: "A2493",
                 seat: "033"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-23",
                 startTime: "11:03PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-25",
                 startTime: 17,
                 endTime: 35
@@ -110,11 +111,11 @@ function createReservations(){
                 lab: "A2493",
                 seat: "011"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-23",
                 startTime: "5:36PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-25",
                 startTime: 24,
                 endTime: 30
@@ -128,11 +129,11 @@ function createReservations(){
                 lab: "G503",
                 seat: "011"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-22",
                 startTime: "7:16PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-26",
                 startTime: 27,
                 endTime: 30
@@ -146,11 +147,11 @@ function createReservations(){
                 lab: "Y021",
                 seat: "121"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-24",
                 startTime: "2:39PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-27",
                 startTime: 18,
                 endTime: 33
@@ -164,11 +165,11 @@ function createReservations(){
                 lab: "A2493",
                 seat: "034"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-20",
                 startTime: "4:09PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-28",
                 startTime: 18,
                 endTime: 33
@@ -182,11 +183,11 @@ function createReservations(){
                 lab: "G503",
                 seat: "122"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-25",
                 startTime: "6:10AM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-29",
                 startTime: 18,
                 endTime: 33
@@ -200,11 +201,11 @@ function createReservations(){
                 lab: "G503",
                 seat: "122"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-23",
                 startTime: "9:15AM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-26",
                 startTime: 20,
                 endTime: 25
@@ -218,11 +219,11 @@ function createReservations(){
                 lab: "G503",
                 seat: "122"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-24",
                 startTime: "11:02AM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-25",
                 startTime: 17,
                 endTime: 30
@@ -236,11 +237,11 @@ function createReservations(){
                 lab: "G503",
                 seat: "022"
             },
-            reservationDate: {
+            requestDateAndTime: {
                 date: "2023-6-25",
                 startTime: "03:08PM",
                 endTime: null
-            },reservedDate: {
+            },reservedDateAndTime: {
                 date: "2023-6-26",
                 startTime: 25,
                 endTime: 31
@@ -251,4 +252,60 @@ function createReservations(){
     ]);
 }
 
-module.exports={createUser:createUser,createReservations:createReservations};
+function createLabs(){
+    
+    Lab.insertMany([
+        { 
+            labCode: "G503",
+            labTables: 
+            [
+                {
+                tableCode:"T0001",
+                rows:"4",
+                columns:"3"
+                },
+                {
+                    tableCode:"T0002",
+                    rows:"4",
+                    columns:"3"
+                },
+                {
+                    tableCode:"T0003",
+                    rows:"3",
+                    columns:"4"
+                }
+            ]
+    }, { 
+            labCode: "A2493", 
+            labTables: 
+            [
+                {
+                tableCode:"T0004",
+                rows:"4",
+                columns:"10"
+                }
+            ]
+    }, { 
+            labCode: "Y021",
+            labTables: 
+            [
+                {
+                tableCode:"T0005",
+                rows:"4",
+                columns:"6"
+                },
+                {
+                    tableCode:"T0006",
+                    rows:"4",
+                    columns:"6"
+                }
+            ]
+        
+
+
+    }]);
+            
+}
+
+
+module.exports={createUser:createUser,createReservations:createReservations,createLabs:createLabs};

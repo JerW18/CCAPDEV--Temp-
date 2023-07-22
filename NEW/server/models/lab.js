@@ -2,12 +2,15 @@ const mongoose=require('mongoose');
 
 const Schema=mongoose.Schema;
 const labSchema=new Schema({
-    labID:{
+    labCode:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     labTables:{
         type:Array,
         required:true
     }
 });
+
+module.exports=mongoose.model('Lab',labSchema);

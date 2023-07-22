@@ -8,20 +8,22 @@ const reservationSchema=new Schema({
     },
     reservationID:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     labSeat:{
         type:Object,
         required:true
     },
-    reservationDate:{
+    requestDateAndTime:{
         type:Object,
         default:Date.now,
         required:true
     },
-    reservedDate:{
+    reservedDateAndTime:{
         type:Object,
-        required:true
+        required:true,
+        unique:true
     },
     walkInStudent:{
         type:String,
