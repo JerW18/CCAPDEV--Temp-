@@ -43,6 +43,10 @@ If there are any problems, please don't hesitate to contact anyone from our grou
     |admin4@dlsu.edu.ph | admin4  |
     |admin5@dlsu.edu.ph | admin5  |
 
+
+
+within main.js in routes uncomment the two lines under the TODO: comment to initialize the DB
+also make sure to install all important node modules before u start.
 ---
 
 Created by: Lanz Lim, Tyler Tan, Jeremy Wang, and Johann Uytanlet

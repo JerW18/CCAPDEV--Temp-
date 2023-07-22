@@ -14,16 +14,17 @@ const reservationSchema=new Schema({
         type:Object,
         required:true
     },
-    requestDateAndTime:{
+    reservationDate:{
         type:Object,
         default:Date.now,
         required:true
     },
-    reservedDateAndTime:{
-        type:Object
+    reservedDate:{
+        type:Object,
+        required:true
     },
     walkInStudent:{
-        type:String
+        type:String,
     },
     isAnonymous:{
         type:Boolean,
