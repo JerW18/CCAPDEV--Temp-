@@ -26,7 +26,7 @@ router.get('/getReservations', (req, res) => {
     });
 });
 
-router.get('getUsers', (req, res) => {
+router.get('/getUsers', (req, res) => {
     User.find({}).then((data)=>{
         res.json(data);
     });
@@ -61,7 +61,7 @@ module.exports = router;
 const initialize=require('../initializedb.js');
 const reservation=require('../models/reservation.js');
 //README: Uncomment the lines below to initialize the database
-//initialize.createUser();
+initialize.createUser();
 //initialize.createReservations();
 //initialize.createLabs();
 

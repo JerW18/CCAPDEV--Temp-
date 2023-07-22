@@ -18,9 +18,9 @@ const userSchema=new Schema({
         type:Boolean,
         required:true
     },
-    image:{
+    picture:{
         type:String,
-        default:"student_profile.jpg"
+        default:"../images/student_profile.jpg"
     },
     bio:{
         type:String

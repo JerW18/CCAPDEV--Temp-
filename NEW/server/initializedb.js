@@ -36,14 +36,14 @@ function createUser(){
             password: "cellinia_texas",
             isAdmin: false,
             name: "Cellinia Texas",
-            picture: "../images/cellinia_texas.jpg",
+            picture: "../images/cellinia_texas.png",
             bio: "Hi! I'm Cellinia or you can call me Cell. I'm funnily enough I am a cowboy this has no correlation to my last name. Actually my parents disapprove very much they are very serious business people who have casted me out because of my choice of career."
           },{
             email: "gwen_stacy@dlsu.edu.ph",
             password: "gwen_stacy",
             isAdmin: false,
             name: "Gwen Stacy",
-            picture: "../images/gwen_stacy.jpg",
+            picture: "../images/gwen_stacy.png",
             bio: "Hi! My name is Gwen Stacy im from earth 6969 and I watched my bestfriend turn into a giant lizard. He got into an acc and went sleepy for forever. I met this weird kid in another universe tho his name is Miles Morales."
           },{
             email: "admin1@dlsu.edu.ph",

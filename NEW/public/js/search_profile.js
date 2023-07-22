@@ -1,4 +1,12 @@
-import { labs, tables, users, reservations } from "./db.js";
+
+let protor=await fetch("/getReservations");
+let reservations=await protor.json();
+console.log(reservations);
+
+let protou=await fetch("/getUsers");
+let users=await protou.json();
+console.log(users);
+
 
 //TODO need to implement hide profile details and reservations, and also to
 //add rows to the reservation information column when there is a reservation,
