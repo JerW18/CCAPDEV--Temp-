@@ -367,7 +367,31 @@ function updateBottomConfirmListener() {
         let clickedLab = (new FormData(topForm)).get("labForm");
         let clickedAnonymous = document.getElementById("anonymous").checked;
         let clickedEmail = "tyler_tan@dlsu.edu.ph";//for sessioning for now default tyler
+        let currentTime = new Date();
+        let currentDate = currentTime.getDate();
+        //get current date in the format YYYY-MM-DD
+        if (currentDate < 10) {
+            currentDate = "0" + currentDate;
+        }
+        let currentMonth = currentTime.getMonth() + 1;
+        console.log(currentMonth);
+        if (currentMonth < 10) {
+            currentMonth = "0" + currentMonth;
+        }
+        let currentYear = currentTime.getFullYear();
+        currentDate = `${currentYear}-${currentMonth}-${currentDate}`;
 
+
+        //get current time in hours and minutes
+        let currentHours = currentTime.getHours();
+        let currentMinutes = currentTime.getMinutes();
+        let morning = true;
+        if (currentHours > 12) {
+            currentHours -= 12;
+            morning = false;
+        }
+        let currentFullTime=`${currentHours}:${currentMinutes} ${morning?"AM":"PM"}`;//`12:00 AM
+        //get current date
         let clickedReservation = {
             email: clickedEmail,
             labSeat: {
@@ -378,6 +402,10 @@ function updateBottomConfirmListener() {
                 date: clickedDate,
                 startTime: clickedStart,
                 endTime: clickedEnd
+            },
+            requestDateAndTime: {
+                date: currentDate,
+                time: currentFullTime
             },
             isAnonymous: clickedAnonymous
         };

@@ -17,7 +17,6 @@ const reservationSchema=new Schema({
     },
     requestDateAndTime:{
         type:Object,
-        default:Date.now,
         required:true
     },
     reservedDateAndTime:{

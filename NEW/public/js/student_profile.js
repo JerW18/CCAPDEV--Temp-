@@ -1,4 +1,6 @@
-import { labs, tables, users, reservations } from "./db.js";
+let protor=await fetch("/getReservations");
+let reservations=await protor.json();
+console.log(reservations);
 
 const saveChangesButton = document.getElementById("saveBtn");
 const cancelButton = document.getElementById("cancelBtn");
