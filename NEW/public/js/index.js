@@ -9,7 +9,7 @@ $('#registerMessage a').click(function () {
 
 // Guest Log In
 $('#guestMessage a').click(function () {
-    window.location.assign("../html/temp_guest_reserve.html");;
+    window.location.assign("../html/reserve.html");;
 });
 
 // Login Form
@@ -49,7 +49,7 @@ loginButton.addEventListener("click", async (e) => {
         if (response.ok) {
             // Login successful
             console.log(data.message);
-            window.location.href = 'html/reserve.html';
+            window.location.href = 'reserve.html';
 
         } else {
             // Login failed

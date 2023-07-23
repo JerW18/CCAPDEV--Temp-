@@ -1,20 +1,47 @@
 /* Global Values */
+
+let protoc = await fetch("/getCredentials");
+let creds = await protoc.json();
+
+/**
+ * 0 - Guest
+ * 1 - Normal
+ * 2 - Admin
+ * 3 - Error
+ */
+let credLevel = creds.credLevel;
+let credEmail = creds.email;
+
 let topForm = document.forms.topForm;
+
 let protol = await fetch("/getLabs");
 let labs = await protol.json();
 
 let protor = await fetch("/getReservations");
 let reservations = await protor.json();
-console.log(reservations);
+
+const urlParams = new URLSearchParams(window.location.search);
+const editID = urlParams.get("edit");
+
+if (editID != null) {
+    let newArray = reservations.filter(function (el) {
+        return el.reservationID != editID;
+    }
+    
+    );
+    reservations = editID;
+}
 
 pageStartUp();
 
 /* Start Up the Page */
 async function pageStartUp() {
+
     await initializeTopForm();
     await updateCenter(0);
     initializeCenterListener();
 }
+
 /* Initialize Options for TopForm */
 async function initializeTopForm() {
     await initializeTopFormLab();
@@ -284,10 +311,10 @@ function updateCenterClicked(clickedPosition) {
 the center. This should cause the bottom panel to be hidden from view. */
 function initializeCenterListener() {
     let center = document.getElementById("center");
-    center.addEventListener("click", (e) => {
+    center.addEventListener("click", async (e) => {
         if (!e.target.classList.contains("seat")) {
             hideBottom();
-            updateCenter(-1);
+            await updateCenter(-1);
         }
     });
 }
@@ -362,9 +389,19 @@ function updateBottomTables() {
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
-    insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
-    insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
-    insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+    if (credLevel == 0) {
+        insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Login to Reserve A Slot" disabled>`
+    } else if (credLevel == 1) {
+        insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+        insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
+        insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+    } else if (credLevel == 2) {
+        insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+        insert += `<div id = "walkInContainer"><label for = "walkIn">Walk-In Student: </label>`;
+        insert += `<input type = "textbox" name = "walkIn" id = "walkIn"></div>`;
+        insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
+        insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+    }
 
     document.getElementById("bottom").innerHTML += insert;
 }
@@ -402,77 +439,124 @@ function updateBottomListeners() {
 }
 
 function updateBottomConfirmListener() {
-    document.getElementById("submit").addEventListener("click", async (e) => {
-        e.preventDefault();
-        let clickedSeat = document.querySelector(".clickedSeat");
+    if (credLevel == 1 || credLevel == 2) {
+        document.getElementById("submit").addEventListener("click", async (e) => {
+            e.preventDefault();
 
-        let rangeTime = document.getElementsByClassName("clickedSlot");
-        let clickedStart = rangeTime[0].id.substring(1);
-        let clickedEnd = rangeTime[rangeTime.length - 1].id.substring(1);
-        let clickedDate = (new FormData(topForm)).get("dateForm");
-        let clickedLab = (new FormData(topForm)).get("labForm");
-        let clickedAnonymous = document.getElementById("anonymous").checked;
-        let clickedEmail = "tyler_tan@dlsu.edu.ph";//for sessioning for now default tyler
-        let currentTime = new Date();
-        let currentDate = currentTime.getDate();
-        //get current date in the format YYYY-MM-DD
-        if (currentDate < 10) {
-            currentDate = "0" + currentDate;
-        }
-        let currentMonth = currentTime.getMonth() + 1;
-        console.log(currentMonth);
-        if (currentMonth < 10) {
-            currentMonth = "0" + currentMonth;
-        }
-        let currentYear = currentTime.getFullYear();
-        currentDate = `${currentYear}-${currentMonth}-${currentDate}`;
+            if (e.target.value == "Confirm Reservation") {
+                let clickedSeat = document.querySelector(".clickedSeat");
+
+                let rangeTime = document.getElementsByClassName("clickedSlot");
+                let clickedStart = parseInt(rangeTime[0].id.substring(1));
+                let clickedEnd = parseInt(rangeTime[rangeTime.length - 1].id.substring(1));
+                let clickedDate = (new FormData(topForm)).get("dateForm");
+                let clickedLab = (new FormData(topForm)).get("labForm");
+                let clickedAnonymous = document.getElementById("anonymous").checked;
+                let clickedEmail = credEmail;
+                let currentTime = new Date();
+                let currentDate = currentTime.getDate();
+                let walkInStudent = null;
+                if (credLevel == 2)
+                    walkInStudent = document.getElementById("walkIn").value;
+
+                //get current date in the format YYYY-MM-DD
+                if (currentDate < 10) {
+                    currentDate = "0" + currentDate;
+                }
+                let currentMonth = currentTime.getMonth() + 1;
+                if (currentMonth < 10) {
+                    currentMonth = "0" + currentMonth;
+                }
+                let currentYear = currentTime.getFullYear();
+                currentDate = `${currentYear}-${currentMonth}-${currentDate}`;
 
 
-        //get current time in hours and minutes
-        let currentHours = currentTime.getHours();
-        let currentMinutes = currentTime.getMinutes();
-        let morning = true;
-        if (currentHours > 12) {
-            currentHours -= 12;
-            morning = false;
-        }
-        let currentFullTime = `${currentHours}:${currentMinutes} ${morning ? "AM" : "PM"}`;//`12:00 AM
-        //get current date
-        let clickedReservation = {
-            email: clickedEmail,
-            labSeat: {
-                lab: clickedLab,
-                seat: clickedSeat.id
-            },
-            reservedDateAndTime: {
-                date: clickedDate,
-                startTime: clickedStart,
-                endTime: clickedEnd
-            },
-            requestDateAndTime: {
-                date: currentDate,
-                time: currentFullTime
-            },
-            isAnonymous: clickedAnonymous
-        };
-        let response = await fetch("/addReservation", {
-            method: "post",
-            body: JSON.stringify(clickedReservation),
-            headers: {
-                Accept: "application/json, text/plain, */*",
-                "Content-Type": "application/json"
+                //get current time in hours and minutes
+                let currentHours = currentTime.getHours();
+                let currentMinutes = currentTime.getMinutes();
+                let morning = true;
+                if (currentHours > 12) {
+                    currentHours -= 12;
+                    morning = false;
+                }
+                if (currentMinutes < 10) {
+                    currentMinutes = "0" + currentMinutes;
+                }
+                let currentFullTime = `${currentHours}:${currentMinutes} ${morning ? "AM" : "PM"}`;//`12:00 AM
+                //get current date
+
+                let clickedReservation = {
+                    email: clickedEmail,
+                    labSeat: {
+                        lab: clickedLab,
+                        seat: clickedSeat.id
+                    },
+                    reservedDateAndTime: {
+                        date: clickedDate,
+                        startTime: clickedStart,
+                        endTime: clickedEnd
+                    },
+                    requestDateAndTime: {
+                        date: currentDate,
+                        startTime: currentFullTime
+                    },
+                    isAnonymous: clickedAnonymous,
+                    walkInStudent
+                };
+                let response = await fetch("/addReservation", {
+                    method: "POST",
+                    body: JSON.stringify(clickedReservation),
+                    headers: {
+                        Accept: "application/json, text/plain, */*",
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response.status == 201) {
+                    alert("Reservation successful.");
+                    window.location.assign("reserve.html");
+                }
+                else {
+                    alert("Reservation failed.");
+                }
+            } else if (e.target.value == "Delete Reservation") {
+                let rID = 0;
+                const slot = document.querySelector(".reservedSlot").id.substring(1);
+                console.log(slot);
+                for (let r of reservations) {
+                    if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
+                        if (slot >= r.reservedDateAndTime.startTime && slot <= r.reservedDateAndTime.endTime) {
+                            if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                                rID = r.reservationID;
+                                break;
+                            }
+                        }
+                    }
+                }
+                let response = await fetch("/deleteReservation", {
+                    method: "DELETE",
+                    body: JSON.stringify({ reservationID: rID }),
+                    headers: {
+                        Accept: "application/json, text/plain, */*",
+                        "Content-Type": "application/json"
+                    }
+                })
+                if (response.status == 201) {
+                    alert("Deletion successful.");
+                    window.location.assign("reserve.html");
+                }
+                else {
+                    alert("Deletion failed.");
+                }
             }
         });
-        console.log(response);
-        if (response.status == 201) {
-            alert("Reservation successful.");
-            window.location.assign("reserve.html");
-        }
-        else {
-            alert("Reservation failed.");
-        }
-    });
-
+    } else if (credLevel == 0) {
+        const resLogin = document.getElementById("submit");
+        resLogin.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.assign("index.html");
+        })
+    }
+    console.log(credLevel);
 }
 
 
@@ -517,7 +601,12 @@ async function updateBottomClicked(clickedSlot) {
                 }
             }
         }
-        document.getElementById("submit").disabled = true;
+        if (credLevel == 0 || credLevel == 1)
+            document.getElementById("submit").disabled = true;
+        else {
+            document.getElementById("submit").disabled = false;
+            document.getElementById("submit").value = "Delete Reservation";
+        }
     }
     /* If the slot clicked is NOT a reserved slot and they HAVEN'T selected a slot (dark green) before... */
     else if (document.querySelector(".selectingSlot") == null) {

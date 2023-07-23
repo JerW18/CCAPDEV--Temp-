@@ -1,36 +1,38 @@
 const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const reservationSchema = new Schema({
-    email:{
+    email: {
         type: String,
         required: true
     },
-    reservationID:{
+    reservationID: {
         type: String,
         required: true,
         unique: true
     },
-    labSeat:{
+    labSeat: {
         type: Object,
         required: true
     },
-    requestDateAndTime:{
+    requestDateAndTime: {
         type: Object,
         required: true
     },
-    reservedDateAndTime:{
+    reservedDateAndTime: {
         type: Object,
         required: true,
         unique: true
     },
-    walkInStudent:{
+    walkInStudent: {
         type: String,
     },
-    isAnonymous:{
+    isAnonymous: {
         type: Boolean,
         required: true
     }
 });
 
+module.exports = mongoose.model('Reservation', reservationSchema);
 module.exports = mongoose.model('Reservation', reservationSchema);

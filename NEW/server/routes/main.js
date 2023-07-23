@@ -1,8 +1,8 @@
 express = require('express');
 const router = express.Router();
-const path = require('path');	
+const path = require('path');
 const session = require('express-session');
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken');
 parentDIR = path.dirname(__filename);
 parentDIR = path.dirname(parentDIR);
 parentDIR = path.dirname(parentDIR);
@@ -16,8 +16,14 @@ router.use(cookieParser());
 
 // Routes
 router.get('/', (req, res) => {
-    res.sendFile(path.join(parentDIR, 'public/index.html'));
-});
+    if (!req.cookies.token) {
+        res.redirect('html/index.html');
+    }
+    else {
+        res.redirect('html/reserve.html');
+    }
+}
+);
 
 const User = require('../models/user.js');
 const Reservation = require('../models/reservation.js');
@@ -42,13 +48,11 @@ router.get('/getUsers', (req, res) => {
 });
 
 router.get('/getUser', (req, res) => {
-    const password = req.query.password;
     const email = req.query.email;
     //if there was a user found return success else return null
-    User.findOne({ password, email }).then((data) => {
+    User.findOne({ email: email }).then((data) => {
         res.json(data);
     });
-
 });
 
 router.get('/getLab', (req, res) => {
@@ -72,10 +76,111 @@ router.post('/addUser', (req, res) => {
     );
 });
 
-router.post('/addReservation', async (req, res) => {
+router.get("/getCredentials", (req, res) => {
+    // Checks if there are cookies...
+    if (req.cookies.token) {
+        try {
+            const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
+            const email = decoded.email;
 
-    let last = await Reservation.find().sort({ $natural: -1 }).limit(1)
-    console.log("gonk");
+            User.findOne({ email }).then((data) => {
+                if (!data.isAdmin) {
+                    res.json({ credLevel: 1, email });
+                } else {
+                    res.json({ credLevel: 2, email });
+                }
+            }).catch((err) => {
+                // If verification fails, clear the invalid 'token'.
+                res.json({ credLevel: 0 });
+                res.clearCookie('token');
+            });
+        } catch (err) {
+            // If verification fails, clear the invalid 'token'.
+            res.json({ credLevel: 0 });
+            res.clearCookie('token');
+        }
+    }
+    // If there are no cookies, send "0" for guest.
+    else {
+        res.json({ credLevel: 0 });
+    }
+});
+
+router.post('/login', async (req, res) => {
+
+    console.log("Backend");
+    console.log(req.body.email);
+    console.log(req.body.password);
+    console.log(req.body.rememberMe);
+
+
+    const password = req.body.password;
+    const email = req.body.email;
+    const rememberMe = req.body.rememberMe;
+
+
+    if (!password || !email) {
+        console.log("Login Failed");
+        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
+        console.log("Login Failed");
+        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
+    }
+    else {
+        User.findOne({ password, email }).then((data) => {
+            console.log(data);
+
+            if (!data) {
+                res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
+            }
+            else {
+                if (rememberMe) {
+                    const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                        maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
+                    });
+                } else {
+                    const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                    });
+                }
+
+                console.log("Login Successful");
+                res.status(200).json({ success: true, message: 'Login successful!' });
+            }
+
+        }).catch((err) => {
+            console.error('Error:', err);
+            console.log("Login Errored");
+            return res.status(500).json({ success: false, message: 'An error occurred during login.' });
+        });
+    }
+});
+
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/');
+});
+
+
+router.get('/home', (req, res) => {
+    res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
+});
+
+/*
+router.get('/home', (req, res) => {
+  console.log("Cookies", req.cookies);
+  console.log("Cookie Token", req.cookies.token);
+ 
+  // Check if the 'token' cookie exists
+  
+  
+});*/
+
+router.post('/addReservation', async (req, res) => {
+    let last = await Reservation.find().sort({ $natural: -1 }).limit(1);
     let newresID = parseInt(last[0].reservationID.substring(1)) + 1;
     newresID = "R" + newresID.toString().padStart(7, "0");
     const reservation = new Reservation({ ...req.body, reservationID: newresID });
@@ -89,117 +194,106 @@ router.post('/addReservation', async (req, res) => {
     );
 });
 
+router.put("/editReservation", async (req, res) => {
 
-function checkSessionToken(req, res, next) {
-    const token = req.session.token;
+    const reservationID = req.body.reservationID;
+    const reservationEmail = req.body.email;
+    const reservationData = req.body;
 
-    if (token) {
-        try {
-            // Verify the token using your secret key (process.env.MYSECRET)
-            const decoded = jwt.verify(token, process.env.MYSECRET);
-            req.user = decoded; // Store the decoded token in the request object for future use
-            return next(); // Proceed to the next middleware or route handler
-        } catch (err) {
-            // Token verification failed, clear the invalid token from the session
-            delete req.session.token;
-        }
-    }
-
-    // If there's no valid token or token verification failed, proceed to the next middleware or route handler
-    return next();
-}
-
-router.post('/login', async (req, res) => {
-
-    console.log("Backend");
-    console.log(req.body.email);
-    console.log(req.body.password);
-    console.log(req.body.rememberMe);
-
-    const password = req.body.password;
-    const email = req.body.email;
-    const rememberMe = req.body.rememberMe;
-
-    if (!password || !email) {
-        console.log("Login Failed");
-        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
-    }
-    else {
-        User.findOne({ password, email }).then((data) => {
-            console.log(data);
-    
-            if (!data) {
-                res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
-            }
-            else {
-                if(rememberMe){
-                    const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
-                    res.cookie('token', token, {
-                        httpOnly: true,
-                        maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
-                    });
-                } else {
-                    const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
-                    res.cookie('token', token, {
-                        httpOnly: true,
-                    });
+    try {
+        const editedReservation = await Reservation.updateOne(
+            { reservationID, reservationEmail },
+            {
+                $set: {
+                    reservationData
                 }
-                
-    
-                // sessions
-                //res.session.token = token;
-    
-                console.log("Login Successful");
-                res.status(200).json({ success: true, message: 'Login successful!' });
             }
-    
-        }).catch((err) => {
-            console.error('Error:', err);
-            console.log("Login Errored");
-            return res.status(500).json({ success: false, message: 'An error occurred during login.' });
-        });
+        );
+
+        if (editedReservation.nModified === 0) {
+            res.status(400);
+            res.end();
+        } else {
+            res.status(201);
+            res.end();
+        }
+    } catch (error) {
+        res.status(500).json(error);
     }
 });
 
+router.put("/editUserPassword", async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const newPassword = req.body.newPassword;
 
-router.get('/home', (req, res) => {
-    res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
 });
-
 /*
-  router.get('/home', (req, res) => {
-    console.log("Cookies", req.cookies);
-    console.log("Cookie Token", req.cookies.token);
-  
-    // Check if the 'token' cookie exists
-    if (req.cookies.token) {
-      try {
-        // Verify the 'token' cookie using your secret key (process.env.MYSECRET)
-        const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET); // decoded is username
-        
-        console.log("working");
-        console.log(decoded);
-  
-        res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
-  
-        //res.redirect('html/reserve.html');
-      } catch (err) {
-        // If verification fails, clear the invalid 'token' cookie
-        console.log("not working");
-        res.clearCookie('token');
-        // Proceed to check the session 'token'
-      }
-    }else{
-      res.redirect('/');
-    }
-    
-  });*/
+router.put("/editUser", async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const newPassword = req.body.newPassword;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const is
 
-module.exports = router;
 
-const initialize = require('../initializedb.js');
-const reservation = require('../models/reservation.js');
-const { appendFile } = require('fs');
+
+    router.delete('/deleteReservation', (req, res) => {
+        const reservationID = req.body.reservationID;
+        // Checks if there are cookies...
+        if (req.cookies.token) {
+            try {
+                const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
+                const email = decoded.email;
+
+                User.findOne({ email }).then((data) => {
+                    if (data.isAdmin) {
+                        Reservation.deleteOne({ reservationID }).then((result) => {
+                            console.log(result);
+                        });
+                        res.status(201);
+                        res.end();
+                    } else {
+                        Reservation.deleteOne({ reservationID, email }).then((result) => {
+                            console.log(result);
+                            if (result.deletedCount == 0) {
+                                res.status(400);
+                                res.end();
+                            } else {
+                                res.status(201);
+                                res.end();
+                            }
+                        });
+                    }
+                }).catch((err) => {
+                    // If verification fails, clear the invalid 'token'.
+                    res.status(400);
+                    res.end();
+                    res.clearCookie('token');
+                });
+            } catch (err) {
+                // If verification fails, clear the invalid 'token'.
+                res.status(400);
+                res.end();
+            }
+        }
+        // If there are no cookies, send "0" for guest.
+        else {
+            res.status(403);
+            res.end();
+        }
+    });
+
+
+
+    module.exports = router;
+
+
+
+    const initialize = require('../initializedb.js');
+    const reservation = require('../models/reservation.js');
+    const { appendFile } = require('fs');
 //README: Uncomment the lines below to initialize the database
 //initialize.createUser();
 //initialize.createReservations();
