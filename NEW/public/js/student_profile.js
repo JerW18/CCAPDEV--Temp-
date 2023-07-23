@@ -1,5 +1,5 @@
-let protor=await fetch("/getReservations");
-let reservations=await protor.json();
+let protor = await fetch("/getReservations");
+let reservations = await protor.json();
 console.log(reservations);
 
 let protoc = await fetch("/getCredentials");

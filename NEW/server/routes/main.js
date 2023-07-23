@@ -113,11 +113,15 @@ router.post('/login', async (req, res) => {
     console.log(req.body.password);
     console.log(req.body.rememberMe);
 
+
     const password = req.body.password;
     const email = req.body.email;
     const rememberMe = req.body.rememberMe;
 
+
     if (!password || !email) {
+        console.log("Login Failed");
+        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
         console.log("Login Failed");
         res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
     }
