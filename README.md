@@ -6,10 +6,7 @@ A Computer Laboratory Reservation System web application made with HTML, CSS, an
 
 ## How to Run
 1. Download the files and place them in the same folder.
-2. Open the said folder in VSCode.
-3. Download the extension "Live Server" by Ritwick Dey.
-4. Open index.html still within VSCode
-5. Right-click on the code window of index.html and find the "Open with Live Server" button to start running the website
+2. // don't run this in chrome.
 
 Note:
 It is recommended to use Google Chrome to open this website. If opening the files automatically goes to another browser, 

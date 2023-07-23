@@ -20,6 +20,8 @@ let labs = await protol.json();
 let protor = await fetch("/getReservations");
 let reservations = await protor.json();
 
+console.log(reservations);
+
 const urlParams = new URLSearchParams(window.location.search);
 const editID = urlParams.get("edit");
 
@@ -27,9 +29,8 @@ if (editID != null) {
     let newArray = reservations.filter(function (el) {
         return el.reservationID != editID;
     }
-    
     );
-    reservations = editID;
+    reservations = newArray;
 }
 
 pageStartUp();
@@ -81,6 +82,10 @@ function initializeTopFormDate() {
         let year = result.getFullYear();
         let month = result.getMonth() + 1;
         let day = result.getDate();
+
+        if(month < 10){
+            month = "0" + month;
+        }
 
         let resultDate = `${year}-${month}-${day}`;
         document.getElementById("dateForm").innerHTML += `<option value = "${resultDate}">${resultDate}</option>`;
@@ -242,7 +247,7 @@ async function updateCenterReserved() {
                     // Check if same lab...
                     if ((new FormData(topForm)).get("labForm") == reserves.labSeat.lab && reserves.labSeat.seat == r.labSeat.seat) {
                         // Check if same date...
-                        if ((new FormData(topForm)).get("dateForm") == reserves.reservedDateAndTime.date && reserves.reservedDateAndTime.date ==  r.reservedDateAndTime.date) {
+                        if ((new FormData(topForm)).get("dateForm") == reserves.reservedDateAndTime.date && reserves.reservedDateAndTime.date == r.reservedDateAndTime.date) {
                             // Check if same time...
                             if (reserves.labSeat.seat == r.labSeat.seat) {
                                 for (let i = reserves.reservedDateAndTime.startTime; i <= reserves.reservedDateAndTime.endTime; i++) {
@@ -256,9 +261,9 @@ async function updateCenterReserved() {
                 }
 
                 const noOfSeats = timeFormEnd - timeForm + 1;
-                
+
                 let now = document.getElementById(`${r.labSeat.seat}`);
-                
+
                 if (noOfSeats != 1) {
                     const huePercentageAdd = 100 / (noOfSeats - 1);
                     let huePercentage = 0;
@@ -503,21 +508,43 @@ function updateBottomConfirmListener() {
                     isAnonymous: clickedAnonymous,
                     walkInStudent
                 };
-                let response = await fetch("/addReservation", {
-                    method: "POST",
-                    body: JSON.stringify(clickedReservation),
-                    headers: {
-                        Accept: "application/json, text/plain, */*",
-                        "Content-Type": "application/json"
+                if (editID == null) {
+                    let response = await fetch("/addReservation", {
+                        method: "POST",
+                        body: JSON.stringify(clickedReservation),
+                        headers: {
+                            Accept: "application/json, text/plain, */*",
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (response.status == 201) {
+                        alert("Reservation successful.");
+                        window.location.assign("reserve.html");
                     }
-                });
-                if (response.status == 201) {
-                    alert("Reservation successful.");
-                    window.location.assign("reserve.html");
+                    else {
+                        alert("Reservation failed. Please try again.");
+                        window.location.assign("reserve.html");
+                    }
+                } else {
+                    clickedReservation.reservationID = editID;
+                    let response = await fetch("/editReservation", {
+                        method: "PUT",
+                        body: JSON.stringify(clickedReservation),
+                        headers: {
+                            Accept: "application/json, text/plain, */*",
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (response.status == 201) {
+                        alert("Edit successful.");
+                        window.location.assign("reserve.html");
+                    }
+                    else {
+                        alert("Edit failed. Please relog and try again.");
+                        window.location.assign("reserve.html");
+                    }
                 }
-                else {
-                    alert("Reservation failed.");
-                }
+
             } else if (e.target.value == "Delete Reservation") {
                 let rID = 0;
                 const slot = document.querySelector(".reservedSlot").id.substring(1);
@@ -545,7 +572,8 @@ function updateBottomConfirmListener() {
                     window.location.assign("reserve.html");
                 }
                 else {
-                    alert("Deletion failed.");
+                    alert("Deletion failed. Please try again.");
+                    window.location.assign("reserve.html");
                 }
             }
         });

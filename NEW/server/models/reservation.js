@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const reservationSchema = new Schema({
@@ -22,8 +21,7 @@ const reservationSchema = new Schema({
     },
     reservedDateAndTime: {
         type: Object,
-        required: true,
-        unique: true
+        required: true
     },
     walkInStudent: {
         type: String,

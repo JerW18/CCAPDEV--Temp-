@@ -55,6 +55,12 @@ router.get('/getUser', (req, res) => {
     });
 });
 
+router.get("/getUserReservations", (req, res) => {
+    Reservation.find({ email: req.query.email }).then((data) => {
+        res.json(data);
+    });
+});
+
 router.get('/getLab', (req, res) => {
     const labCode = req.query.labCode;
     console.log(labCode);
@@ -122,8 +128,6 @@ router.post('/login', async (req, res) => {
     if (!password || !email) {
         console.log("Login Failed");
         res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
-        console.log("Login Failed");
-        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
     }
     else {
         User.findOne({ password, email }).then((data) => {
@@ -159,6 +163,7 @@ router.post('/login', async (req, res) => {
 });
 
 
+
 router.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
@@ -175,8 +180,6 @@ router.get('/home', (req, res) => {
   console.log("Cookie Token", req.cookies.token);
  
   // Check if the 'token' cookie exists
-  
-  
 });*/
 
 router.post('/addReservation', async (req, res) => {
@@ -189,6 +192,7 @@ router.post('/addReservation', async (req, res) => {
         res.status(201).json(data);
     }
     ).catch((error) => {
+        console.log(error);
         res.status(500).json(error);
     }
     );
@@ -200,121 +204,196 @@ router.put("/editReservation", async (req, res) => {
     const reservationEmail = req.body.email;
     const reservationData = req.body;
 
+
+    console.log(reservationData);
     try {
-        const editedReservation = await Reservation.updateOne(
-            { reservationID, reservationEmail },
-            {
-                $set: {
-                    reservationData
+
+        const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
+        const email = decoded.email;
+
+        User.findOne({ email }).then(async (data) => {
+            if (data.isAdmin) {
+                const editedReservation = await Reservation.updateOne(
+                    { reservationID },
+                    {
+                        $set: {
+                            labSeat: reservationData.labSeat,
+                            requestDateAndTime: reservationData.requestDateAndTime,
+                            reservedDateAndTime: reservationData.reservedDateAndTime
+                        }
+                    }
+                );
+                if (editedReservation.modifiedCount === 0) {
+                    console.log("1");
+                    res.status(400);
+                    res.end();
+                } else {
+                    console.log("2");
+                    res.status(201);
+                    res.end();
+                }
+            } else {
+                const editedReservation = await Reservation.updateOne(
+                    { reservationID, email: reservationEmail },
+                    {
+                        $set: reservationData
+                    }
+                );
+                console.log(editedReservation);
+                if (editedReservation.modifiedCount === 0) {
+                    console.log("3");
+                    res.status(400);
+                    res.end();
+                } else {
+                    console.log("4");
+                    res.status(201);
+                    res.end();
                 }
             }
-        );
+        }).catch((err) => {
+            console.log("555555555555");
+            // If verification fails, clear the invalid 'token'.
+            res.json({ credLevel: 0 });
+            res.clearCookie('token');
+        });
 
-        if (editedReservation.nModified === 0) {
-            res.status(400);
-            res.end();
-        } else {
-            res.status(201);
-            res.end();
-        }
     } catch (error) {
+        console.log("6");
         res.status(500).json(error);
     }
 });
 
-router.put("/editUserPassword", async (req, res) => {
+router.put("/updatePassword", async (req, res) => {
     const email = req.body.email;
-    const password = req.body.password;
     const newPassword = req.body.newPassword;
+
+    console.log(email);
+    console.log(newPassword);
+    const updatedPassword = await User.updateOne(
+        { email: email },
+        { $set: { password: newPassword } }
+    );
+    if (updatedPassword.nModified === 0) {
+        res.status(400);
+        res.end();
+    }
+    else {
+        res.status(201);
+        res.end();
+    }
 
 });
-/*
-router.put("/editUser", async (req, res) => {
+
+router.put("/updateBio", async (req, res) => {
     const email = req.body.email;
-    const password = req.body.password;
-    const newPassword = req.body.newPassword;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const is
+    const bio = req.body.bio;
+    console.log(email);
+    console.log(bio);
+    const updatedBio = await User.updateOne(
+        { email: email },
+        { $set: { bio: bio } }
+    );
+    if (updatedBio.nModified === 0) {
+        res.status(400);
+        res.end();
+    } else {
+        res.status(201);
+        res.end();
+    }
+});
 
+router.delete('/deleteReservation', (req, res) => {
+    const reservationID = req.body.reservationID;
+    // Checks if there are cookies...
+    if (req.cookies.token) {
+        try {
+            const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
+            const email = decoded.email;
 
-
-    router.delete('/deleteReservation', (req, res) => {
-        const reservationID = req.body.reservationID;
-        // Checks if there are cookies...
-        if (req.cookies.token) {
-            try {
-                const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
-                const email = decoded.email;
-
-                User.findOne({ email }).then((data) => {
-                    if (data.isAdmin) {
-                        Reservation.deleteOne({ reservationID }).then((result) => {
-                            console.log(result);
-                        });
-                        res.status(201);
-                        res.end();
-                    } else {
-                        Reservation.deleteOne({ reservationID, email }).then((result) => {
-                            console.log(result);
-                            if (result.deletedCount == 0) {
-                                res.status(400);
-                                res.end();
-                            } else {
-                                res.status(201);
-                                res.end();
-                            }
-                        });
-                    }
-                }).catch((err) => {
-                    // If verification fails, clear the invalid 'token'.
-                    res.status(400);
+            User.findOne({ email }).then((data) => {
+                if (data.isAdmin) {
+                    Reservation.deleteOne({ reservationID }).then((result) => {
+                        console.log(result);
+                    });
+                    res.status(201);
                     res.end();
-                    res.clearCookie('token');
-                });
-            } catch (err) {
+                } else {
+                    console.log({reservationID, email});
+                    Reservation.deleteOne({ reservationID, email }).then((result) => {
+                        console.log(result);
+                        if (result.deletedCount == 0) {
+                            res.status(400);
+                            res.end();
+                        } else {
+                            res.status(201);
+                            res.end();
+                        }
+                    });
+                }
+            }).catch((err) => {
                 // If verification fails, clear the invalid 'token'.
                 res.status(400);
                 res.end();
-            }
-        }
-        // If there are no cookies, send "0" for guest.
-        else {
-            res.status(403);
+                res.clearCookie('token');
+            });
+        } catch (err) {
+            // If verification fails, clear the invalid 'token'.
+            res.status(400);
             res.end();
         }
-    });
+    }
+    // If there are no cookies, send "0" for guest.
+    else {
+        res.status(403);
+        res.end();
+    }
+});
+
+router.delete('/deleteUser', async (req, res) => {
+    if (req.cookies.token) {
+        try {
+            const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
+            const email = decoded.email;
+
+            if (req.body.email == email) {
+                await Reservation.deleteMany({ email });
+                const deletedUser = await User.findOneAndDelete({ email });
+
+                if(!deletedUser){
+                    res.status(404);
+                    res.end();
+                } else {
+                    res.status(200);
+                    res.end();
+                }
+
+            } else {
+                res.status(403);
+                res.end();
+            }
+        } catch (error) {
+            res.status(400);
+            res.end();
+        }
+
+    } else {
+        res.status(403);
+        res.end();
+    }
+
+});
 
 
 
-    module.exports = router;
+module.exports = router;
+
+const initialize = require('../initializedb.js');
+const reservation = require('../models/reservation.js');
+const { appendFile } = require('fs');
 
 
-
-    const initialize = require('../initializedb.js');
-    const reservation = require('../models/reservation.js');
-    const { appendFile } = require('fs');
 //README: Uncomment the lines below to initialize the database
 //initialize.createUser();
 //initialize.createReservations();
 //initialize.createLabs();
 
-/*reservation.insertMany([{
-    email: "admin1@dlsu.edu.ph",
-    reservationID: "R0000069",
-    labSeat: {
-        lab: "G503",
-        seat: "022"
-    },
-    reservationDate: {
-        date: "2023-6-25",
-        startTime: "03:08PM",
-        endTime: null
-    },reservedDate: {
-        date: "2023-6-26",
-        startTime: 25,
-        endTime: 31
-    },
-    walkInStudent: "cellinia_texas@dlsu.edu.ph",
-    isAnonymous: true
-}])*/

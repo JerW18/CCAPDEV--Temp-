@@ -2,7 +2,7 @@ const User = require('./models/user.js');
 const Reservation = require('./models/reservation.js');
 const Lab = require('./models/lab.js');
 
-function createUser(){
+function createUser() {
     User.insertMany([
         {
             email: "lanz_lim@dlsu.edu.ph",
@@ -85,7 +85,7 @@ function createUser(){
     ]);
 }
 
-function createReservations(){
+function createReservations() {
     Reservation.insertMany([
         {
             email: "admin2@dlsu.edu.ph",
@@ -95,12 +95,11 @@ function createReservations(){
                 seat: "033"
             },
             requestDateAndTime: {
-                date: "2023-6-23",
-                startTime: "11:03PM",
-                endTime: null
+                date: "2023-06-23",
+                startTime: "11:03 PM",
             },
             reservedDateAndTime: {
-                date: "2023-6-25",
+                date: "2023-06-25",
                 startTime: 17,
                 endTime: 35
             },
@@ -114,12 +113,11 @@ function createReservations(){
                 seat: "011"
             },
             requestDateAndTime: {
-                date: "2023-6-23",
-                startTime: "5:36PM",
-                endTime: null
+                date: "2023-06-23",
+                startTime: "5:36 PM",
             },
             reservedDateAndTime: {
-                date: "2023-6-25",
+                date: "2023-06-25",
                 startTime: 24,
                 endTime: 30
             },
@@ -133,12 +131,11 @@ function createReservations(){
                 seat: "011"
             },
             requestDateAndTime: {
-                date: "2023-6-22",
-                startTime: "7:16PM",
-                endTime: null
+                date: "2023-06-22",
+                startTime: "7:16 PM"
             },
             reservedDateAndTime: {
-                date: "2023-6-26",
+                date: "2023-06-26",
                 startTime: 27,
                 endTime: 30
             },
@@ -152,12 +149,11 @@ function createReservations(){
                 seat: "121"
             },
             requestDateAndTime: {
-                date: "2023-6-24",
-                startTime: "2:39PM",
-                endTime: null
+                date: "2023-06-24",
+                startTime: "2:39 PM"
             },
             reservedDateAndTime: {
-                date: "2023-6-27",
+                date: "2023-06-27",
                 startTime: 18,
                 endTime: 33
             },
@@ -171,12 +167,11 @@ function createReservations(){
                 seat: "034"
             },
             requestDateAndTime: {
-                date: "2023-6-20",
-                startTime: "4:09PM",
-                endTime: null
+                date: "2023-06-20",
+                startTime: "4:09 PM"
             },
             reservedDateAndTime: {
-                date: "2023-6-28",
+                date: "2023-06-28",
                 startTime: 18,
                 endTime: 33
             },
@@ -190,12 +185,11 @@ function createReservations(){
                 seat: "122"
             },
             requestDateAndTime: {
-                date: "2023-6-25",
-                startTime: "6:10AM",
-                endTime: null
+                date: "2023-06-25",
+                startTime: "6:10 AM"
             },
             reservedDateAndTime: {
-                date: "2023-6-29",
+                date: "2023-06-29",
                 startTime: 18,
                 endTime: 33
             },
@@ -209,12 +203,11 @@ function createReservations(){
                 seat: "122"
             },
             requestDateAndTime: {
-                date: "2023-6-23",
-                startTime: "9:15AM",
-                endTime: null
+                date: "2023-06-23",
+                startTime: "9:15 AM"
             },
             reservedDateAndTime: {
-                date: "2023-6-26",
+                date: "2023-06-26",
                 startTime: 20,
                 endTime: 25
             },
@@ -228,12 +221,11 @@ function createReservations(){
                 seat: "122"
             },
             requestDateAndTime: {
-                date: "2023-6-24",
-                startTime: "11:02AM",
-                endTime: null
+                date: "2023-06-24",
+                startTime: "11:02 AM"
             },
             reservedDateAndTime: {
-                date: "2023-6-25",
+                date: "2023-06-25",
                 startTime: 17,
                 endTime: 30
             },
@@ -247,12 +239,11 @@ function createReservations(){
                 seat: "022"
             },
             requestDateAndTime: {
-                date: "2023-6-25",
-                startTime: "03:08PM",
-                endTime: null
+                date: "2023-06-25",
+                startTime: "03:08 PM"
             },
             reservedDateAndTime: {
-                date: "2023-6-26",
+                date: "2023-06-26",
                 startTime: 25,
                 endTime: 31
             },
@@ -262,54 +253,54 @@ function createReservations(){
     ]);
 }
 
-function createLabs(){
+function createLabs() {
     Lab.insertMany([
-        { 
+        {
             labCode: "G503",
-            labTables: 
-            [
-                {
-                    tableCode:"T0001",
-                    rows:"4",
-                    columns:"3"
-                },
-                {
-                    tableCode:"T0002",
-                    rows:"4",
-                    columns:"3"
-                },
-                {
-                    tableCode:"T0003",
-                    rows:"3",
-                    columns:"4"
-                }
-            ]
-    }, { 
-            labCode: "A2493", 
-            labTables: 
-            [
-                {
-                    tableCode:"T0004",
-                    rows:"4",
-                    columns:"10"
-                }
-            ]
-    }, { 
+            labTables:
+                [
+                    {
+                        tableCode: "T0001",
+                        rows: "4",
+                        columns: "3"
+                    },
+                    {
+                        tableCode: "T0002",
+                        rows: "4",
+                        columns: "3"
+                    },
+                    {
+                        tableCode: "T0003",
+                        rows: "3",
+                        columns: "4"
+                    }
+                ]
+        }, {
+            labCode: "A2493",
+            labTables:
+                [
+                    {
+                        tableCode: "T0004",
+                        rows: "4",
+                        columns: "10"
+                    }
+                ]
+        }, {
             labCode: "Y021",
-            labTables: 
-            [
-                {
-                    tableCode:"T0005",
-                    rows:"4",
-                    columns:"6"
-                },
-                {
-                    tableCode:"T0006",
-                    rows:"4",
-                    columns:"6"
-                }
-            ]
-    }]);          
+            labTables:
+                [
+                    {
+                        tableCode: "T0005",
+                        rows: "4",
+                        columns: "6"
+                    },
+                    {
+                        tableCode: "T0006",
+                        rows: "4",
+                        columns: "6"
+                    }
+                ]
+        }]);
 }
 
-module.exports = {createUser:createUser,createReservations:createReservations,createLabs:createLabs};
+module.exports = { createUser: createUser, createReservations: createReservations, createLabs: createLabs };

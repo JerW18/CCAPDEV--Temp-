@@ -131,3 +131,7 @@ thead{
 a > img{
     width: 2em;
 }
+
+.deleteIconBtn:hover{
+    cursor: pointer;
+}
