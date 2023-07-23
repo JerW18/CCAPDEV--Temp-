@@ -18,7 +18,7 @@ connectDB();
 
 app.use(express.static(__dirname + '/public'));
 app.use(expressLayout);
-
+app.use(express.json());
 app.set('layout', './layouts/main');
 app.set('view engine', 'hbs');
 

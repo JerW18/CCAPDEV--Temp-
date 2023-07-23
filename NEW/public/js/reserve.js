@@ -261,6 +261,7 @@ async function updateBottom(clickedSlotStart, clickedSlotEnd) {
     updateBottomTables();
     await updateBottomReserved();
     updateBottomListeners();
+    updateBottomConfirmListener();
 
     /* Check if interval has reserved seat. */
     let clickedSlotReserved = -1;
@@ -353,6 +354,52 @@ function updateBottomListeners() {
         });
     });
 }
+
+function updateBottomConfirmListener() {
+    document.getElementById("submit").addEventListener("click", async (e) => {
+        e.preventDefault();
+        let clickedSeat = document.querySelector(".clickedSeat");
+        
+        let rangeTime = document.getElementsByClassName("clickedSlot");
+        let clickedStart = rangeTime[0].id.substring(1);
+        let clickedEnd = rangeTime[rangeTime.length-1].id.substring(1);
+        let clickedDate = (new FormData(topForm)).get("dateForm");
+        let clickedLab = (new FormData(topForm)).get("labForm");
+        let clickedAnonymous = document.getElementById("anonymous").checked;
+        let clickedEmail = "tyler_tan@dlsu.edu.ph";//for sessioning for now default tyler
+
+        let clickedReservation = {
+            email: clickedEmail,
+            labSeat: {
+                lab: clickedLab,
+                seat: clickedSeat.id
+            },
+            reservedDateAndTime: {
+                date: clickedDate,
+                startTime: clickedStart,
+                endTime: clickedEnd
+            },
+            isAnonymous: clickedAnonymous
+        };
+        let response=await fetch("/addReservation",{
+            method:"post",
+            body:JSON.stringify(clickedReservation),
+            headers:{
+                Accept:"application/json, text/plain, */*",
+                "Content-Type":"application/json"
+            }
+        });
+        console.log(response);
+        if(response.status==201){
+            alert("Reservation successful.");
+            window.location.assign("reserve.html");
+        }
+        else{
+            alert("Reservation failed.");
+        }
+        });
+        
+    }
 
 
 /* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */

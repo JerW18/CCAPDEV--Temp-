@@ -50,6 +50,36 @@ router.get('/getLab', (req, res) => {
     });
 });
 
+router.post('/addUser', (req, res) => {
+
+    const user = new User(req.body);
+    console.log(user)
+    user.save().then((data)=>{
+        res.status(201).json(data);
+    }
+    ).catch((error)=>{
+        res.status(500).json(error);
+    }
+    );
+});
+
+router.post('/addReservation',async (req, res) => {
+    
+    let last=await Reservation.find().sort({$natural:-1}).limit(1)
+    console.log("gonk");
+    let newresID=parseInt(last[0].reservationID.substring(1))+1;
+    newresID="R"+newresID.toString().padStart(7,"0");
+    const reservation = new Reservation({...req.body,reservationID:newresID});
+    console.log(reservation)
+    reservation.save().then((data)=>{
+        res.status(201).json(data);
+    }
+    ).catch((error)=>{
+        res.status(500).json(error);
+    }
+    );
+});
+
 
 
 
@@ -60,8 +90,9 @@ module.exports = router;
 
 const initialize=require('../initializedb.js');
 const reservation=require('../models/reservation.js');
+const { appendFile } = require('fs');
 //README: Uncomment the lines below to initialize the database
-initialize.createUser();
+//initialize.createUser();
 //initialize.createReservations();
 //initialize.createLabs();
 

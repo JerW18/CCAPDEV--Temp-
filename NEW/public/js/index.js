@@ -1,4 +1,6 @@
-import { labs, tables, users, reservations } from "./db.js";
+let protou=await fetch("/getUsers");
+let users=await protou.json();
+console.log(users);
 
 // Animation of Forms
 $('#registerMessage a').click(function(){
@@ -48,13 +50,19 @@ loginButton.addEventListener("click", (e) => {
 const registerForm = document.getElementById("register");
 const registerButton = document.getElementById("register-form-submit");
 
-registerButton.addEventListener("click", (e) => {
+registerButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
     const username = registerForm.regEmail.value;
+    const name=username.substring(0,username.search("@dlsu.edu.ph"));
     const password = registerForm.regPassword.value;
     const confirmPassword = registerForm.regConfirmPassword.value;
     let isRegister = true;
+
+    if(username.search("@dlsu.edu.ph")==-1){
+        alert("Invalid email address.");
+        isRegister=false;
+    }
 
     if (password !== confirmPassword) {
         alert("Passwords do not match.");
@@ -69,7 +77,26 @@ registerButton.addEventListener("click", (e) => {
     }
 
     if (isRegister) {
-        users.push({ username: username, password: password, isAdmin: false});
-        alert("You have successfully registered.");
+        console.log("Registering...");
+        let request = new Request("/addUser", {
+            method: "post",
+            body: JSON.stringify({name:name,email: username, password: password, isAdmin: false}),
+            headers: {
+                Accept: "application/json, text/plain, */*",
+                "Content-Type": "application/json"
+            }
+        });
+
+        let result=await fetch(request);
+        console.log(result);
+ 
+        if(result.status==201){
+            alert("You have successfully registered.");
+            window.location.assign("index.html");    
+        }
+        else{
+            alert("Registration failed.");
+        }
+        
     }
 })
