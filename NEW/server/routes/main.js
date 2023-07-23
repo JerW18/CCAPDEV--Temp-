@@ -17,9 +17,8 @@ router.use(cookieParser());
 // Routes
 router.get('/', (req, res) => {
     res.sendFile(path.join(parentDIR, 'public/index.html'));
+});
 
-}
-);
 const User = require('../models/user.js');
 const Reservation = require('../models/reservation.js');
 const Lab = require('../models/lab.js')
@@ -93,81 +92,81 @@ router.post('/addReservation', async (req, res) => {
 
 function checkSessionToken(req, res, next) {
     const token = req.session.token;
-  
+
     if (token) {
-      try {
-        // Verify the token using your secret key (process.env.MYSECRET)
-        const decoded = jwt.verify(token, process.env.MYSECRET);
-        req.user = decoded; // Store the decoded token in the request object for future use
-        return next(); // Proceed to the next middleware or route handler
-      } catch (err) {
-        // Token verification failed, clear the invalid token from the session
-        delete req.session.token;
-      }
+        try {
+            // Verify the token using your secret key (process.env.MYSECRET)
+            const decoded = jwt.verify(token, process.env.MYSECRET);
+            req.user = decoded; // Store the decoded token in the request object for future use
+            return next(); // Proceed to the next middleware or route handler
+        } catch (err) {
+            // Token verification failed, clear the invalid token from the session
+            delete req.session.token;
+        }
     }
-  
+
     // If there's no valid token or token verification failed, proceed to the next middleware or route handler
     return next();
-  }
-  
-  router.post('/login', async (req, res) => {
-  
+}
+
+router.post('/login', async (req, res) => {
+
     console.log("Backend");
     console.log(req.body.email);
     console.log(req.body.password);
     console.log(req.body.rememberMe);
-  
+
     const password = req.body.password;
     const email = req.body.email;
     const rememberMe = req.body.rememberMe;
-  
+
     if (!password || !email) {
-      console.log("Login Failed");
-      res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
+        console.log("Login Failed");
+        res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
     }
     else {
-      User.findOne({ password, email }).then((data) => {
-        console.log(data);
-  
-        if (!data) {
-          res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
-        }
-        else {
-          if(rememberMe){
-              const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
-              res.cookie('token', token, {
-                  httpOnly: true,
-                  maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
-              });
-          } else {
-              const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
-              res.cookie('token', token, {
-                  httpOnly: true,
-              });
-          }
-          
-  
-          // sessions
-          //res.session.token = token;
-  
-          console.log("Login Successful");
-          res.status(200).json({ success: true, message: 'Login successful!' });
-        }
-  
-      }).catch((err) => {
-        console.error('Error:', err);
-        console.log("Login Errored");
-        return res.status(500).json({ success: false, message: 'An error occurred during login.' });
-      });
+        User.findOne({ password, email }).then((data) => {
+            console.log(data);
+    
+            if (!data) {
+                res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
+            }
+            else {
+                if(rememberMe){
+                    const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                        maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
+                    });
+                } else {
+                    const token = jwt.sign({email}, process.env.MYSECRET, { expiresIn: '1h' });
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                    });
+                }
+                
+    
+                // sessions
+                //res.session.token = token;
+    
+                console.log("Login Successful");
+                res.status(200).json({ success: true, message: 'Login successful!' });
+            }
+    
+        }).catch((err) => {
+            console.error('Error:', err);
+            console.log("Login Errored");
+            return res.status(500).json({ success: false, message: 'An error occurred during login.' });
+        });
     }
-  });
-  
-  
-  router.get('/home', (req, res) => {
-          res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
-  });
-  
-  /*
+});
+
+
+router.get('/home', (req, res) => {
+    res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
+});
+
+/*
   router.get('/home', (req, res) => {
     console.log("Cookies", req.cookies);
     console.log("Cookie Token", req.cookies.token);
@@ -197,8 +196,6 @@ function checkSessionToken(req, res, next) {
   });*/
 
 module.exports = router;
-
-
 
 const initialize = require('../initializedb.js');
 const reservation = require('../models/reservation.js');

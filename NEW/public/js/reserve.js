@@ -1,5 +1,3 @@
-
-
 /* Global Values */
 let topForm = document.forms.topForm;
 let protol = await fetch("/getLabs");
