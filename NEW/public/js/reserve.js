@@ -125,22 +125,20 @@ function initializeTopFormTime() {
         document.getElementById("timeFormEnd").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
     }
     document.getElementById("timeForm").addEventListener("change", async (e) => {
-        await updateCenter(-1);
         hideBottom();
         if (document.getElementById("timeFormEnd").value < document.getElementById("timeForm").value) {
             document.getElementById("timeFormEnd").value = document.getElementById("timeForm").value;
         }
+        await updateCenter(-1);
     });
     document.getElementById("timeFormEnd").addEventListener("change", async (e) => {
-        await updateCenter(-1);
         hideBottom();
         if (document.getElementById("timeFormEnd").value < document.getElementById("timeForm").value) {
             document.getElementById("timeForm").value = document.getElementById("timeFormEnd").value;
         }
+        await updateCenter(-1);
     });
 }
-
-
 
 /* Update the Center Seating Display */
 async function updateCenter(clickedPosition) {
@@ -227,13 +225,63 @@ async function updateCenterReserved() {
 
     /* For each reservation, check if they apply then color red if applicable. */
     for (let r of reservations) {
-        // Check if same date...
-        if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
-            // Check if same time...
-            if ((new FormData(topForm).get("timeForm")) >= r.reservedDateAndTime.startTime && (new FormData(topForm).get("timeForm")) <= r.reservedDateAndTime.endTime) {
-                // Check if same lab...
-                if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
-                    let now = document.getElementById(`${r.labSeat.seat}`);
+        // Check if same lab...
+        if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+            // Check if same date...
+            if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
+                // Check if same time...
+                const timeForm = new FormData(topForm).get("timeForm");
+                const timeFormEnd = new FormData(topForm).get("timeFormEnd");
+                let occupiedTime = [];
+
+                for (let i = timeForm; i <= timeFormEnd; i++) {
+                    occupiedTime.push(parseInt(i));
+                }
+
+                for (let reserves of reservations) {
+                    // Check if same lab...
+                    if ((new FormData(topForm)).get("labForm") == reserves.labSeat.lab && reserves.labSeat.seat == r.labSeat.seat) {
+                        // Check if same date...
+                        if ((new FormData(topForm)).get("dateForm") == reserves.reservedDateAndTime.date && reserves.reservedDateAndTime.date ==  r.reservedDateAndTime.date) {
+                            // Check if same time...
+                            if (reserves.labSeat.seat == r.labSeat.seat) {
+                                for (let i = reserves.reservedDateAndTime.startTime; i <= reserves.reservedDateAndTime.endTime; i++) {
+                                    if (occupiedTime.indexOf(parseInt(i)) != -1) {
+                                        occupiedTime.splice(occupiedTime.indexOf(parseInt(i)), 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                const noOfSeats = timeFormEnd - timeForm + 1;
+                
+                let now = document.getElementById(`${r.labSeat.seat}`);
+                
+                if (noOfSeats != 1) {
+                    const huePercentageAdd = 100 / (noOfSeats - 1);
+                    let huePercentage = 0;
+                    let gradientStyle = `linear-gradient(90deg`;
+                    for (let i = timeForm; i <= timeFormEnd; i++) {
+                        if (occupiedTime.indexOf(parseInt(i)) === -1) {
+                            gradientStyle += `, rgba(203,8,8,1) ${huePercentage}%`;
+                        } else if (occupiedTime.indexOf(parseInt(i)) !== -1) {
+                            gradientStyle += `, rgba(0,128,0,1) ${huePercentage}%`;
+                        }
+                        huePercentage += huePercentageAdd;
+                    }
+                    gradientStyle += `)`;
+
+                    now.style.background = gradientStyle;
+                    now.classList.add("reservedSeat");
+                }
+                else {
+                    if (occupiedTime.indexOf(parseInt(timeForm)) === -1) {
+                        now.style.background = "rgb(203,8,8)";
+                    } else {
+                        now.style.background = "green";
+                    }
                     now.classList.add("reservedSeat");
                 }
             }

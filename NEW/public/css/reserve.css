@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Faster+One&display=swap');
 
 body {
@@ -6,6 +7,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    cursor: default;
 }
 
 #main {
@@ -27,6 +30,13 @@ body {
     justify-content: space-around;
     width: 100%;
     height: 100%;
+}
+
+#labForm,
+#dateForm,
+#timeForm,
+#timeFormEnd {
+    cursor: pointer;
 }
 
 td {
@@ -55,19 +65,18 @@ td {
 .seat {
     background-color: green;
     padding: 35px;
-    border: 15px solid #b3b3b3;
+    border: 12px solid #b3b3b3;
+    cursor: pointer;
 }
 
 .clickedSeat {
-    background-color: rgb(0, 35, 0);
-}
-
-div.reservedSeat {
-    background-color: rgb(203, 8, 8);
+    filter: brightness(80%);
+    border-radius: 15px;
 }
 
 div.reservedSeat.clickedSeat {
-    background-color: rgb(139, 21, 21);
+    filter: brightness(80%);
+    border-radius: 15px;
 }
 
 #bottom.hidden {
@@ -78,6 +87,7 @@ div.reservedSeat.clickedSeat {
     background-color: green;
     padding: 17px;
     border: 2px solid #b3b3b3;
+    cursor: pointer;
 }
 
 #bottomDetails {
@@ -126,9 +136,33 @@ div.reservedSeat.clickedSeat {
 }
 
 #submit {
-    font-size: 20px;
-    margin: 10px;
-    margin-bottom: 2px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#submit:hover {
+    background-color: #e8e7e7; 
+    color: black; 
+    border: 3px solid #4CAF50;
+    border-radius: 10px;
+}
+
+#submit:disabled,
+#submit[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
 }
 
 #checkboxContainer {
@@ -152,10 +186,14 @@ div.reservedSeat.clickedSeat {
 #anonymous {
     position: relative;
     right: 9px;
+    cursor: pointer;
 }
 
 .centerTable {
     display: grid;
+    padding: 1%;
+    border: 10px solid #4CAF50;
+    border-radius: 20px;
 }
 
 /* Time On Hover CSS */
