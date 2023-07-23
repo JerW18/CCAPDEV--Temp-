@@ -1,36 +1,36 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
-const Schema=mongoose.Schema;
-const reservationSchema=new Schema({
-    email:{
-        type:String,
-        required:true
+const Schema = mongoose.Schema;
+const reservationSchema = new Schema({
+    email: {
+        type: String,
+        required: true
     },
-    reservationID:{
-        type:String,
-        required:true,
-        unique:true
+    reservationID: {
+        type: String,
+        required: true,
+        unique: true
     },
-    labSeat:{
-        type:Object,
-        required:true
+    labSeat: {
+        type: Object,
+        required: true
     },
-    requestDateAndTime:{
-        type:Object,
-        required:true
+    requestDateAndTime: {
+        type: Object,
+        required: true
     },
-    reservedDateAndTime:{
-        type:Object,
-        required:true,
-        unique:true
+    reservedDateAndTime: {
+        type: Object,
+        required: true,
+        unique: true
     },
-    walkInStudent:{
-        type:String,
+    walkInStudent: {
+        type: String,
     },
-    isAnonymous:{
-        type:Boolean,
-        required:true
+    isAnonymous: {
+        type: Boolean,
+        required: true
     }
 });
 
-module.exports=mongoose.model('Reservation',reservationSchema);
+module.exports = mongoose.model('Reservation', reservationSchema);

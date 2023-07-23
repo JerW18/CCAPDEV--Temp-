@@ -2,11 +2,37 @@ let protor=await fetch("/getReservations");
 let reservations=await protor.json();
 console.log(reservations);
 
+let protoc = await fetch("/getCredentials");
+
+let creds = await protoc.json();
+let credLevel = creds.credLevel;
+let credEmail = creds.email;
+if(credLevel!=1){
+    window.location.href = "/html/index.html";
+}
+let protou=await fetch("/getUser?email="+credEmail);
+let user=await protou.json();
+
+
+
+const emailfield=document.getElementById("email");
+const usernamefield=document.getElementById("username");
+const biofield=document.getElementById("bioText");
+const profilepic=document.getElementById("profilepic");
+
+profilepic.src=user.picture;
+emailfield.innerHTML=user.email;
+usernamefield.innerHTML=user.name;
+biofield.innerHTML=user.bio;
+
 const saveChangesButton = document.getElementById("saveBtn");
 const cancelButton = document.getElementById("cancelBtn");
 const logoutButton = document.getElementById("logoutBtn");
 const deleteButton = document.getElementById("deleteBtn");
 const bioText = document.getElementById("bioText");
+
+
+
 
 bioText.addEventListener("click", (e) => {
     saveChangesButton.removeAttribute("hidden");
@@ -16,6 +42,7 @@ bioText.addEventListener("click", (e) => {
 });
 
 cancelButton.addEventListener("click", (e) => {
+    biofield.value = user.bio;
     saveChangesButton.setAttribute("hidden", true);
     cancelButton.setAttribute("hidden", true);
     logoutButton.removeAttribute("hidden");
@@ -23,6 +50,8 @@ cancelButton.addEventListener("click", (e) => {
 });
 
 // Print Reservations
+console.log(credLevel);
+
 updateResTable();
 
 function updateResTable() {
@@ -107,6 +136,13 @@ logoutButton.addEventListener('click', function (e) {
     e.preventDefault();
     let result = confirm("Are you sure you want to log out?");
     if (result == true) {
-        window.location.assign("../index.html");
+        let logoutdata=fetch("/logout").then((response)=>{
+            if(response.status==200){
+                window.location.href = "/html/index.html";
+            }
+            else{
+                alert("Error logging out");
+            }
+        });
     }
 })

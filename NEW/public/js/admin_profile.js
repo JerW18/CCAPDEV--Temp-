@@ -1,8 +1,18 @@
-import { labs, tables, users, reservations } from "./db.js";
+let protor=await fetch("/getReservations");
+let reservations=await protor.json();
+console.log(reservations);
+
+let protoc = await fetch("/getCredentials");
+
+let creds = await protoc.json();
+let credLevel = creds.credLevel;
+let credEmail = creds.email;
 
 const logoutButton = document.getElementById("logoutBtn");
 
-
+if(credLevel!=2){
+    window.location.href = "/html/index.html";
+}
 // Print Reservations
 updateViewResTable();
 updateDeleteResTable();
@@ -149,6 +159,13 @@ logoutButton.addEventListener('click', function (e) {
     e.preventDefault();
     let result = confirm("Are you sure you want to log out?");
     if (result == true) {
-        window.location.assign("../index.html");
+        let logoutdata=fetch("/logout").then((response)=>{
+            if(response.status==200){
+                window.location.href = "/html/index.html";
+            }
+            else{
+                alert("Error logging out");
+            }
+        });
     }
 })
