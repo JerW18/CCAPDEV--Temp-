@@ -1,10 +1,10 @@
 
-let protor=await fetch("/getReservations");
-let reservations=await protor.json();
+let protor = await fetch("/getReservations");
+let reservations = await protor.json();
 console.log(reservations);
 
-let protou=await fetch("/getUsers");
-let users=await protou.json();
+let protou = await fetch("/getUsers");
+let users = await protou.json();
 console.log(users);
 
 
