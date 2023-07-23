@@ -17,14 +17,7 @@ let reservations = await protor.json();
 
 // Filter reservations so that only the ones that are in the future by one day are shown
 //TODO: check if this works
-let today = new Date();
-for(let i = 0; i < reservations.length; i++){
-    let resDate = new Date(reservations[i].reservedDateAndTime.date);
-    if(resDate < today){
-        reservations.splice(i, 1);
-        i--;
-    }
-}
+
 
 const emailfield = document.getElementById("email");
 const usernamefield = document.getElementById("username");
