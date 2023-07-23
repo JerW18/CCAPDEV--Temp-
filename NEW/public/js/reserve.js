@@ -2,11 +2,11 @@
 
 /* Global Values */
 let topForm = document.forms.topForm;
-let protol=await fetch("/getLabs");
-let labs=await protol.json();
+let protol = await fetch("/getLabs");
+let labs = await protol.json();
 
-let protor=await fetch("/getReservations");
-let reservations=await protor.json();
+let protor = await fetch("/getReservations");
+let reservations = await protor.json();
 console.log(reservations);
 
 pageStartUp();
@@ -37,9 +37,9 @@ async function initializeTopFormLab() {
     document.getElementById("labForm").addEventListener("change", (e) => {
         updateCenter(-1);
         hideBottom();
-        
+
     });
-  //  updateCenter(-1);//TODO: check if this is needed, if not remove,see if when we make other functions here async if rendering gets delayed
+    //  updateCenter(-1);//TODO: check if this is needed, if not remove,see if when we make other functions here async if rendering gets delayed
 }
 
 /* Add Form Options for "Date" */
@@ -129,9 +129,9 @@ async function updateCenter(clickedPosition) {
 async function updateCenterTables() {
     document.getElementById("center").innerHTML = "";
     let tablesToAdd = [];
-    for(let l of labs){
-        if(l.labCode==new FormData(topForm).get("labForm")){
-            tablesToAdd=l.labTables;
+    for (let l of labs) {
+        if (l.labCode == new FormData(topForm).get("labForm")) {
+            tablesToAdd = l.labTables;
         }
     }
 
@@ -161,13 +161,13 @@ async function updateCenterTables() {
 /* Create the EventListeners for Each Seat in the Display */
 async function updateCenterListeners() {
     let tablesToAdd = [];
-    for(let l of labs){
-        if(l.labCode==new FormData(topForm).get("labForm")){
-            tablesToAdd=l.labTables;
+    for (let l of labs) {
+        if (l.labCode == new FormData(topForm).get("labForm")) {
+            tablesToAdd = l.labTables;
         }
     }
 
-   // let proto=await fetch("/getLab?labCode="+new FormData(topForm).get("labForm")+"");
+    // let proto=await fetch("/getLab?labCode="+new FormData(topForm).get("labForm")+"");
     //let lab=await proto.json();
     //let tablesToAdd=lab.labTables;
     /*let tablesToAdd = [];
@@ -359,10 +359,10 @@ function updateBottomConfirmListener() {
     document.getElementById("submit").addEventListener("click", async (e) => {
         e.preventDefault();
         let clickedSeat = document.querySelector(".clickedSeat");
-        
+
         let rangeTime = document.getElementsByClassName("clickedSlot");
         let clickedStart = rangeTime[0].id.substring(1);
-        let clickedEnd = rangeTime[rangeTime.length-1].id.substring(1);
+        let clickedEnd = rangeTime[rangeTime.length - 1].id.substring(1);
         let clickedDate = (new FormData(topForm)).get("dateForm");
         let clickedLab = (new FormData(topForm)).get("labForm");
         let clickedAnonymous = document.getElementById("anonymous").checked;
@@ -390,7 +390,7 @@ function updateBottomConfirmListener() {
             currentHours -= 12;
             morning = false;
         }
-        let currentFullTime=`${currentHours}:${currentMinutes} ${morning?"AM":"PM"}`;//`12:00 AM
+        let currentFullTime = `${currentHours}:${currentMinutes} ${morning ? "AM" : "PM"}`;//`12:00 AM
         //get current date
         let clickedReservation = {
             email: clickedEmail,
@@ -409,25 +409,25 @@ function updateBottomConfirmListener() {
             },
             isAnonymous: clickedAnonymous
         };
-        let response=await fetch("/addReservation",{
-            method:"post",
-            body:JSON.stringify(clickedReservation),
-            headers:{
-                Accept:"application/json, text/plain, */*",
-                "Content-Type":"application/json"
+        let response = await fetch("/addReservation", {
+            method: "post",
+            body: JSON.stringify(clickedReservation),
+            headers: {
+                Accept: "application/json, text/plain, */*",
+                "Content-Type": "application/json"
             }
         });
         console.log(response);
-        if(response.status==201){
+        if (response.status == 201) {
             alert("Reservation successful.");
             window.location.assign("reserve.html");
         }
-        else{
+        else {
             alert("Reservation failed.");
         }
-        });
-        
-    }
+    });
+
+}
 
 
 /* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */
