@@ -52,9 +52,9 @@ saveChangesButton.addEventListener("click", (e) => {
 });
 
 cancelButtonPw.addEventListener("click", (e) => {
-    document.getElementById("oldPw").value="";
-    document.getElementById("newPw").value="";
-    document.getElementById("confirmPw").value="";
+    document.getElementById("oldPw").value = "";
+    document.getElementById("newPw").value = "";
+    document.getElementById("confirmPw").value = "";
 });
 
 saveChangesPwButton.addEventListener("click", (e) => {
@@ -189,24 +189,24 @@ function updateResTable() {
 }
 
 let editButtons = document.getElementsByClassName("editIconBtn");
-for(let i = 0; i < editButtons.length; i++){
+for (let i = 0; i < editButtons.length; i++) {
     editButtons[i].addEventListener('click', function (e) {
         e.preventDefault();
         let resID = editButtons[i].id.substring(1);
 
         let valid = true;
         // alert the user if they are deleting a reservation that is in the past by one day
-        for (let r of reservations) {  
+        for (let r of reservations) {
             if (r.reservationID == resID) {
                 let today = new Date();
                 let yearNow = today.getFullYear();
                 let dayNow = today.getDate();
-                let monthNow = today.getMonth()+1;
+                let monthNow = today.getMonth() + 1;
 
                 let resDate = new Date(r.reservedDateAndTime.date);
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
-                let monthRes = resDate.getMonth()+1;
+                let monthRes = resDate.getMonth() + 1;
 
                 if (yearRes < yearNow) {
                     alert("You cannot edit a reservation that has already passed!");
@@ -236,18 +236,18 @@ for (let i = 0; i < deleteButtons.length; i++) {
         let resID = deleteButtons[i].id;
         let valid = true;
         // alert the user if they are deleting a reservation that is in the past by one day
-        for (let r of reservations) {  
+        for (let r of reservations) {
             if (r.reservationID == resID) {
-                
+
                 let today = new Date();
                 let yearNow = today.getFullYear();
                 let dayNow = today.getDate();
-                let monthNow = today.getMonth()+1;
+                let monthNow = today.getMonth() + 1;
 
                 let resDate = new Date(r.reservedDateAndTime.date);
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
-                let monthRes = resDate.getMonth()+1;
+                let monthRes = resDate.getMonth() + 1;
 
                 if (yearRes < yearNow) {
                     alert("You cannot delete a reservation that has already passed!");
@@ -263,11 +263,11 @@ for (let i = 0; i < deleteButtons.length; i++) {
                 }
             }
         }
-        let result=false;
+        let result = false;
         if (valid == true) {
             result = confirm("Are you sure you want to delete this reservation?");
         }
-        
+
         if (result == true && valid == true) {
             let reservationID = deleteButtons[i].id;
             let data = { "reservationID": reservationID };
@@ -299,24 +299,24 @@ console.log(credEmail);
 
 deleteBtn.addEventListener('click', function (e) {
     e.preventDefault();
-    confirm("Are you sure you want to delete your account?");
+    const res = confirm("Are you sure you want to delete your account?");
     console.log("clicked");
-
-    let result = fetch("/deleteUser", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ "email": credEmail }),
-    }).then((response) => {
-        if (response.status == 200) {
-            window.location.href = "/html/index.html";
-        }
-        else {
-            alert("Error deleting account");
-        }
-    });
-
+    if (res == 1) {
+        let result = fetch("/deleteUser", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ "email": credEmail }),
+        }).then((response) => {
+            if (response.status == 200) {
+                window.location.href = "/html/index.html";
+            }
+            else {
+                alert("Error deleting account");
+            }
+        });
+    }
 });
 
 
