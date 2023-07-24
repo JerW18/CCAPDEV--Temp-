@@ -392,8 +392,8 @@ const reservation = require('../models/reservation.js');
 const { appendFile } = require('fs');
 
 
-//README: Uncomment the lines below to initialize the database
-//initialize.createUser();
-//initialize.createReservations();
-//initialize.createLabs();
+//TODO: Uncomment the lines below to initialize the database
+// initialize.createUser();
+// initialize.createReservations();
+// initialize.createLabs();
 
