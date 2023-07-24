@@ -362,8 +362,9 @@ router.delete('/deleteUser', async (req, res) => {
             if (req.body.email == email) {
                 await Reservation.deleteMany({ email });
                 const deletedUser = await User.findOneAndDelete({ email });
+                const deletedImage = await Image.findOneAndDelete({ email });
 
-                if (!deletedUser) {
+                if (!deletedUser || !deletedImage) {
                     res.status(404);
                     res.end();
                 } else {
@@ -436,7 +437,7 @@ const { appendFile } = require('fs');
 
 //TODO: Uncomment the lines below to initialize the database
  //initialize.createUser();
-  //initialize.createImage();
+ // initialize.createImage();
  //initialize.createReservations();
  //initialize.createLabs();
 // initialize.createAdminUser();//formatting is (name,email,password,picture)
