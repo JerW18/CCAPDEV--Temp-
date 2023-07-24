@@ -111,6 +111,9 @@ async function processTextForm() {
             usertag.textContent = "@" + user.email.substring(0, loc);
             displayName.textContent = user.name;
 
+            if(username.search("@") == -1)
+                username += "@dlsu.edu.ph";
+
             const imgRes = await fetch("/getImage?email=" + username);
             const imgNum = await imgRes.json();
             img.src = "../images/default_" + imgNum + ".png";
