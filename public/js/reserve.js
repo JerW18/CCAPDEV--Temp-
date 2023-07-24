@@ -80,7 +80,7 @@ function initializeTopFormDate() {
     let tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    document.getElementById("dateForm").setAttribute("value", today.toISOString().split("T")[0]);
+    document.getElementById("dateForm").setAttribute("value", tomorrow.toISOString().split("T")[0]);
     document.getElementById("dateForm").setAttribute("min", today.toISOString().split("T")[0]);
     document.getElementById("dateForm").setAttribute("max", result.toISOString().split("T")[0]);
 

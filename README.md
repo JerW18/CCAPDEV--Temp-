@@ -14,6 +14,10 @@ Note:
 It is recommended to use Firefox to open this website. If opening the files automatically goes to another browser, 
 you may want to manually copy the url and open it on Firefox.
 
+Furthermore, most of the sample data for the reservations have their dates set to somewhere between 2023-06-26
+and 2023-06-29. As such, if testing on later dates, these reservations might not be visible. In such a case, 
+please set your system's date to sometime earlier, preferably 2023-07-24, to be able to view these reservations properly.
+
 <br>
 If there are any problems, please don't hesitate to contact anyone from our group.
 
