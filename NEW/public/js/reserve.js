@@ -389,7 +389,7 @@ function updateBottomTables() {
     for (let t = 16; t < 40; t++) {
         insert += `<td id = "S${t}" class = "slot tooltip"><span class="tooltiptext">${formatTime(t)} - ${formatTime(t + 1)}</span></td>`;
     }
-    insert += `</tr><tr><td colspan = "12">Time: <span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></td>`;
+    insert += `</tr><tr><td colspan = "12">Selected Time: <span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></td>`;
     insert += `<td colspan = "12">Reserved By: <span id = "reserver">None</span></td></tr>`;
     insert += `</tr></table></div>`;
 
