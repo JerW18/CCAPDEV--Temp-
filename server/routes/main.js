@@ -184,7 +184,9 @@ router.get('/home', (req, res) => {
 
 router.post('/addReservation', async (req, res) => {
     let last = await Reservation.find().sort({ $natural: -1 }).limit(1);
-    let newresID = parseInt(last[0].reservationID.substring(1)) + 1;
+    let newresID = 1;
+    if(last.length == 1)
+        newresID = parseInt(last[0].reservationID.substring(1)) + 1;
     newresID = "R" + newresID.toString().padStart(7, "0");
     const reservation = new Reservation({ ...req.body, reservationID: newresID });
     console.log(reservation)
