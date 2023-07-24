@@ -6,7 +6,8 @@ A Computer Laboratory Reservation System web application made with HTML, CSS, an
 ## Local Set Up
 - Make sure MongoDB is installed and running.
 - Run `npm install`
-- In `main.js` in the `routes` folder uncomment the three lines under the TODO: comment to initialize the DB
+- In `main.js` in the `server/routes` folder uncomment the three lines under the TODO: comment to initialize the DB
+  - Don't forget to comment out the TODO: after running once as to not repeatedly initialize the DB  
 - To run the application, execute `node app.js`
 
 Note:
