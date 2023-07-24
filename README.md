@@ -14,7 +14,7 @@ Note:
 It is recommended to use Firefox to open this website. If opening the files automatically goes to another browser, 
 you may want to manually copy the url and open it on Firefox.
 
-In this system, the cut-off for creating/editing/deleting a reservation is the day before the actual reservation.
+In this system, the cut-off for editing/deleting a reservation is the day before the actual reservation.
 The only exception to this rule is that an admin can delete an ongoing reservation if the user is 10 or more minutes late.
 
 Furthermore, most of the sample data for the reservations have their dates set to somewhere between 2023-06-26

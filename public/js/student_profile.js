@@ -207,6 +207,12 @@ for (let i = 0; i < editButtons.length; i++) {
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
                 let monthRes = resDate.getMonth() + 1;
+                console.log(yearRes);
+                console.log(monthRes);
+                console.log(dayRes);
+                console.log(yearNow);
+                console.log(monthNow);
+                console.log(dayNow);
 
                 if (yearRes < yearNow) {
                     alert("You cannot edit a reservation that has already passed!");
@@ -216,7 +222,7 @@ for (let i = 0; i < editButtons.length; i++) {
                     alert("You cannot edit a reservation that has already passed!");
                     valid = false;
                 }
-                else if (yearRes == yearNow && monthRes == monthNow && dayRes < dayNow) {
+                else if (yearRes == yearNow && monthRes == monthNow && dayRes <= dayNow) {
                     alert("You cannot edit a reservation that has already passed!");
                     valid = false;
                 }
@@ -248,6 +254,12 @@ for (let i = 0; i < deleteButtons.length; i++) {
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
                 let monthRes = resDate.getMonth() + 1;
+                console.log(yearRes);
+                console.log(monthRes);
+                console.log(dayRes);
+                console.log(yearNow);
+                console.log(monthNow);
+                console.log(dayNow);
 
                 if (yearRes < yearNow) {
                     alert("You cannot delete a reservation that has already passed!");
@@ -257,7 +269,7 @@ for (let i = 0; i < deleteButtons.length; i++) {
                     alert("You cannot delete a reservation that has already passed!");
                     valid = false;
                 }
-                else if (yearRes == yearNow && monthRes == monthNow && dayRes < dayNow) {
+                else if (yearRes == yearNow && monthRes == monthNow && dayRes <= dayNow) {
                     alert("You cannot delete a reservation that has already passed!");
                     valid = false;
                 }
