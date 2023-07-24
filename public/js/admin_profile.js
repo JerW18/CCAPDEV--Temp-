@@ -204,7 +204,7 @@ function updateDeleteResTable() {
                 insert += " to ";
 
         }
-        if (i.anonymous) {
+        if (i.isAnonymous) {
             insert += `<td>Yes!</td>`;
         } else {
             insert += `<td>No!</td>`;
