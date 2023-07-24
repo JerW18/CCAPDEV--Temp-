@@ -29,6 +29,7 @@ const logoutButton = document.getElementById("logoutBtn");
 const deleteButton = document.getElementById("deleteBtn");
 const bioText = document.getElementById("bioText");
 const saveChangesPwButton = document.getElementById("saveBtnPw");
+const cancelButtonPw = document.getElementById("cancelBtnPw");
 
 saveChangesButton.addEventListener("click", (e) => {
     let newBio = bioText.value;
@@ -48,6 +49,12 @@ saveChangesButton.addEventListener("click", (e) => {
             alert("Error updating bio");
         }
     });
+});
+
+cancelButtonPw.addEventListener("click", (e) => {
+    document.getElementById("oldPw").value="";
+    document.getElementById("newPw").value="";
+    document.getElementById("confirmPw").value="";
 });
 
 saveChangesPwButton.addEventListener("click", (e) => {
