@@ -53,7 +53,7 @@ body {
 }
 
 #timeForm,
-#timeFormEnd{
+#timeFormEnd {
     width: 120px;
     padding: 3px;
 }
@@ -112,8 +112,9 @@ div.reservedSeat.clickedSeat {
 
 #bottomDetails {
     font-size: 20px;
-    font-weight: bolder;
+    font-weight: 400;
     padding: 20px;
+    padding-left: 35px;
     padding-top: 0px;
     padding-bottom: 0px;
     justify-content: center;
@@ -121,6 +122,22 @@ div.reservedSeat.clickedSeat {
     text-align: left;
     display: flex;
     flex-direction: column;
+}
+
+#bottomDetailsSeat,
+#bottomDetailsLab,
+#bottomDetailsDate {
+    font-weight: 900;
+    color: #007a10;
+}
+
+#bottomDetailsSelected, #bottomDetailsReserver {
+    font-weight: 500;
+}
+
+#bottomDetailsSelectedTime, #reserver {
+    font-weight: 750;
+    color: #007a10;
 }
 
 #bottomTableContainer {
@@ -157,7 +174,8 @@ div.reservedSeat.clickedSeat {
 
 #submit {
     font-family: 'Roboto', sans-serif;
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
+    /* Green */
     border: none;
     color: white;
     padding: 12px 28px;
@@ -173,14 +191,14 @@ div.reservedSeat.clickedSeat {
 }
 
 #submit:hover {
-    background-color: #e8e7e7; 
-    color: black; 
+    background-color: #e8e7e7;
+    color: black;
     border: 2px solid #4CAF50;
     border-radius: 10px;
 }
 
 #submit:disabled,
-#submit[disabled]{
+#submit[disabled] {
     border: 2px solid #999999;
     background-color: #cccccc;
     color: #666666;
@@ -255,7 +273,8 @@ div.reservedSeat.clickedSeat {
 .tooltip .tooltiptext::after {
     content: " ";
     position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
+    top: 100%;
+    /* At the bottom of the tooltip */
     left: 50%;
     margin-left: -5px;
     border-width: 5px;

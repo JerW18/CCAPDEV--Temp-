@@ -5,22 +5,22 @@ A Computer Laboratory Reservation System web application made with HTML, CSS, an
 
 ## Local Set Up
 - Make sure MongoDB is installed and running.
-- Run `npm install`
-- In `main.js` in the `server/routes` folder uncomment the three lines under the TODO: comment to initialize the DB
-  - Don't forget to comment out the TODO: after running once as to not repeatedly initialize the DB  
-- To run the application, execute `node app.js`
+- Run `npm install`.
+- In `main.js` in the `server/routes` folder uncomment the three lines under the TODO: comment to initialize the DB.
+  - Don't forget to comment out the TODO: after running once as to not repeatedly initialize the DB.
+- To run the application, execute `node app.js`.
 
 Note:
-It is recommended to use Google Chrome to open this website. If opening the files automatically goes to another browser, 
-you may want to manually copy the url and open it on chrome.
+It is recommended to use Firefox to open this website. If opening the files automatically goes to another browser, 
+you may want to manually copy the url and open it on Firefox.
 
-The design of the main "reserve" page is still currently temporary, as we plan to spruce up its design in MCO2.<br>
+<br>
 If there are any problems, please don't hesitate to contact anyone from our group.
 
 ## What to do in the Website
 - To Login
   - Use the "email" followed by the "password" to log in as a student or admin
-  - The current hard-coded values for user logins are
+  - The current hard-coded values for user logins are...
 
     | Email      | Password |
     | --- | --- |

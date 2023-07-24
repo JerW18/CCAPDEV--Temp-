@@ -394,8 +394,8 @@ const { appendFile } = require('fs');
 
 
 //TODO: Uncomment the lines below to initialize the database
-// initialize.createUser();
-// initialize.createReservations();
-// initialize.createLabs();
+ //initialize.createUser();
+ //initialize.createReservations();
+ //initialize.createLabs();
 // initialize.createAdminUser();//formatting is (name,email,password,picture)
 // if picture is null it uses the default admin profile picture admin.png 

@@ -361,8 +361,8 @@ function updateBottomTables() {
     let insert = "";
 
     /* First, add the details on the left side of the bottom panel. */
-    insert += `<div id = "bottomDetails"><div>Seat No. <span id = "bottomDetailsSeat">${document.querySelector(`.clickedSeat`).id}</span></div>`;
-    insert += `<div>Lab Room <span id = "bottomDetailsLab">${(new FormData(topForm).get("labForm"))}</span></div>`;
+    insert += `<div id = "bottomDetails"><div>Seat No: <span id = "bottomDetailsSeat">${document.querySelector(`.clickedSeat`).id}</span></div>`;
+    insert += `<div>Lab Room: <span id = "bottomDetailsLab">${(new FormData(topForm).get("labForm"))}</span></div>`;
     insert += `<div>Date: <span id = "bottomDetailsDate">${(new FormData(topForm).get("dateForm"))}</span></div></div>`;
 
     /* Then, add the table in the center to represent the slots of that seat. */
@@ -383,8 +383,8 @@ function updateBottomTables() {
     for (let t = 16; t < 40; t++) {
         insert += `<td id = "S${t}" class = "slot tooltip"><span class="tooltiptext">${formatTime(t)} - ${formatTime(t + 1)}</span></td>`;
     }
-    insert += `</tr><tr><td colspan = "14"><span id = "bottomDetailsSelected">Selected Time: <span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></span></td>`;
-    insert += `<td colspan = "10">Reserved By: <span id = "reserver">None</span></td></tr>`;
+    insert += `</tr><tr><td colspan = "14"><span id = "bottomDetailsSelected">Selected Time: <span id = "bottomDetailsSelectedTime"><span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></span></span></td>`;
+    insert += `<td colspan = "10"><span id = "bottomDetailsReserver">Reserved By: <span id = "reserver">None</span></span></td></tr>`;
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
@@ -455,8 +455,13 @@ function updateBottomConfirmListener() {
                 let currentTime = new Date();
                 let currentDate = currentTime.getDate();
                 let walkInStudent = null;
-                if (credLevel == 2)
+
+                // -2 for normal users, -1 for admin but invalid, others for admin but valid.
+                let walkInValid = -2;
+                if (credLevel == 2) {
                     walkInStudent = document.getElementById("walkIn").value;
+                    walkInValid = walkInStudent.search("@dlsu.edu.ph");
+                }
 
                 //get current date in the format YYYY-MM-DD
                 if (currentDate < 10) {
@@ -502,42 +507,50 @@ function updateBottomConfirmListener() {
                     isAnonymous: clickedAnonymous,
                     walkInStudent
                 };
-                if (editID == null) {
-                    let response = await fetch("/addReservation", {
-                        method: "POST",
-                        body: JSON.stringify(clickedReservation),
-                        headers: {
-                            Accept: "application/json, text/plain, */*",
-                            "Content-Type": "application/json"
+
+                console.log(walkInValid);
+
+                if (walkInValid != -1) {
+                    if (editID == null) {
+                        let response = await fetch("/addReservation", {
+                            method: "POST",
+                            body: JSON.stringify(clickedReservation),
+                            headers: {
+                                Accept: "application/json, text/plain, */*",
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        if (response.status == 201) {
+                            alert("Reservation successful.");
+                            window.location.assign("reserve.html");
                         }
-                    });
-                    if (response.status == 201) {
-                        alert("Reservation successful.");
-                        window.location.assign("reserve.html");
-                    }
-                    else {
-                        alert("Reservation failed. Please try again.");
-                        window.location.assign("reserve.html");
+                        else {
+                            alert("Reservation failed. Please try again.");
+                            window.location.assign("reserve.html");
+                        }
+                    } else {
+                        clickedReservation.reservationID = editID;
+                        let response = await fetch("/editReservation", {
+                            method: "PUT",
+                            body: JSON.stringify(clickedReservation),
+                            headers: {
+                                Accept: "application/json, text/plain, */*",
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        if (response.status == 201) {
+                            alert("Edit successful.");
+                            window.location.assign("reserve.html");
+                        }
+                        else {
+                            alert("Edit failed. Please relog and try again.");
+                            window.location.assign("reserve.html");
+                        }
                     }
                 } else {
-                    clickedReservation.reservationID = editID;
-                    let response = await fetch("/editReservation", {
-                        method: "PUT",
-                        body: JSON.stringify(clickedReservation),
-                        headers: {
-                            Accept: "application/json, text/plain, */*",
-                            "Content-Type": "application/json"
-                        }
-                    });
-                    if (response.status == 201) {
-                        alert("Edit successful.");
-                        window.location.assign("reserve.html");
-                    }
-                    else {
-                        alert("Edit failed. Please relog and try again.");
-                        window.location.assign("reserve.html");
-                    }
+                    alert("Please input a valid dlsu email for the walk-in student.");
                 }
+
 
             } else if (e.target.value == "Delete Reservation") {
                 let rID = 0;
