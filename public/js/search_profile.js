@@ -22,12 +22,13 @@ if (username != null) {
 console.log(document.getElementById("textSearch").value);
 
 // Main JS
-updateResTable();
-processTextForm();
 
-searchButton.addEventListener("click", (e) => {
+updateResTable();
+await processTextForm();
+
+searchButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    processTextForm();
+    await processTextForm();
 })
 
 function updateResTable() {
@@ -94,7 +95,7 @@ function updateResTable() {
 
 }
 
-function processTextForm() {
+async function processTextForm() {
     const searchForm = document.getElementById("searchForm");
     const searchButton = document.getElementById("searchButton");
     let username = searchForm.fname.value;
@@ -109,7 +110,10 @@ function processTextForm() {
             let loc = user.email.search("@");
             usertag.textContent = "@" + user.email.substring(0, loc);
             displayName.textContent = user.name;
-            img.src = user.picture;
+
+            const imgRes = await fetch("/getImage?email=" + username);
+            const imgNum = await imgRes.json();
+            img.src = "../images/default_" + imgNum + ".png";
         }
     }
 }

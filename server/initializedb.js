@@ -1,6 +1,7 @@
 const User = require('./models/user.js');
 const Reservation = require('./models/reservation.js');
 const Lab = require('./models/lab.js');
+const Image = require('./models/image.js');
 
 function createUser() {
     User.insertMany([
@@ -84,6 +85,46 @@ function createUser() {
         }
     ]);
 }
+
+function createImage() {
+    Image.insertMany([
+        {
+            email: "lanz_lim@dlsu.edu.ph",
+            image: "1"
+        }, {
+            email: "tyler_tan@dlsu.edu.ph",
+            image: "2"
+        }, {
+            email: "johann_uytanlet@dlsu.edu.ph",
+            image: "3"
+        }, {
+            email: "jeremy_wang@dlsu.edu.ph",
+            image: "4"
+        }, {
+            email: "cellinia_texas@dlsu.edu.ph",
+            image: "3"
+        }, {
+            email: "gwen_stacy@dlsu.edu.ph",
+            image: "2"
+        }, {
+            email: "admin1@dlsu.edu.ph",
+            image: "0"
+        }, {
+            email: "admin2@dlsu.edu.ph",
+            image: "0"
+        }, {
+            email: "admin3@dlsu.edu.ph",
+            image: "0"
+        }, {
+            email: "admin4@dlsu.edu.ph",
+            image: "0"
+        }, {
+            email: "admin5@dlsu.edu.ph",
+            image: "0"
+        }
+    ]);
+}
+
 
 function createReservations() {
     Reservation.insertMany([
@@ -329,4 +370,4 @@ function createAdminUser(name,email,password,picture){
 }
 
 
-module.exports = { createUser: createUser, createReservations: createReservations, createLabs: createLabs , createAdminUser: createAdminUser};
+module.exports = { createUser: createUser, createReservations: createReservations, createLabs: createLabs , createAdminUser: createAdminUser, createImage: createImage};

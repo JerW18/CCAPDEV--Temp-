@@ -11,6 +11,9 @@ let credEmail = creds.email;
 let protou = await fetch("/getUser?email=" + credEmail);
 let user = await protou.json();
 
+const imgRes = await fetch("/getImage?email=" + user.email);
+const imageNum = await imgRes.json();
+
 
 if (credLevel != 2) {
     window.location.href = "/html/index.html";
@@ -23,12 +26,8 @@ const profilepic = document.getElementById("profilepic");
 
 console.log(user.email);
 
-if(user.picture == null){
-    profilepic.src="../images/admin.png";
-}
-else{
-    profilepic.src = user.picture;
-}
+profilepic.src = "../images/default_" + imageNum + ".png";
+
 
 emailfield.innerHTML = user.email;
 usernamefield.innerHTML = user.name;

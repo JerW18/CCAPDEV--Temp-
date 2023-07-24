@@ -27,6 +27,7 @@ router.get('/', (req, res) => {
 
 const User = require('../models/user.js');
 const Reservation = require('../models/reservation.js');
+const Image = require('../models/image.js');
 const Lab = require('../models/lab.js')
 
 router.get('/getLabs', (req, res) => {
@@ -74,6 +75,7 @@ router.post('/addUser', (req, res) => {
     const user = new User(req.body);
     console.log(user)
     user.save().then((data) => {
+        Image.create({ email: req.body.email, image: "0"});
         res.status(201).json(data);
     }
     ).catch((error) => {
@@ -185,7 +187,7 @@ router.get('/home', (req, res) => {
 router.post('/addReservation', async (req, res) => {
     let last = await Reservation.find().sort({ $natural: -1 }).limit(1);
     let newresID = 1;
-    if(last.length == 1)
+    if (last.length == 1)
         newresID = parseInt(last[0].reservationID.substring(1)) + 1;
     newresID = "R" + newresID.toString().padStart(7, "0");
     const reservation = new Reservation({ ...req.body, reservationID: newresID });
@@ -386,7 +388,44 @@ router.delete('/deleteUser', async (req, res) => {
 
 });
 
+router.get("/getImage", (req, res) => {
+    const email = req.query.email;
+    Image.findOne({ email }).then((result) => {
+        console.log(result);
+        if (result == null) {
+            console.log("sdfsdf");
+            res.status(400);
+            res.end();
+        }
+        else {
+            res.status(201);
+            console.log("xd");
+            res.json(result.image);
+        }
+    });
+})
 
+router.put("/editImage", (req, res) => {
+    const email = req.body.email;
+    const image = req.body.image;
+    Image.findOne({ email }).then((result) => {
+        console.log("here");
+        console.log(result);
+        if (result == null) {
+            console.log("hereeee");
+            res.status(400);
+            res.end();
+        }
+        else {
+            console.log("there");
+            Image.updateOne({ email }, { $set: { image } }).then((result) => {
+                console.log(result);
+                res.status(201);
+                res.end();
+            });
+        }
+    });
+})
 
 module.exports = router;
 
@@ -397,6 +436,7 @@ const { appendFile } = require('fs');
 
 //TODO: Uncomment the lines below to initialize the database
  //initialize.createUser();
+  //initialize.createImage();
  //initialize.createReservations();
  //initialize.createLabs();
 // initialize.createAdminUser();//formatting is (name,email,password,picture)

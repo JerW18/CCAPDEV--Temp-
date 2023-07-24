@@ -18,7 +18,11 @@ const usernamefield = document.getElementById("username");
 const biofield = document.getElementById("bioText");
 const profilepic = document.getElementById("profilepic");
 
-profilepic.src = user.picture;
+let protoi = await fetch("/getImage?email=" + credEmail);
+let imageNum = await protoi.json();
+document.getElementById("image").value = imageNum;
+
+profilepic.src = "../images/default_" + imageNum + ".png";
 emailfield.innerHTML = user.email;
 usernamefield.innerHTML = user.name;
 biofield.innerHTML = user.bio;
@@ -42,13 +46,26 @@ saveChangesButton.addEventListener("click", (e) => {
         body: JSON.stringify(data),
     }).then((response) => {
         if (response.status == 201) {
-            alert("Bio updated!");
-            window.location.href = "/html/student_profile.html";
+            fetch("/editImage", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ "image": document.getElementById("image").value , "email": credEmail }),
+            }).then((res) => {
+                if (res.status == 201) {
+                    alert("Bio updated!");
+                    window.location.href = "/html/student_profile.html";
+                } else {
+                    alert("Error updating image...");
+                }
+            });
         }
         else {
-            alert("Error updating bio");
+            alert("Error updating bio...");
         }
     });
+    fetch("updateImage")
 });
 
 cancelButtonPw.addEventListener("click", (e) => {
@@ -109,8 +126,17 @@ bioText.addEventListener("click", (e) => {
     console.log("clicked");
 });
 
+document.getElementById("image").addEventListener("change", (e) => {
+    saveChangesButton.removeAttribute("hidden");
+    cancelButton.removeAttribute("hidden");
+    logoutButton.setAttribute("hidden", true);
+    deleteButton.setAttribute("hidden", true);
+    console.log("clicked");
+});
+
 cancelButton.addEventListener("click", (e) => {
     biofield.value = user.bio;
+    document.getElementById('image').value = imageNum;
     saveChangesButton.setAttribute("hidden", true);
     cancelButton.setAttribute("hidden", true);
     logoutButton.removeAttribute("hidden");
@@ -180,6 +206,7 @@ function updateResTable() {
         } else {
             insert += `<td>No!</td>`;
         }
+
         insert += `<td><a href="reserve.html?edit=${i["reservationID"]}"><img id=E${i["reservationID"]} class=editIconBtn src = "../images/edit.png"> </a></td>`;
         insert += `<td><a ><img id=${i["reservationID"]} class=deleteIconBtn src = "../images/delete.png"></td>`;
         insert += "</tr>";
