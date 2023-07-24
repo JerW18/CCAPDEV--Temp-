@@ -14,7 +14,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.use(cookieParser());
 
-// Routes
+// Route
 router.get('/', (req, res) => {
     if (!req.cookies.token) {
         res.redirect('html/index.html');
