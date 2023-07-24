@@ -1,4 +1,3 @@
-
 let protor = await fetch("/getReservations");
 let reservations = await protor.json();
 
@@ -100,7 +99,7 @@ function processTextForm() {
     const searchButton = document.getElementById("searchButton");
     let username = searchForm.fname.value;
     for (const user of users) {
-        if (user.email == username && !user.isAdmin) {
+        if ((user.email == username || user.name == username) && !user.isAdmin) {
             updateResTable();
             const displayName = document.getElementById("displayName");
             const usertag = document.getElementById("username");

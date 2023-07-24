@@ -1,6 +1,3 @@
-
-
-
 let protoc = await fetch("/getCredentials");
 
 let creds = await protoc.json();
@@ -15,10 +12,7 @@ let user = await protou.json();
 let protor = await fetch("/getUserReservations?email=" + credEmail);
 let reservations = await protor.json();
 
-// Filter reservations so that only the ones that are in the future by one day are shown
-//TODO: check if this works
-
-
+//initialization of user info
 const emailfield = document.getElementById("email");
 const usernamefield = document.getElementById("username");
 const biofield = document.getElementById("bioText");
@@ -174,12 +168,12 @@ function updateResTable() {
                 insert += " to ";
         }
         insert += `</td>`;
-        if (i.anonymous) {
+        if (i.isAnonymous) {
             insert += `<td>Yes!</td>`;
         } else {
             insert += `<td>No!</td>`;
         }
-        insert += `<td><a href="reserve.html?edit=${i["reservationID"]}"><img src = "../images/edit.png"> </a></td>`;
+        insert += `<td><a href="reserve.html?edit=${i["reservationID"]}"><img id=E${i["reservationID"]} class=editIconBtn src = "../images/edit.png"> </a></td>`;
         insert += `<td><a ><img id=${i["reservationID"]} class=deleteIconBtn src = "../images/delete.png"></td>`;
         insert += "</tr>";
 
@@ -187,13 +181,87 @@ function updateResTable() {
     table.innerHTML = insert;
 }
 
+let editButtons = document.getElementsByClassName("editIconBtn");
+for(let i = 0; i < editButtons.length; i++){
+    editButtons[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        let resID = editButtons[i].id.substring(1);
+
+        let valid = true;
+        // alert the user if they are deleting a reservation that is in the past by one day
+        for (let r of reservations) {  
+            if (r.reservationID == resID) {
+                let today = new Date();
+                let yearNow = today.getFullYear();
+                let dayNow = today.getDate();
+                let monthNow = today.getMonth()+1;
+
+                let resDate = new Date(r.reservedDateAndTime.date);
+                let yearRes = resDate.getFullYear();
+                let dayRes = resDate.getDate();
+                let monthRes = resDate.getMonth()+1;
+
+                if (yearRes < yearNow) {
+                    alert("You cannot edit a reservation that has already passed!");
+                    valid = false;
+                }
+                else if (yearRes == yearNow && monthRes < monthNow) {
+                    alert("You cannot edit a reservation that has already passed!");
+                    valid = false;
+                }
+                else if (yearRes == yearNow && monthRes == monthNow && dayRes < dayNow) {
+                    alert("You cannot edit a reservation that has already passed!");
+                    valid = false;
+                }
+            }
+        }
+        if (valid == true) {
+            window.location.href = "/html/reserve.html?edit=" + resID;
+        }
+    });
+}
+
 let deleteButtons = document.getElementsByClassName("deleteIconBtn");
 
 for (let i = 0; i < deleteButtons.length; i++) {
     deleteButtons[i].addEventListener('click', function (e) {
         e.preventDefault();
-        let result = confirm("Are you sure you want to delete this reservation?");
-        if (result == true) {
+        let resID = deleteButtons[i].id;
+        let valid = true;
+        // alert the user if they are deleting a reservation that is in the past by one day
+        for (let r of reservations) {  
+            if (r.reservationID == resID) {
+                
+                let today = new Date();
+                let yearNow = today.getFullYear();
+                let dayNow = today.getDate();
+                let monthNow = today.getMonth()+1;
+
+                let resDate = new Date(r.reservedDateAndTime.date);
+                let yearRes = resDate.getFullYear();
+                let dayRes = resDate.getDate();
+                let monthRes = resDate.getMonth()+1;
+
+                if (yearRes < yearNow) {
+                    alert("You cannot delete a reservation that has already passed!");
+                    valid = false;
+                }
+                else if (yearRes == yearNow && monthRes < monthNow) {
+                    alert("You cannot delete a reservation that has already passed!");
+                    valid = false;
+                }
+                else if (yearRes == yearNow && monthRes == monthNow && dayRes < dayNow) {
+                    alert("You cannot delete a reservation that has already passed!");
+                    valid = false;
+                }
+            }
+        }
+        let result=false;
+        if (valid == true) {
+            result = confirm("Are you sure you want to delete this reservation?");
+        }
+        
+        if (result == true && valid == true) {
             let reservationID = deleteButtons[i].id;
             let data = { "reservationID": reservationID };
             console.log(data);

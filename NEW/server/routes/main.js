@@ -97,13 +97,13 @@ router.get("/getCredentials", (req, res) => {
                 }
             }).catch((err) => {
                 // If verification fails, clear the invalid 'token'.
-                res.json({ credLevel: 0 });
                 res.clearCookie('token');
+                res.json({ credLevel: 0 });
             });
         } catch (err) {
             // If verification fails, clear the invalid 'token'.
-            res.json({ credLevel: 0 });
             res.clearCookie('token');
+            res.json({ credLevel: 0 });
         }
     }
     // If there are no cookies, send "0" for guest.
@@ -253,8 +253,8 @@ router.put("/editReservation", async (req, res) => {
         }).catch((err) => {
             console.log("555555555555");
             // If verification fails, clear the invalid 'token'.
-            res.json({ credLevel: 0 });
             res.clearCookie('token');
+            res.json({ credLevel: 0 });
         });
 
     } catch (error) {
@@ -318,7 +318,7 @@ router.delete('/deleteReservation', (req, res) => {
                     res.status(201);
                     res.end();
                 } else {
-                    console.log({reservationID, email});
+                    console.log({ reservationID, email });
                     Reservation.deleteOne({ reservationID, email }).then((result) => {
                         console.log(result);
                         if (result.deletedCount == 0) {
@@ -332,9 +332,9 @@ router.delete('/deleteReservation', (req, res) => {
                 }
             }).catch((err) => {
                 // If verification fails, clear the invalid 'token'.
+                res.clearCookie('token');
                 res.status(400);
                 res.end();
-                res.clearCookie('token');
             });
         } catch (err) {
             // If verification fails, clear the invalid 'token'.
@@ -359,10 +359,11 @@ router.delete('/deleteUser', async (req, res) => {
                 await Reservation.deleteMany({ email });
                 const deletedUser = await User.findOneAndDelete({ email });
 
-                if(!deletedUser){
+                if (!deletedUser) {
                     res.status(404);
                     res.end();
                 } else {
+                    res.clearCookie('token');
                     res.status(200);
                     res.end();
                 }
@@ -396,4 +397,5 @@ const { appendFile } = require('fs');
 // initialize.createUser();
 // initialize.createReservations();
 // initialize.createLabs();
-
+// initialize.createAdminUser();//formatting is (name,email,password,picture)
+// if picture is null it uses the default admin profile picture admin.png 

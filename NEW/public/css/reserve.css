@@ -37,6 +37,25 @@ body {
 #timeForm,
 #timeFormEnd {
     cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #000000;
+}
+
+#labForm {
+    width: 120px;
+    padding: 3px;
+}
+
+#dateForm {
+    width: 155px;
+    text-align: center;
+    padding: 3px;
+}
+
+#timeForm,
+#timeFormEnd{
+    width: 120px;
+    padding: 3px;
 }
 
 td {
@@ -130,10 +149,10 @@ div.reservedSeat.clickedSeat {
 #bottomForm {
     display: flex;
     align-items: center;
-    height: 100%;
+    height: 95%;
     font-weight: bolder;
     margin: auto;
-
+    padding-top: 3px;
 }
 
 #submit {
@@ -141,54 +160,63 @@ div.reservedSeat.clickedSeat {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 16px 32px;
+    padding: 12px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     margin: 4px 2px;
-    transition-duration: 0.4s;
+    transition-duration: 0.2s;
     cursor: pointer;
+    border: 2px solid #4CAF50;
     border-radius: 10px;
 }
 
 #submit:hover {
     background-color: #e8e7e7; 
     color: black; 
-    border: 3px solid #4CAF50;
+    border: 2px solid #4CAF50;
     border-radius: 10px;
 }
 
 #submit:disabled,
 #submit[disabled]{
-    border: 1px solid #999999;
+    border: 2px solid #999999;
     background-color: #cccccc;
     color: #666666;
     cursor: not-allowed;
 }
 
 #checkboxContainer {
-    font-size: 17px;
+    font-size: 13px;
     margin: 10px;
-    margin-top: 2px;
+    margin-top: 4px;
     display: flex;
     justify-content: center;
 }
 
 #walkInContainer {
-    font-size: 17px;
-    margin: 10px;
-    margin-top: 2px;
+    font-size: 15px;
+    margin-top: 4px;
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: flex;
     align-items: center;
 }
 
+#walkIn {
+    width: 105px;
+    font-size: 15px;
+    margin-left: 3px;
+}
+
 #anonymous {
+    border: 1px solid blue;
+    border-radius: 3px;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
     position: relative;
-    right: 9px;
-    cursor: pointer;
 }
 
 .centerTable {

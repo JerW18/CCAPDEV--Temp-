@@ -26,7 +26,8 @@ const userSchema = new Schema({
         default: "../images/student_profile.jpg"
     },
     bio:{
-        type: String
+        type: String,
+        default: null
     }
 });
 

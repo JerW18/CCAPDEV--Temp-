@@ -72,24 +72,18 @@ async function initializeTopFormLab() {
 function initializeTopFormDate() {
     document.getElementById("dateForm").innerHTML = "";
 
-    /* NOTE: Temporarily changed to static dates for MCO1.
-    const today = new Date();*/
-    const today = new Date("2023-06-23");
+    const today = new Date();
 
-    for (let i = 0; i <= 7; i++) {
-        let result = new Date(today);
-        result.setDate(result.getDate() + i);
-        let year = result.getFullYear();
-        let month = result.getMonth() + 1;
-        let day = result.getDate();
+    let result = new Date(today);
+    result.setDate(result.getDate() + 7);
 
-        if(month < 10){
-            month = "0" + month;
-        }
+    let tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-        let resultDate = `${year}-${month}-${day}`;
-        document.getElementById("dateForm").innerHTML += `<option value = "${resultDate}">${resultDate}</option>`;
-    }
+    document.getElementById("dateForm").setAttribute("value", today.toISOString().split("T")[0]);
+    document.getElementById("dateForm").setAttribute("min", today.toISOString().split("T")[0]);
+    document.getElementById("dateForm").setAttribute("max", result.toISOString().split("T")[0]);
+
     document.getElementById("dateForm").addEventListener("change", async (e) => {
         await updateCenter(-1);
         hideBottom();
@@ -367,9 +361,9 @@ function updateBottomTables() {
     let insert = "";
 
     /* First, add the details on the left side of the bottom panel. */
-    insert += `<div id = "bottomDetails"><div>Seat No. ${document.querySelector(`.clickedSeat`).id}</div>`;
-    insert += `<div>Lab Room ${(new FormData(topForm).get("labForm"))}</div>`;
-    insert += `<div>Date: ${(new FormData(topForm).get("dateForm"))}</div></div>`;
+    insert += `<div id = "bottomDetails"><div>Seat No. <span id = "bottomDetailsSeat">${document.querySelector(`.clickedSeat`).id}</span></div>`;
+    insert += `<div>Lab Room <span id = "bottomDetailsLab">${(new FormData(topForm).get("labForm"))}</span></div>`;
+    insert += `<div>Date: <span id = "bottomDetailsDate">${(new FormData(topForm).get("dateForm"))}</span></div></div>`;
 
     /* Then, add the table in the center to represent the slots of that seat. */
     insert += `<div id = "bottomTableContainer"><table><tr>`;
@@ -389,8 +383,8 @@ function updateBottomTables() {
     for (let t = 16; t < 40; t++) {
         insert += `<td id = "S${t}" class = "slot tooltip"><span class="tooltiptext">${formatTime(t)} - ${formatTime(t + 1)}</span></td>`;
     }
-    insert += `</tr><tr><td colspan = "12">Selected Time: <span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></td>`;
-    insert += `<td colspan = "12">Reserved By: <span id = "reserver">None</span></td></tr>`;
+    insert += `</tr><tr><td colspan = "14"><span id = "bottomDetailsSelected">Selected Time: <span id = "startTime">--:-- --</span> to <span id = "endTime">--:-- --</span></span></td>`;
+    insert += `<td colspan = "10">Reserved By: <span id = "reserver">None</span></td></tr>`;
     insert += `</tr></table></div>`;
 
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
@@ -401,10 +395,10 @@ function updateBottomTables() {
         insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
         insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
     } else if (credLevel == 2) {
-        insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
-        insert += `<div id = "walkInContainer"><label for = "walkIn">Walk-In Student: </label>`;
-        insert += `<input type = "textbox" name = "walkIn" id = "walkIn"></div>`;
-        insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
+        insert += `<div id = "bottomForm"><form><div id = "walkInContainer"><label for = "walkIn"></label></label>Walk-In:</label>`;
+        insert += `<input type = "text" name = "walkIn" id = "walkIn" placeholder="Email"></div>`;
+        insert += `<input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+        insert += `<div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
         insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
     }
 
