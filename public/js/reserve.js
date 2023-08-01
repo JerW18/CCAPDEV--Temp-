@@ -25,7 +25,13 @@ console.log(reservations);
 const urlParams = new URLSearchParams(window.location.search);
 const editID = urlParams.get("edit");
 
+let editReservation = null
+
 if (editID != null) {
+    editReservation = reservations.filter(function (el) {
+        return el.reservationID == editID;
+    }
+    )[0];
     let newArray = reservations.filter(function (el) {
         return el.reservationID != editID;
     }
@@ -41,6 +47,25 @@ async function pageStartUp() {
     await initializeTopForm();
     await updateCenter(0);
     initializeCenterListener();
+
+    if (editID != null) {
+        const lab = editReservation.labSeat.lab;
+        const seat = editReservation.labSeat.seat;
+        const date = editReservation.reservedDateAndTime.date;
+        const startTime = editReservation.reservedDateAndTime.startTime;
+        const endTime = editReservation.reservedDateAndTime.endTime;
+        console.log(lab, seat, date, startTime, endTime);
+        document.getElementById("labForm").value = lab;
+        document.getElementById("dateForm").value = date;
+        console.log("HERE")
+        console.log(document.getElementById("timeForm").value)
+        document.getElementById("timeForm").value = startTime;
+        console.log(document.getElementById("timeForm").value)
+        document.getElementById("timeFormEnd").value = endTime;
+        await updateCenter([seat.substring(0, 1), seat.substring(1, 2), seat.substring(2, 3)]);
+        updateBottom((new FormData(topForm).get("timeForm")), (new FormData(topForm).get("timeFormEnd")));
+    }
+
 }
 
 /* Initialize Options for TopForm */
@@ -123,6 +148,7 @@ function initializeTopFormTime() {
         let ampm = (Math.floor((t + 1) / 2) < 12) ? "AM" : "PM";
         document.getElementById("timeFormEnd").innerHTML += `<option value = "${t}">${hour}:${minute} ${ampm}</option>`;
     }
+    document.getElementById("timeFormEnd").value = 39;
     document.getElementById("timeForm").addEventListener("change", async (e) => {
         hideBottom();
         if (document.getElementById("timeFormEnd").value < document.getElementById("timeForm").value) {
@@ -293,6 +319,7 @@ function updateCenterClicked(clickedPosition) {
     // -1 is a special value indicating to remove the currently clicked seat.
     // 0 is a special value indicating to do nothing.
 
+    console.log(clickedPosition)
     if (clickedPosition == -1) {
         const pastClicked = document.querySelectorAll("clickedSeat");
         pastClicked.forEach((element) => {
@@ -392,14 +419,16 @@ function updateBottomTables() {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Login to Reserve A Slot" disabled>`
     } else if (credLevel == 1) {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+        insert += `<div id = "bottomForm"><form><input style = "display:none" type = "submit" name = "submit2" class="small" id = "submit2" value = "Edit Reservation">`
         insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
-        insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+        insert += `<label id = "anonyLabel" for = "checkbox">Anonymous?</label><div></form>`;
     } else if (credLevel == 2) {
         insert += `<div id = "bottomForm"><form><div id = "walkInContainer"><label for = "walkIn"></label></label>Walk-In:</label>`;
         insert += `<input type = "text" name = "walkIn" id = "walkIn" placeholder="Email"></div>`;
         insert += `<input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
+        insert += `<input style = "display:none" type = "submit" name = "submit2" id = "submit2" class="small" value = "Edit Reservation">`
         insert += `<div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
-        insert += `<label for = "checkbox">Anonymous?</label><div></form>`;
+        insert += `<label id = "anonyLabel" for = "checkbox">Anonymous?</label><div></form>`;
     }
 
     document.getElementById("bottom").innerHTML += insert;
@@ -553,15 +582,18 @@ function updateBottomConfirmListener() {
 
 
             } else if (e.target.value == "Delete Reservation") {
+                //TODO: Add Check for valid time for delete reservation here (also check if they are admin or user cuz that will affect when they can edit).
                 let rID = 0;
-                const slot = document.querySelector(".reservedSlot").id.substring(1);
+                const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
                 console.log(slot);
                 for (let r of reservations) {
-                    if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
-                        if (slot >= r.reservedDateAndTime.startTime && slot <= r.reservedDateAndTime.endTime) {
-                            if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
-                                rID = r.reservationID;
-                                break;
+                    if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
+                        if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
+                            if (slot >= r.reservedDateAndTime.startTime && slot <= r.reservedDateAndTime.endTime) {
+                                if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                                    rID = r.reservationID;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -584,6 +616,26 @@ function updateBottomConfirmListener() {
                 }
             }
         });
+        document.getElementById("submit2").addEventListener("click", async (e) => {
+            //TODO: Add Check for valid time for editing reservation here (also maybe check if they are admin or user cuz that will affect when they can edit).
+            e.preventDefault();
+            let rID = 0;
+            const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
+            console.log(slot);
+            for (let r of reservations) {
+                if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
+                    if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
+                        if (slot >= r.reservedDateAndTime.startTime && slot <= r.reservedDateAndTime.endTime) {
+                            if ((new FormData(topForm)).get("labForm") == r.labSeat.lab) {
+                                rID = r.reservationID;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            window.location.assign(`reserve.html?edit=${rID}`);
+        });
     } else if (credLevel == 0) {
         const resLogin = document.getElementById("submit");
         resLogin.addEventListener("click", (e) => {
@@ -600,6 +652,23 @@ async function updateBottomClicked(clickedSlot) {
     /*let proto=await fetch("/getReservations");
     let reservations=await proto.json();
     console.log(reservations);*/
+
+    document.getElementById("submit").value = "Confirm Reservation";
+    document.getElementById("submit").classList.remove("small");
+    document.getElementById("submit2").style.display = "none";
+    if (document.getElementById("walkInContainer") != null) {
+        document.getElementById("walkIn").value = ""
+        document.getElementById("walkInContainer").style.display = "flex";
+    }
+    document.getElementById("anonymous").style.display = "inline";
+    document.getElementById("anonyLabel").style.display = "inline";
+    if (credLevel == 2 && editID != null) {
+        document.getElementById("walkInContainer").style.display = "none";
+        document.getElementById("walkIn").value = "temp@dlsu.edu.ph"
+        document.getElementById("anonymous").style.display = "none";
+        document.getElementById("anonyLabel").style.display = "none";
+    }
+
     /* If the slot clicked is a reserved slot... */
     if (document.getElementById(`S${clickedSlot}`).classList.contains("reservedSlot")) {
         /* Remove all currently "clicked" and "selecting" slots. */
@@ -607,6 +676,7 @@ async function updateBottomClicked(clickedSlot) {
             element.classList.remove("clickedSlot", "selectingSlot");
         });
         /* Find the reservation that matches the clicked slot. */
+        var email = null
         for (let r of reservations) {
             if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
                 // Check if same date...
@@ -628,6 +698,7 @@ async function updateBottomClicked(clickedSlot) {
                                     document.getElementById("reserver").innerHTML = `${r.walkInStudent} (${r.email})`;
                                 }
                             }
+                            email = r.email;
                             document.getElementById("startTime").innerHTML = formatTime(r.reservedDateAndTime.startTime);
                             document.getElementById("endTime").innerHTML = formatTime(r.reservedDateAndTime.endTime + 1);
                             break;
@@ -636,11 +707,30 @@ async function updateBottomClicked(clickedSlot) {
                 }
             }
         }
-        if (credLevel == 0 || credLevel == 1)
+        if (credLevel == 0)
             document.getElementById("submit").disabled = true;
+        else if (credLevel == 1) {
+            console.log(email)
+            console.log(credEmail)
+            if (email != credEmail)
+                document.getElementById("submit").disabled = true;
+            else {
+                document.getElementById("submit").disabled = false;
+                document.getElementById("submit").value = "Delete Reservation";
+                document.getElementById("submit").classList.add("small");
+                document.getElementById("submit2").style.display = "inline";
+                document.getElementById("anonymous").style.display = "none";
+                document.getElementById("anonyLabel").style.display = "none";
+            }
+        }
         else {
             document.getElementById("submit").disabled = false;
             document.getElementById("submit").value = "Delete Reservation";
+            document.getElementById("submit").classList.add("small");
+            document.getElementById("submit2").style.display = "inline";
+            document.getElementById("anonymous").style.display = "none";
+            document.getElementById("anonyLabel").style.display = "none";
+            document.getElementById("walkInContainer").style.display = "none";
         }
     }
     /* If the slot clicked is NOT a reserved slot and they HAVEN'T selected a slot (dark green) before... */

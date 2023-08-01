@@ -140,7 +140,7 @@ function createReservations() {
                 startTime: "11:03 PM",
             },
             reservedDateAndTime: {
-                date: "2023-07-26",
+                date: "2023-08-07",
                 startTime: 17,
                 endTime: 35
             },
@@ -158,7 +158,7 @@ function createReservations() {
                 startTime: "5:36 PM",
             },
             reservedDateAndTime: {
-                date: "2023-07-27",
+                date: "2023-08-07",
                 startTime: 24,
                 endTime: 30
             },
@@ -176,7 +176,7 @@ function createReservations() {
                 startTime: "7:16 PM"
             },
             reservedDateAndTime: {
-                date: "2023-07-27",
+                date: "2023-08-07",
                 startTime: 27,
                 endTime: 30
             },
@@ -194,7 +194,7 @@ function createReservations() {
                 startTime: "2:39 PM"
             },
             reservedDateAndTime: {
-                date: "2023-07-28",
+                date: "2023-08-07",
                 startTime: 18,
                 endTime: 33
             },
@@ -212,7 +212,7 @@ function createReservations() {
                 startTime: "4:09 PM"
             },
             reservedDateAndTime: {
-                date: "2023-07-28",
+                date: "2023-08-08",
                 startTime: 18,
                 endTime: 33
             },
@@ -223,14 +223,14 @@ function createReservations() {
             reservationID: "R0000006",
             labSeat: {
                 lab: "G503",
-                seat: "122"
+                seat: "022"
             },
             requestDateAndTime: {
                 date: "2023-07-24",
                 startTime: "6:10 AM"
             },
             reservedDateAndTime: {
-                date: "2023-07-29",
+                date: "2023-08-08",
                 startTime: 18,
                 endTime: 33
             },
@@ -241,14 +241,14 @@ function createReservations() {
             reservationID: "R0000007",
             labSeat: {
                 lab: "G503",
-                seat: "122"
+                seat: "111"
             },
             requestDateAndTime: {
                 date: "2023-07-24",
                 startTime: "9:15 AM"
             },
             reservedDateAndTime: {
-                date: "2023-07-27",
+                date: "2023-08-08",
                 startTime: 20,
                 endTime: 25
             },
@@ -262,7 +262,7 @@ function createReservations() {
                 seat: "122"
             },
             requestDateAndTime: {
-                date: "2023-07-24",
+                date: "2023-08-08",
                 startTime: "11:02 AM"
             },
             reservedDateAndTime: {
@@ -276,15 +276,15 @@ function createReservations() {
             email: "admin1@dlsu.edu.ph",
             reservationID: "R0000009",
             labSeat: {
-                lab: "G503",
-                seat: "022"
+                lab: "A2493",
+                seat: "000"
             },
             requestDateAndTime: {
                 date: "2023-07-24",
                 startTime: "03:08 PM"
             },
             reservedDateAndTime: {
-                date: "2023-07-27",
+                date: "2023-08-08",
                 startTime: 25,
                 endTime: 31
             },

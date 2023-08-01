@@ -428,6 +428,13 @@ router.put("/editImage", (req, res) => {
     });
 })
 
+router.get('/getUsersWithSubstring', (req, res) => {
+    const substring = req.query.substring;
+    User.find({ isAdmin: false, email: { $regex: substring, $options: 'i' } }, "email").then((data) => {
+        res.json(data);
+    });
+});
+
 module.exports = router;
 
 const initialize = require('../initializedb.js');
@@ -437,6 +444,6 @@ const { appendFile } = require('fs');
 
 //TODO: Uncomment the lines below to initialize the database
  //initialize.createUser();
- // initialize.createImage();
+ //initialize.createImage();
  //initialize.createReservations();
  //initialize.createLabs(); 

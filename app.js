@@ -1,4 +1,4 @@
-// Remove in MCO3
+// TODO: Remove in MCO3 when deploying...
 require('dotenv').config();
 const path = require('path');
 

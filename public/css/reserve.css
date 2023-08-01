@@ -205,6 +205,49 @@ div.reservedSeat.clickedSeat {
     cursor: not-allowed;
 }
 
+#submit.small {
+    padding: 10px 5px;
+    font-size: 13px;
+}
+
+#submit2 {
+    font-family: 'Roboto', sans-serif;
+    background-color: #4CAF50;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+}
+
+#submit2:hover {
+    background-color: #e8e7e7;
+    color: black;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+}
+
+#submit2:disabled,
+#submit2[disabled] {
+    border: 2px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+#submit2.small {
+    padding: 10px 5px;
+    font-size: 13px;
+}
+
 #checkboxContainer {
     font-size: 13px;
     margin: 10px;
