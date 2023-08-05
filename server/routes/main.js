@@ -14,6 +14,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.use(cookieParser());
 
+const bcrypt = require('bcrypt');
+const saltRounds = process.env.SALT; 
+
 // Route
 router.get('/', (req, res) => {
     if (!req.cookies.token) {
@@ -70,19 +73,43 @@ router.get('/getLab', (req, res) => {
     });
 });
 
+/*
 router.post('/addUser', (req, res) => {
+    password = req.password;
+    bcrypt.hash(req.password, Number(saltRounds)).then((hashedPassword) => {
+        req.password = hashedPassword;
+        const user = new User(req.body);
+        console.log(user)
+        user.save().then((data) => {
+            Image.create({ email: req.body.email, image: "0"});
+            res.status(201).json(data);
+        }
+        ).catch((error) => {
+            res.status(500).json(error);
+        }
+        );
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+});*/
 
-    const user = new User(req.body);
-    console.log(user)
-    user.save().then((data) => {
-        Image.create({ email: req.body.email, image: "0"});
-        res.status(201).json(data);
-    }
-    ).catch((error) => {
+router.post('/addUser', async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, Number(saltRounds));
+        req.body.password = hashedPassword;
+        
+        const user = new User(req.body);
+        console.log(user);
+
+        const userData = await user.save();
+        await Image.create({ email: req.body.email, image: "0" });
+
+        res.status(201).json(userData);
+    } catch (error) {
         res.status(500).json(error);
     }
-    );
 });
+
 
 router.get("/getCredentials", (req, res) => {
     // Checks if there are cookies...
@@ -132,30 +159,39 @@ router.post('/login', async (req, res) => {
         res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
     }
     else {
-        User.findOne({ password, email }).then((data) => {
+        let hashedPassword = await bcrypt.hash(password, Number(saltRounds));
+        User.findOne({email}).then((data) => {
             console.log(data);
-
             if (!data) {
                 res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
             }
-            else {
-                if (rememberMe) {
-                    const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
-                    res.cookie('token', token, {
-                        httpOnly: true,
-                        maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
-                    });
+            bcrypt.compare(password, data.password).then((isMatch) => {
+                if (isMatch) {
+                    console.log("Password matches!");
+                    
+                    if (rememberMe) {
+                        const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
+                        res.cookie('token', token, {
+                            httpOnly: true,
+                            maxAge: 3 * 7 * 24 * 1000 * 60 * 60, // three weeks
+                        });
+                    } else {
+                        const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
+                        res.cookie('token', token, {
+                            httpOnly: true,
+                        });
+                    }
+                    console.log("Login Successful");
+                    res.status(200).json({ success: true, message: 'Login successful!' });
+                    
                 } else {
-                    const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
-                    res.cookie('token', token, {
-                        httpOnly: true,
-                    });
+                    console.log("Password does not match.");
+                    res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
                 }
-
-                console.log("Login Successful");
-                res.status(200).json({ success: true, message: 'Login successful!' });
-            }
-
+            }).catch((error) => {
+                console.error("Error comparing passwords:", error);
+                return res.status(500).json({ success: false, message: 'An error occurred during login.' });
+            });
         }).catch((err) => {
             console.error('Error:', err);
             console.log("Login Errored");
@@ -269,10 +305,48 @@ router.put("/editReservation", async (req, res) => {
 
 router.put("/updatePassword", async (req, res) => {
     const email = req.body.email;
+    const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
 
     console.log(email);
+    console.log(oldPassword)
     console.log(newPassword);
+
+    try{
+        const user = await User.findOne({ email: req.body.email });
+        console.log(user);
+        if (!user) {
+            res.status(400).json({ message: 'User not found' }); // just in case
+            res.end();
+            return;
+        }
+
+        const oldPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+        if(!oldPasswordMatch){
+            res.status(401); // not proper credentials
+            res.end();
+            return;
+        }
+
+        const newPasswordMatch = await bcrypt.compare(newPassword, user.password);
+        if (newPasswordMatch) {
+            res.status(400); // cannot be same password as old password
+            res.end();
+            return;
+        }
+
+        const hashedNewPassword = await bcrypt.hash(req.body.newPassword, Number(saltRounds));
+        user.password = hashedNewPassword;
+        await user.save();
+        res.status(201);
+        res.end();
+        return;
+    } catch (error) {
+        console.error(error); 
+        res.status(500).json(error);
+        return;
+    }
+    /*
     const updatedPassword = await User.updateOne(
         { email: email },
         { $set: { password: newPassword } }
@@ -284,8 +358,7 @@ router.put("/updatePassword", async (req, res) => {
     else {
         res.status(201);
         res.end();
-    }
-
+    }*/
 });
 
 router.put("/updateBio", async (req, res) => {
@@ -436,7 +509,6 @@ router.get('/getUsersWithSubstring', (req, res) => {
 });
 
 module.exports = router;
-
 const initialize = require('../initializedb.js');
 const reservation = require('../models/reservation.js');
 const { appendFile } = require('fs');

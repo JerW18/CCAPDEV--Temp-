@@ -2,88 +2,117 @@ const User = require('./models/user.js');
 const Reservation = require('./models/reservation.js');
 const Lab = require('./models/lab.js');
 const Image = require('./models/image.js');
+const bcrypt = require('bcrypt');
+const saltRounds = process.env.SALT; // Number of rounds for bcrypt to perform
+/*
+(async () => {
+    let hashedArr = []
+    for (const password of passwords) {
+      const hash = await bcrypt.hash(password, Number(saltRounds));
+      //console.log("Password: "+ password + "\nHash: " + hash);
+      hashedArr.push(hash);
+    }
 
-function createUser() {
-    User.insertMany([
+})();*/
+
+async function createUser() {
+    users = [
         {
             email: "lanz_lim@dlsu.edu.ph",
-            password: "lanz_lim",
+            //password: "lanz_lim",
+            password: await bcrypt.hash("lanz_lim", Number(saltRounds)), 
             isAdmin: false,
             name: "lanz_lim",
             picture: "../images/lanz_lim.jpg",
             bio: "Hi, I'm Lanz, 19 years old, never learned how to read."
         }, {
             email: "tyler_tan@dlsu.edu.ph",
-            password: "tyler_tan",
+            //password: "tyler_tan",
+            password: await bcrypt.hash("tyler_tan", Number(saltRounds)),
             isAdmin: false,
             name: "tyler_tan",
             picture: "../images/tyler_tan.jpg",
             bio: "My name is Tyler currently learning japanesse and watashiwa playing 4.5 gachas currently."
         }, {
             email: "johann_uytanlet@dlsu.edu.ph",
-            password: "johann_uytanlet",
+            //password: "johann_uytanlet",
+            password: await bcrypt.hash("johann_uytanlet", Number(saltRounds)),
             isAdmin: false,
             name: "johann_uytanlet",
             picture: "../images/johann_uytanlet.jpg",
             bio: "Hi, I'm Johann and I wish my grades would go ap, dev. Crying into my notes if you wanna find me."
         }, {
             email: "jeremy_wang@dlsu.edu.ph",
-            password: "jeremy_wang",
+            //password: "jeremy_wang",
+            password: await bcrypt.hash("jeremy_wang", Number(saltRounds)),
             isAdmin: false,
             name: "jeremy_wang",
             picture: "../images/jeremy_wang.jpg",
             bio: "Yes I am disguised toast, ask me for money if you need some. I am very rich."
         }, {
             email: "cellinia_texas@dlsu.edu.ph",
-            password: "cellinia_texas",
+            //password: "cellinia_texas",
+            password: await bcrypt.hash("cellinia_texas", Number(saltRounds)),
             isAdmin: false,
             name: "cellinia_texas",
             picture: "../images/cellinia_texas.png",
             bio: "Hi! I'm Cellinia or you can call me Cell. I'm funnily enough I am a cowboy this has no correlation to my last name. Actually my parents disapprove very much they are very serious business people who have casted me out because of my choice of career."
         }, {
             email: "gwen_stacy@dlsu.edu.ph",
-            password: "gwen_stacy",
+            //password: "gwen_stacy",
+            password: await bcrypt.hash("gwen_stacy", Number(saltRounds)),
             isAdmin: false,
             name: "gwen_stacy",
             picture: "../images/gwen_stacy.png",
             bio: "Hi! My name is Gwen Stacy im from earth 6969 and I watched my bestfriend turn into a giant lizard. He got into an acc and went sleepy for forever. I met this weird kid in another universe tho his name is Miles Morales."
         }, {
             email: "admin1@dlsu.edu.ph",
-            password: "admin1",
+            //password: "admin1",
+            password: await bcrypt.hash("admin1", Number(saltRounds)),
             isAdmin: true,
             name: "Lappland Saluzzo",
             picture: "../images/admin.png",
             bio: null
         }, {
             email: "admin2@dlsu.edu.ph",
-            password: "admin2",
+            //password: "admin2",
+            password: await bcrypt.hash("admin2", Number(saltRounds)),
             isAdmin: true,
             name: "Tendou Alice",
             picture: "../images/admin.png",
             bio: null
         }, {
             email: "admin3@dlsu.edu.ph",
-            password: "admin3",
+            //password: "admin3",
+            password: await bcrypt.hash("admin3", Number(saltRounds)),
             isAdmin: true,
             name: "Hayase Yuuka",
             picture: "../images/admin.png",
             bio: null
         }, {
             email: "admin4@dlsu.edu.ph",
-            password: "admin4",
+            //password: "admin4",
+            password: await bcrypt.hash("admin4", Number(saltRounds)),
             isAdmin: true,
             name: "Koyanskaya of Light",
             picture: ".../images/admin.png",
             bio: null
         }, {
             email: "admin5@dlsu.edu.ph",
-            password: "admin5",
+            //password: "admin5",
+            password: await bcrypt.hash("admin5", Number(saltRounds)),
             isAdmin: true,
             name: "Silverwolf",
             picture: "../images/admin.png",
             bio: null
         }
-    ]);
+    ];
+    try {
+        await User.insertMany(users);
+        console.log("Users created successfully.");
+    } catch (error) {
+        console.error("Error creating users:", error);
+    }
 }
 
 function createImage() {

@@ -86,18 +86,18 @@ saveChangesPwButton.addEventListener("click", (e) => {
     if (oldPw == newPw & valid == true) {
         alert("New password cannot be the same as the old password!");
         valid = false;
-    }
+    }/*
     if (oldPw != user.password & valid == true) {
         alert("Current password is incorrect!");
         valid = false;
-    }
+    }*/
     if (newPw != confirmPw & valid == true) {
         alert("Passwords do not match!");
         valid = false;
     }
     console.log(valid);
     if (valid == true) {
-        let data = { "newPassword": newPw, "email": credEmail };
+        let data = {"oldPassword": oldPw, "newPassword": newPw, "email": credEmail };
         fetch("/updatePassword", {
             method: "PUT",
             headers: {
@@ -109,8 +109,12 @@ saveChangesPwButton.addEventListener("click", (e) => {
                 alert("Password updated!");
                 window.location.href = "/html/student_profile.html";
             }
-            else {
+            else if(response.status == 400){
                 alert("Error updating password");
+            } else if(response.status == 401){
+                alert("Not proper credentials");
+            } else {
+                alert("ERROR");
             }
         });
     }
