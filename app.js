@@ -1,5 +1,3 @@
-// TODO: Remove in MCO3 when deploying...
-require('dotenv').config();
 const path = require('path');
 
 const express = require('express');
@@ -13,7 +11,7 @@ const connectDB = require('./server/config/db.js');
 const { connect } = require('http2');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 connectDB();
 
