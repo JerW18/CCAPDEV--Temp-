@@ -113,10 +113,10 @@ function updateViewResTable() {
 
 
 let editButtons = document.getElementsByClassName("editIconBtn");
-for(let i = 0; i < editButtons.length; i++){
-    editButtons[i].addEventListener('click', function (e) {
+for(const element of editButtons){
+    element.addEventListener('click', function (e) {
         e.preventDefault();
-        let resID = editButtons[i].id.substring(1);
+        let resID = element.id.substring(1);
 
         let valid = true;
         // alert the user if they are deleting a reservation that is in the past by one day
@@ -140,13 +140,13 @@ for(let i = 0; i < editButtons.length; i++){
                     alert("You cannot edit a reservation that has already passed!");
                     valid = false;
                 }
-                else if (yearRes == yearNow && monthRes == monthNow && dayRes < dayNow) {
+                else if (yearRes == yearNow && monthRes == monthNow && dayRes <= dayNow) {
                     alert("You cannot edit a reservation that has already passed!");
                     valid = false;
                 }
             }
         }
-        if (valid == true) {
+        if (valid) {
             window.location.href = "/html/reserve.html?edit=" + resID;
         }
     });

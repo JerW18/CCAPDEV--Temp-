@@ -28,10 +28,12 @@ await processTextForm();
 
 searchButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    await processTextForm();
+    document.getElementById("searchResult").setAttribute("style", "display: block;");
+    document.getElementById("userinfo").setAttribute("style", "display: none;");
+    await displayUsers();
 })
 
-function updateResTable() {
+function updateResTable(email) {
     //one reservation=1 row
     //one detail of reservation=1col
     let insert = `<thead>
@@ -47,8 +49,8 @@ function updateResTable() {
 
     for (let i of reservations) {
 
-        if (!i.isAnonymous && (i.email == (new FormData(searchForm).get("fname"))
-            || i.walkInStudent == (new FormData(searchForm).get("fname")))) {
+        if (!i.isAnonymous && i.email == email
+            || i.walkInStudent == email) {
 
             insert += "<tr>";
 
@@ -95,13 +97,10 @@ function updateResTable() {
 
 }
 
-async function processTextForm() {
-    const searchForm = document.getElementById("searchForm");
-    const searchButton = document.getElementById("searchButton");
-    let username = searchForm.fname.value;
+async function processTextForm(name, email) {
     for (const user of users) {
-        if ((user.email == username || user.name == username) && !user.isAdmin) {
-            updateResTable();
+        if ((user.email == email || user.name == name) && !user.isAdmin) {
+            updateResTable(email);
             const displayName = document.getElementById("displayName");
             const usertag = document.getElementById("username");
             const bio = document.getElementById("writtendesc");
@@ -111,12 +110,73 @@ async function processTextForm() {
             usertag.textContent = "@" + user.email.substring(0, loc);
             displayName.textContent = user.name;
 
-            if(username.search("@") == -1)
-                username += "@dlsu.edu.ph";
-
-            const imgRes = await fetch("/getImage?email=" + username);
+            const imgRes = await fetch("/getImage?email=" + email);
             const imgNum = await imgRes.json();
             img.src = "../images/default_" + imgNum + ".png";
+        }
+    }
+}
+
+async function displayUsers() {
+    const searchForm = document.getElementById("searchForm");
+    const searchResult = document.getElementById("searchResult");
+    
+    searchResult.innerHTML = "";
+
+    let searchValue = searchForm.fname.value;
+    let count = 0;
+
+    const result = await fetch("/getUsersWithSubstring?substring=" + searchValue);
+    const users = await result.json();  
+    const usersLength = users.length;
+
+    if (usersLength == 0) {
+        searchResult.innerHTML = "<h2>No results found.</h2>";
+    }
+    else {  
+        searchResult.innerHTML = `<p class="search-results-count">${usersLength} users found.</p>`;
+        for (const user of users) {
+            const name = user.name;
+            const email = user.email;
+            const bio = user.bio;
+
+            const imgRes = await fetch("/getImage?email=" + email);
+            const imgNum = await imgRes.json();
+            const img = "../images/default_" + imgNum + ".png";
+            
+            searchResult.innerHTML +=  
+            `<section class="search-result-item">
+                <a class="image-link"><img class="image" src=${img}></a>
+                <div class="search-result-item-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4 class="search-result-item-heading">${name}</h4>
+                            <p class="info">${email}</p>
+                            <p class="description">${bio}</p>
+                            <button type="submit" class="btn btn-primary btn-info btn-sm" id="viewProfile${count}">View Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </section>`;
+            count++;
+        }
+
+        count = 0;
+        for (const user of users) {
+            const name = user.name;
+            const email = user.email;
+
+            let viewProfile = "viewProfile" + count.toString();
+            console.log(viewProfile);
+
+            document.getElementById(viewProfile).addEventListener("click", async (e) => {
+                e.preventDefault();
+                document.getElementById("searchResult").setAttribute("style", "display: none;");
+                await processTextForm(name, email);
+                document.getElementById("userinfo").setAttribute("style", "display: block;");
+            })
+
+            count++;     
         }
     }
 }

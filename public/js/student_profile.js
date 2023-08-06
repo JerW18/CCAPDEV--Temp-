@@ -285,12 +285,7 @@ for (let i = 0; i < deleteButtons.length; i++) {
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
                 let monthRes = resDate.getMonth() + 1;
-                console.log(yearRes);
-                console.log(monthRes);
-                console.log(dayRes);
-                console.log(yearNow);
-                console.log(monthNow);
-                console.log(dayNow);
+                
 
                 if (yearRes < yearNow) {
                     alert("You cannot delete a reservation that has already passed!");

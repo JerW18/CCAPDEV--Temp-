@@ -467,13 +467,11 @@ router.get("/getImage", (req, res) => {
     Image.findOne({ email }).then((result) => {
         console.log(result);
         if (result == null) {
-            console.log("sdfsdf");
             res.status(400);
             res.end();
         }
         else {
             res.status(201);
-            console.log("xd");
             res.json(result.image);
         }
     });
@@ -503,7 +501,7 @@ router.put("/editImage", (req, res) => {
 
 router.get('/getUsersWithSubstring', (req, res) => {
     const substring = req.query.substring;
-    User.find({ isAdmin: false, email: { $regex: substring, $options: 'i' } }, "email").then((data) => {
+    User.find({ isAdmin: false, email: { $regex: substring, $options: 'i' } }, "email name bio").then((data) => {
         res.json(data);
     });
 });
@@ -515,7 +513,7 @@ const { appendFile } = require('fs');
 
 
 //TODO: Uncomment the lines below to initialize the database
- //initialize.createUser();
- //initialize.createImage();
- //initialize.createReservations();
- //initialize.createLabs(); 
+//  initialize.createUser();
+//  initialize.createImage();
+//  initialize.createReservations();
+//  initialize.createLabs(); 

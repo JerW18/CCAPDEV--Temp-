@@ -176,7 +176,6 @@ div.reservedSeat.clickedSeat {
     font-family: 'Roboto', sans-serif;
     background-color: #4CAF50;
     /* Green */
-    border: none;
     color: white;
     padding: 12px 28px;
     text-align: center;
@@ -197,6 +196,30 @@ div.reservedSeat.clickedSeat {
     border-radius: 10px;
 }
 
+#submit[value="Delete Reservation"] {
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(211, 1, 1);
+    /* Green */
+    color: white;
+    padding: 12px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border: 2px solid rgb(211, 1, 1);
+    border-radius: 10px;
+}
+
+#submit[value="Delete Reservation"]:hover {
+    background-color: #e8e7e7;
+    color: black;
+    border: 2px solid rgb(211, 1, 1);
+    border-radius: 10px;
+}
+
 #submit:disabled,
 #submit[disabled] {
     border: 2px solid #999999;
@@ -206,7 +229,7 @@ div.reservedSeat.clickedSeat {
 }
 
 #submit.small {
-    padding: 10px 5px;
+    padding: 10px 14px;
     font-size: 13px;
 }
 
@@ -214,14 +237,13 @@ div.reservedSeat.clickedSeat {
     font-family: 'Roboto', sans-serif;
     background-color: #4CAF50;
     /* Green */
-    border: none;
     color: white;
     padding: 12px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
-    margin: 4px 2px;
+    margin: auto;
     transition-duration: 0.2s;
     cursor: pointer;
     border: 2px solid #4CAF50;
@@ -244,13 +266,13 @@ div.reservedSeat.clickedSeat {
 }
 
 #submit2.small {
-    padding: 10px 5px;
+    padding: 10px 14px;
     font-size: 13px;
 }
 
 #checkboxContainer {
     font-size: 13px;
-    margin: 10px;
+    margin: auto;
     margin-top: 4px;
     display: flex;
     justify-content: center;

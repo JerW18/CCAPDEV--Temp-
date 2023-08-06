@@ -417,6 +417,9 @@ function updateBottomTables() {
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
     if (credLevel == 0) {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Login to Reserve A Slot" disabled>`
+        //insert += `<div id = "bottomForm"><form><input style = "display:none" type = "submit" name = "submit2" class="small" id = "submit2" value = "Edit Reservation">`
+       // insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
+        //insert += `<label id = "anonyLabel" for = "checkbox">Anonymous?</label><div></form>`;
     } else if (credLevel == 1) {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
         insert += `<div id = "bottomForm"><form><input style = "display:none" type = "submit" name = "submit2" class="small" id = "submit2" value = "Edit Reservation">`
@@ -465,7 +468,8 @@ function updateBottomListeners() {
         });
     });
 }
-
+console.log("honk")
+console.log(credLevel)
 function updateBottomConfirmListener() {
     if (credLevel == 1 || credLevel == 2) {
         document.getElementById("submit").addEventListener("click", async (e) => {
@@ -586,6 +590,7 @@ function updateBottomConfirmListener() {
                 let rID = 0;
                 const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
                 console.log(slot);
+                let valid=true;
                 for (let r of reservations) {
                     if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
                         if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
@@ -598,21 +603,91 @@ function updateBottomConfirmListener() {
                         }
                     }
                 }
-                let response = await fetch("/deleteReservation", {
-                    method: "DELETE",
-                    body: JSON.stringify({ reservationID: rID }),
-                    headers: {
-                        Accept: "application/json, text/plain, */*",
-                        "Content-Type": "application/json"
+                if(credLevel==1){
+                    for (let r of reservations) {
+                        if (r.reservationID == rID) {
+            
+                            let today = new Date();
+                            let yearNow = today.getFullYear();
+                            let dayNow = today.getDate();
+                            let monthNow = today.getMonth() + 1;
+            
+                            let resDate = new Date(r.reservedDateAndTime.date);
+                            let yearRes = resDate.getFullYear();
+                            let dayRes = resDate.getDate();
+                            let monthRes = resDate.getMonth() + 1;
+            
+                            if (yearRes < yearNow) {
+                                alert("You cannot delete a reservation that has already passed!");
+                                valid = false;
+                            }
+                            else if (yearRes == yearNow && monthRes < monthNow) {
+                                alert("You cannot delete a reservation that has already passed!");
+                                valid = false;
+                            }
+                            else if (yearRes == yearNow && monthRes == monthNow && dayRes <= dayNow) {
+                                alert("You cannot delete a reservation that has already passed! Or one that is on the same day.");
+                                valid = false;
+                            }
+                        }
                     }
-                })
-                if (response.status == 201) {
-                    alert("Deletion successful.");
-                    window.location.assign("reserve.html");
                 }
-                else {
-                    alert("Deletion failed. Please try again.");
-                    window.location.assign("reserve.html");
+
+                if(credLevel==2){
+                    for(let r of reservations){
+                        if(rID == r.reservationID){
+                            let today = new Date();
+                            let resDate= new Date(r.reservedDateAndTime.date);
+                            let yearRes = resDate.getFullYear();
+                            let dayRes = resDate.getDate();
+                            let monthRes = resDate.getMonth()+1;
+                            let startTimeRes = r.reservedDateAndTime.startTime;
+            
+                            //formatting the time of reservation to +10 minutes
+                            let minutes = startTimeRes % 2;
+                            startTimeRes /= 2;
+                            let startTimeResHour = Math.floor(startTimeRes);
+                            let startTimeResMin;
+                            if (minutes == 0) {
+                                startTimeResMin =10;
+                            }
+                            else {
+                                startTimeResMin = 40;
+                            }
+                            startTimeRes= startTimeRes;
+                            console.log(startTimeResHour);
+                            console.log(startTimeResMin);
+                            resDate= new Date(yearRes, monthRes-1, dayRes, startTimeResHour, startTimeResMin);
+                            console.log(resDate);
+                            if(resDate>today){
+                                alert("You cannot delete a reservation that has not started yet!");
+                                valid = false;
+                            }
+                        }//marker
+                    }
+                }
+
+
+                if(valid==true){
+                    let result=confirm("Are you sure you want to delete this reservation?");
+                    if(result==true){
+                        let response = await fetch("/deleteReservation", {
+                            method: "DELETE",
+                            body: JSON.stringify({ reservationID: rID }),
+                            headers: {
+                                Accept: "application/json, text/plain, */*",
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        if (response.status == 201) {
+                            alert("Deletion successful.");
+                            window.location.assign("reserve.html");
+                        }
+                        else {
+                            alert("Deletion failed. Please try again.");
+                            window.location.assign("reserve.html");
+                        }
+                    }
                 }
             }
         });
@@ -622,6 +697,7 @@ function updateBottomConfirmListener() {
             let rID = 0;
             const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
             console.log(slot);
+            let valid=true;
             for (let r of reservations) {
                 if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
                     if ((new FormData(topForm)).get("dateForm") == r.reservedDateAndTime.date) {
@@ -634,15 +710,55 @@ function updateBottomConfirmListener() {
                     }
                 }
             }
-            window.location.assign(`reserve.html?edit=${rID}`);
-        });
+            for (let r of reservations) {  
+                if (r.reservationID == rID) {
+                    let today = new Date();
+                    let yearNow = today.getFullYear();
+                    let dayNow = today.getDate();
+                    let monthNow = today.getMonth()+1;
+    
+                    let resDate = new Date(r.reservedDateAndTime.date);
+                    let yearRes = resDate.getFullYear();
+                    let dayRes = resDate.getDate();
+                    let monthRes = resDate.getMonth()+1;
+                    console.log("honk for checking")
+                    console.log(yearRes)
+                    console.log(yearNow)
+                    console.log(monthRes)
+                    console.log(monthNow)
+                    console.log(dayRes)
+                    console.log(dayNow)
+                    if (yearRes < yearNow) {
+                        alert("You cannot edit a reservation that has already passed!");
+                        valid = false;
+                    }
+                    else if (yearRes == yearNow && monthRes < monthNow) {
+                        alert("You cannot edit a reservation that has already passed!");
+                        valid = false;
+                    }
+                    else if (yearRes == yearNow && monthRes == monthNow && dayRes <= dayNow) {
+                        alert("You cannot edit a reservation that has already passed! Or one on the same day.");
+                        valid = false;
+                    }
+                }
+                console.log(valid)
+            }
+            if(valid==true){
+                let result=confirm("Are you sure you want to edit this reservation?");
+                if(result==true){   
+                    window.location.assign(`reserve.html?edit=${rID}`)
+                }
+            }
+        })
     } else if (credLevel == 0) {
+        console.log("i got here");
         const resLogin = document.getElementById("submit");
         resLogin.addEventListener("click", (e) => {
             e.preventDefault();
             window.location.assign("index.html");
         })
     }
+    console.log("honk");
     console.log(credLevel);
 }
 
@@ -655,13 +771,16 @@ async function updateBottomClicked(clickedSlot) {
 
     document.getElementById("submit").value = "Confirm Reservation";
     document.getElementById("submit").classList.remove("small");
-    document.getElementById("submit2").style.display = "none";
+    if(credLevel!=0){
+        document.getElementById("submit2").style.display = "none";
+        document.getElementById("checkboxContainer").style.display = "inline";
+    }else{
+        document.getElementById("submit").value = "Login to Reserve A Slot";
+    }
     if (document.getElementById("walkInContainer") != null) {
         document.getElementById("walkIn").value = ""
         document.getElementById("walkInContainer").style.display = "flex";
     }
-    document.getElementById("anonymous").style.display = "inline";
-    document.getElementById("anonyLabel").style.display = "inline";
     if (credLevel == 2 && editID != null) {
         document.getElementById("walkInContainer").style.display = "none";
         document.getElementById("walkIn").value = "temp@dlsu.edu.ph"
@@ -719,8 +838,7 @@ async function updateBottomClicked(clickedSlot) {
                 document.getElementById("submit").value = "Delete Reservation";
                 document.getElementById("submit").classList.add("small");
                 document.getElementById("submit2").style.display = "inline";
-                document.getElementById("anonymous").style.display = "none";
-                document.getElementById("anonyLabel").style.display = "none";
+                document.getElementById("checkboxContainer").style.display = "none";
             }
         }
         else {
@@ -728,8 +846,7 @@ async function updateBottomClicked(clickedSlot) {
             document.getElementById("submit").value = "Delete Reservation";
             document.getElementById("submit").classList.add("small");
             document.getElementById("submit2").style.display = "inline";
-            document.getElementById("anonymous").style.display = "none";
-            document.getElementById("anonyLabel").style.display = "none";
+            document.getElementById("checkboxContainer").style.display = "none";
             document.getElementById("walkInContainer").style.display = "none";
         }
     }
