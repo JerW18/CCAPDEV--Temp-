@@ -513,7 +513,7 @@ const { appendFile } = require('fs');
 
 
 //TODO: Uncomment the lines below to initialize the database
- initialize.createUser();
- initialize.createImage();
- initialize.createReservations();
- initialize.createLabs(); 
+//  initialize.createUser();
+//  initialize.createImage();
+//  initialize.createReservations();
+//  initialize.createLabs(); 
