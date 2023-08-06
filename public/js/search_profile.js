@@ -148,7 +148,7 @@ async function displayUsers() {
             const imgNum = await imgRes.json();
             const img = "../images/default_" + imgNum + ".png";
             
-            searchResult.innerHTML +=  
+            tempHTML +=  
             `<section class="search-result-item">
                 <a class="image-link"><img class="image" src=${img}></a>
                 <div class="search-result-item-body">
@@ -157,15 +157,17 @@ async function displayUsers() {
                             <h4 class="search-result-item-heading">${name}</h4>
                             <p class="info">${email}</p>`
             if (bio == null) {
-                searchResult.innerHTML += `<p class="description"></p>`
+                tempHTML += `<p class="description"></p>`
             } else {
-                searchResult.innerHTML += `<p class="description">${bio}</p>`
+                tempHTML += `<p class="description">${bio}</p>`
             }
-            searchResult.innerHTML += `<button type="submit" class="btn btn-primary btn-info btn-sm" id="viewProfile${count}">View Profile</button>
+            tempHTML += `<button type="submit" class="btn btn-primary btn-info btn-sm" id="viewProfile${count}">View Profile</button>
                         </div>
                     </div>
                 </div>
             </section>`;
+
+            searchResult.innerHTML += tempHTML;
             count++;
         }
 
