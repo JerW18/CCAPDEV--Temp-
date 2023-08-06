@@ -259,8 +259,11 @@ for (let i = 0; i < editButtons.length; i++) {
                 }
             }
         }
-        if (valid == true) {
-            window.location.href = "/html/reserve.html?edit=" + resID;
+        if(valid==true){
+            let result=confirm("Are you sure you want to edit this reservation?");
+            if(result==true){   
+                window.location.assign(`reserve.html?edit=${resID}`)
+            }
         }
     });
 }
