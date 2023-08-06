@@ -501,7 +501,7 @@ router.put("/editImage", (req, res) => {
 
 router.get('/getUsersWithSubstring', (req, res) => {
     const substring = req.query.substring;
-    User.find({ isAdmin: false, email: { $regex: substring, $options: 'i' } }, "email name bio").then((data) => {
+    User.find({ isAdmin: false, name: { $regex: substring, $options: 'i' } }, "email name bio").then((data) => {
         res.json(data);
     });
 });
