@@ -283,33 +283,33 @@ for(let i = 0; i < deleteButtons.length; i++){
 
 
 
-// Confirm Delete Account Popup
-const deleteBtn = document.getElementById("deleteBtn");
+// // Confirm Delete Account Popup
+// const deleteBtn = document.getElementById("deleteBtn");
 
-deleteBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-    const res = confirm("Are you sure you want to delete your account?");
-    console.log("clicked");
+// deleteBtn.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const res = confirm("Are you sure you want to delete your account?");
+//     console.log("clicked");
     
-    if(res == 1){
-        let result = fetch("/deleteUser", {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ "email": credEmail }),
-        }).then((response) => {
-            if (response.status == 200) {
-                window.location.href = "/html/index.html";
-            }
-            else {
-                alert("Error deleting account");
-            }
-        });
-    }
+//     if(res == 1){
+//         let result = fetch("/deleteUser", {
+//             method: "DELETE",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({ "email": credEmail }),
+//         }).then((response) => {
+//             if (response.status == 200) {
+//                 window.location.href = "/html/index.html";
+//             }
+//             else {
+//                 alert("Error deleting account");
+//             }
+//         });
+//     }
 
 
-});
+// });
 
 logoutButton.addEventListener('click', function (e) {
     e.preventDefault();
