@@ -16,7 +16,11 @@ const searchForm = document.forms.searchForm;
 const urlParams = new URLSearchParams(window.location.search);
 const username = urlParams.get("username");
 if (username != null) {
+    let temp = username;
     document.getElementById("textSearch").value = username;
+    document.getElementById("searchResult").setAttribute("style", "display: none;");
+    await processTextForm(temp, username);
+    document.getElementById("userinfo").setAttribute("style", "display: block;");
 }
 
 console.log(document.getElementById("textSearch").value);
@@ -151,9 +155,13 @@ async function displayUsers() {
                     <div class="row">
                         <div class="col-sm-9">
                             <h4 class="search-result-item-heading">${name}</h4>
-                            <p class="info">${email}</p>
-                            <p class="description">${bio}</p>
-                            <button type="submit" class="btn btn-primary btn-info btn-sm" id="viewProfile${count}">View Profile</button>
+                            <p class="info">${email}</p>`
+            if (bio == null) {
+                searchResult.innerHTML += `<p class="description"></p>`
+            } else {
+                searchResult.innerHTML += `<p class="description">${bio}</p>`
+            }
+            searchResult.innerHTML += `<button type="submit" class="btn btn-primary btn-info btn-sm" id="viewProfile${count}">View Profile</button>
                         </div>
                     </div>
                 </div>
