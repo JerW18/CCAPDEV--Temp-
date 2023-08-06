@@ -263,7 +263,7 @@ router.put("/editReservation", async (req, res) => {
                         }
                     }
                 );
-                if (editedReservation.modifiedCount === 0) {
+                if (editedReservation.matchedCount === 0) {
                     console.log("1");
                     res.status(400);
                     res.end();
@@ -280,7 +280,7 @@ router.put("/editReservation", async (req, res) => {
                     }
                 );
                 console.log(editedReservation);
-                if (editedReservation.modifiedCount === 0) {
+                if (editedReservation.matchedCount === 0) {
                     console.log("3");
                     res.status(400);
                     res.end();
