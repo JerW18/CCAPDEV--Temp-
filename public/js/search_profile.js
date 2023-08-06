@@ -148,7 +148,8 @@ async function displayUsers() {
             const imgNum = await imgRes.json();
             const img = "../images/default_" + imgNum + ".png";
             
-            tempHTML +=  
+            let tempHTML = ""
+            tempHTML +=
             `<section class="search-result-item">
                 <a class="image-link"><img class="image" src=${img}></a>
                 <div class="search-result-item-body">
