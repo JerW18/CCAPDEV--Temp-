@@ -7,10 +7,6 @@ let users = await protou.json();
 let protoc = await fetch("/getCredentials");
 let creds = await protoc.json();
 
-//TODO need to implement hide profile details and reservations, and also to
-//add rows to the reservation information column when there is a reservation,
-//make it scrollable.
-
 const searchForm = document.forms.searchForm;
 
 const urlParams = new URLSearchParams(window.location.search);

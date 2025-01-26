@@ -31,10 +31,6 @@ loginButton.addEventListener("click", async (e) => {
         message: "No message"
     };
 
-    //console.log(loginData.password);
-    //console.log(loginData.username);
-    //console.log(loginData.rememberMe); 
-
     try {
         const response = await fetch('/login', {
             method: 'POST',
@@ -61,30 +57,6 @@ loginButton.addEventListener("click", async (e) => {
         console.error('Error:', error);
         // Handle any network or other errors that may occur
     }
-
-    /*
-    let isLogin = false;
-    let isAdmin = false;
-    for (const user of users) {
-        if (user.email === username && user.password === password) {
-            isLogin = true;
-
-            loginForm.logEmail.value = "";
-            loginForm.logPassword.value = "";
-            
-            if (user.isAdmin === true) {
-                isAdmin = true;
-            }
-        }
-    }
-
-    if (isLogin && !isAdmin) {
-        window.location.assign("html/reserve.html");
-    } else if (isLogin && isAdmin) {
-        window.location.assign("html/temp_admin_reserve.html");
-    } else {
-        alert("Invalid username or password.");
-    }*/
 })
 
 

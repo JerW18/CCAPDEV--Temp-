@@ -215,15 +215,6 @@ async function updateCenterListeners() {
         }
     }
 
-    // let proto=await fetch("/getLab?labCode="+new FormData(topForm).get("labForm")+"");
-    //let lab=await proto.json();
-    //let tablesToAdd=lab.labTables;
-    /*let tablesToAdd = [];
-    for (let t of tables) {
-        if (t.lab == (new FormData(topForm)).get("labForm")) {
-            tablesToAdd.push(t);
-        }
-    }*/
     for (let t = 0; t < tablesToAdd.length; t++) {
         let table = tablesToAdd[t];
         for (let r = 0; r < table.rows; r++) {
@@ -239,9 +230,6 @@ async function updateCenterListeners() {
 
 /* Update the Reserved Seats to be Red */
 async function updateCenterReserved() {
-    /*let proto=await fetch("/getReservations");
-    let reservations=await proto.json();
-    console.log(reservations);*/
     /* Remove all currently reserved seats. */
     const allReserved = document.querySelectorAll("reservedSeat");
     allReserved.forEach((element) => {
@@ -417,9 +405,6 @@ function updateBottomTables() {
     /* Lastly, add the button to submit and checkbox to submit as anonymous on the right side. */
     if (credLevel == 0) {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Login to Reserve A Slot" disabled>`
-        //insert += `<div id = "bottomForm"><form><input style = "display:none" type = "submit" name = "submit2" class="small" id = "submit2" value = "Edit Reservation">`
-       // insert += `<br><div id = "checkboxContainer"><input type = "checkbox" name = "anonymous" id = "anonymous">`
-        //insert += `<label id = "anonyLabel" for = "checkbox">Anonymous?</label><div></form>`;
     } else if (credLevel == 1) {
         insert += `<div id = "bottomForm"><form><input type = "submit" name = "submit" id = "submit" value = "Confirm Reservation" disabled>`
         insert += `<div id = "bottomForm"><form><input style = "display:none" type = "submit" name = "submit2" class="small" id = "submit2" value = "Edit Reservation">`
@@ -439,10 +424,6 @@ function updateBottomTables() {
 
 /* Based on current reservations, mark all reserved slots as "reservedSlots" to make them red. */
 async function updateBottomReserved() {
-    /*let proto=await fetch("/getReservations");
-    let reservations=await proto.json();
-    console.log(reservations);*/
-
     for (let r of reservations) {
         let clickedSeat = document.querySelector(".clickedSeat");
         if (clickedSeat != null) {
@@ -765,10 +746,6 @@ function updateBottomConfirmListener() {
 
 /* Triggers when a slot is clicked. Updates which slots in the table are clicked based on what was clicked before. */
 async function updateBottomClicked(clickedSlot) {
-    /*let proto=await fetch("/getReservations");
-    let reservations=await proto.json();
-    console.log(reservations);*/
-
     document.getElementById("submit").value = "Confirm Reservation";
     document.getElementById("submit").classList.remove("small");
     if(credLevel!=0){

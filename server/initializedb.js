@@ -1,19 +1,10 @@
+require('dotenv').config();
 const User = require('./models/user.js');
 const Reservation = require('./models/reservation.js');
 const Lab = require('./models/lab.js');
 const Image = require('./models/image.js');
 const bcrypt = require('bcrypt');
 const saltRounds = process.env.SALT; // Number of rounds for bcrypt to perform
-/*
-(async () => {
-    let hashedArr = []
-    for (const password of passwords) {
-      const hash = await bcrypt.hash(password, Number(saltRounds));
-      //console.log("Password: "+ password + "\nHash: " + hash);
-      hashedArr.push(hash);
-    }
-
-})();*/
 
 async function createUser() {
     users = [

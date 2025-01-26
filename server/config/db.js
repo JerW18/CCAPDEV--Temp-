@@ -3,11 +3,8 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
 
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true//,
-            //useFindAndModify:false
-        });
+        const conn = await mongoose.connect(process.env.MONGODB_URI);
+
         console.log(`MongoDB Connected: mongodb://${conn.connection.host}:27017/labReservation`);
     }
     catch (err) {

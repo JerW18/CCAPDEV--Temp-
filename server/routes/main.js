@@ -212,14 +212,6 @@ router.get('/home', (req, res) => {
     res.sendFile(path.join(parentDIR, 'public/html/reserve.html'));
 });
 
-/*
-router.get('/home', (req, res) => {
-  console.log("Cookies", req.cookies);
-  console.log("Cookie Token", req.cookies.token);
- 
-  // Check if the 'token' cookie exists
-});*/
-
 router.post('/addReservation', async (req, res) => {
     let last = await Reservation.find().sort({ $natural: -1 }).limit(1);
     let newresID = 1;
@@ -346,19 +338,6 @@ router.put("/updatePassword", async (req, res) => {
         res.status(500).json(error);
         return;
     }
-    /*
-    const updatedPassword = await User.updateOne(
-        { email: email },
-        { $set: { password: newPassword } }
-    );
-    if (updatedPassword.nModified === 0) {
-        res.status(400);
-        res.end();
-    }
-    else {
-        res.status(201);
-        res.end();
-    }*/
 });
 
 router.put("/updateBio", async (req, res) => {
