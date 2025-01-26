@@ -67,7 +67,7 @@ router.get("/getUserReservations", (req, res) => {
 
 router.get('/getLab', (req, res) => {
     const labCode = req.query.labCode;
-    console.log(labCode);
+    
     Lab.findOne({ labCode }).then((data) => {
         res.json(data);
     });
@@ -79,7 +79,6 @@ router.post('/addUser', async (req, res) => {
         req.body.password = hashedPassword;
         
         const user = new User(req.body);
-        console.log(user);
 
         const userData = await user.save();
         await Image.create({ email: req.body.email, image: "0" });
@@ -122,33 +121,22 @@ router.get("/getCredentials", (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-
-    console.log("Backend");
-    console.log(req.body.email);
-    console.log(req.body.password);
-    console.log(req.body.rememberMe);
-
-
     const password = req.body.password;
     const email = req.body.email;
     const rememberMe = req.body.rememberMe;
 
 
     if (!password || !email) {
-        console.log("Login Failed");
         res.status(401).json({ success: false, message: 'Login failed! Incomplete inputs.' });
     }
     else {
         let hashedPassword = await bcrypt.hash(password, Number(saltRounds));
         User.findOne({email}).then((data) => {
-            console.log(data);
             if (!data) {
                 res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
             }
             bcrypt.compare(password, data.password).then((isMatch) => {
                 if (isMatch) {
-                    console.log("Password matches!");
-                    
                     if (rememberMe) {
                         const token = jwt.sign({ email }, process.env.MYSECRET, { expiresIn: '1h' });
                         res.cookie('token', token, {
@@ -161,20 +149,15 @@ router.post('/login', async (req, res) => {
                             httpOnly: true,
                         });
                     }
-                    console.log("Login Successful");
                     res.status(200).json({ success: true, message: 'Login successful!' });
                     
                 } else {
-                    console.log("Password does not match.");
                     res.status(401).json({ success: false, message: 'Login failed! Invalid credentials.' });
                 }
             }).catch((error) => {
-                console.error("Error comparing passwords:", error);
                 return res.status(500).json({ success: false, message: 'An error occurred during login.' });
             });
         }).catch((err) => {
-            console.error('Error:', err);
-            console.log("Login Errored");
             return res.status(500).json({ success: false, message: 'An error occurred during login.' });
         });
     }
@@ -199,12 +182,11 @@ router.post('/addReservation', async (req, res) => {
         newresID = parseInt(last[0].reservationID.substring(1)) + 1;
     newresID = "R" + newresID.toString().padStart(7, "0");
     const reservation = new Reservation({ ...req.body, reservationID: newresID });
-    console.log(reservation)
+    
     reservation.save().then((data) => {
         res.status(201).json(data);
     }
     ).catch((error) => {
-        console.log(error);
         res.status(500).json(error);
     }
     );
@@ -216,8 +198,6 @@ router.put("/editReservation", async (req, res) => {
     const reservationEmail = req.body.email;
     const reservationData = req.body;
 
-
-    console.log(reservationData);
     try {
 
         const decoded = jwt.verify(req.cookies.token, process.env.MYSECRET);
@@ -236,11 +216,9 @@ router.put("/editReservation", async (req, res) => {
                     }
                 );
                 if (editedReservation.matchedCount === 0) {
-                    console.log("1");
                     res.status(400);
                     res.end();
                 } else {
-                    console.log("2");
                     res.status(201);
                     res.end();
                 }
@@ -251,26 +229,22 @@ router.put("/editReservation", async (req, res) => {
                         $set: reservationData
                     }
                 );
-                console.log(editedReservation);
+
                 if (editedReservation.matchedCount === 0) {
-                    console.log("3");
                     res.status(400);
                     res.end();
                 } else {
-                    console.log("4");
                     res.status(201);
                     res.end();
                 }
             }
         }).catch((err) => {
-            console.log("555555555555");
             // If verification fails, clear the invalid 'token'.
             res.clearCookie('token');
             res.json({ credLevel: 0 });
         });
 
     } catch (error) {
-        console.log("6");
         res.status(500).json(error);
     }
 });
@@ -280,13 +254,9 @@ router.put("/updatePassword", async (req, res) => {
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
 
-    console.log(email);
-    console.log(oldPassword)
-    console.log(newPassword);
-
     try{
         const user = await User.findOne({ email: req.body.email });
-        console.log(user);
+        
         if (!user) {
             res.status(400).json({ message: 'User not found' }); // just in case
             res.end();
@@ -314,7 +284,6 @@ router.put("/updatePassword", async (req, res) => {
         res.end();
         return;
     } catch (error) {
-        console.error(error); 
         res.status(500).json(error);
         return;
     }
@@ -323,8 +292,7 @@ router.put("/updatePassword", async (req, res) => {
 router.put("/updateBio", async (req, res) => {
     const email = req.body.email;
     const bio = req.body.bio;
-    console.log(email);
-    console.log(bio);
+    
     const updatedBio = await User.updateOne(
         { email: email },
         { $set: { bio: bio } }
@@ -354,9 +322,7 @@ router.delete('/deleteReservation', (req, res) => {
                     res.status(201);
                     res.end();
                 } else {
-                    console.log({ reservationID, email });
                     Reservation.deleteOne({ reservationID, email }).then((result) => {
-                        console.log(result);
                         if (result.deletedCount == 0) {
                             res.status(400);
                             res.end();
@@ -424,7 +390,6 @@ router.delete('/deleteUser', async (req, res) => {
 router.get("/getImage", (req, res) => {
     const email = req.query.email;
     Image.findOne({ email }).then((result) => {
-        console.log(result);
         if (result == null) {
             res.status(400);
             res.end();
@@ -440,17 +405,12 @@ router.put("/editImage", (req, res) => {
     const email = req.body.email;
     const image = req.body.image;
     Image.findOne({ email }).then((result) => {
-        console.log("here");
-        console.log(result);
         if (result == null) {
-            console.log("hereeee");
             res.status(400);
             res.end();
         }
         else {
-            console.log("there");
             Image.updateOne({ email }, { $set: { image } }).then((result) => {
-                console.log(result);
                 res.status(201);
                 res.end();
             });
