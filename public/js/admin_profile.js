@@ -1,6 +1,5 @@
 let protor = await fetch("/getReservations");
 let reservations = await protor.json();
-console.log(reservations);
 
 let protoc = await fetch("/getCredentials");
 
@@ -24,8 +23,6 @@ const emailfield = document.getElementById("email");
 const usernamefield = document.getElementById("username");
 const profilepic = document.getElementById("profilepic");
 
-console.log(user.email);
-
 profilepic.src = "../images/default_" + imageNum + ".png";
 
 
@@ -45,8 +42,6 @@ const saveChangesPwButton = document.getElementById("saveBtnPw");
 // Print Reservations
 updateViewResTable();
 updateDeleteResTable();
-
-
 
 
 function updateViewResTable() {
@@ -108,7 +103,7 @@ function updateViewResTable() {
         insert += `<td><a href="reserve.html?edit=${i["reservationID"]}"><img id=E${i["reservationID"]} class=editIconBtn src = "../images/edit.png"> </a></td>`;
         insert += "</tr>";
     }
-    table.innerHTML = insert;
+    table.innerHTML = insert; 
 }
 
 
@@ -219,97 +214,56 @@ function updateDeleteResTable() {
 
 // can only delete a reservation 10 minutes after startime
 let deleteButtons = document.getElementsByClassName("deleteIconBtn");
-for(let i = 0; i < deleteButtons.length; i++){
-    deleteButtons[i].addEventListener('click', function (e) {
+for (const button of deleteButtons) {
+    button.addEventListener('click', async function (e) {
         e.preventDefault();
-        let resID = deleteButtons[i].id;
+        const resID = button.id;
         let valid = true;
-        for(let r of reservations){
-            if(resID == r.reservationID){
-                let today = new Date();
-                let resDate= new Date(r.reservedDateAndTime.date);
-                let yearRes = resDate.getFullYear();
-                let dayRes = resDate.getDate();
-                let monthRes = resDate.getMonth()+1;
+        for (const r of reservations) {
+            if (resID == r.reservationID) {
+                const today = new Date();
+                const resDate = new Date(r.reservedDateAndTime.date);
+                const yearRes = resDate.getFullYear();
+                const dayRes = resDate.getDate();
+                const monthRes = resDate.getMonth() + 1;
                 let startTimeRes = r.reservedDateAndTime.startTime;
 
-                //formatting the time of reservation to +10 minutes
-                let minutes = startTimeRes % 2;
+                // Formatting the time of reservation to +10 minutes
+                const minutes = startTimeRes % 2;
                 startTimeRes /= 2;
-                let startTimeResHour = Math.floor(startTimeRes);
-                let startTimeResMin;
-                if (minutes == 0) {
-                    startTimeResMin =10;
-                }
-                else {
-                    startTimeResMin = 40;
-                }
-                startTimeRes= startTimeRes;
-                console.log(startTimeResHour);
-                console.log(startTimeResMin);
-                resDate= new Date(yearRes, monthRes-1, dayRes, startTimeResHour, startTimeResMin);
-                console.log(resDate);
-                if(resDate>today){
+                const startTimeResHour = Math.floor(startTimeRes);
+                const startTimeResMin = minutes === 0 ? 10 : 40;
+                const formattedResDate = new Date(yearRes, monthRes - 1, dayRes, startTimeResHour, startTimeResMin);
+
+                if (formattedResDate > today) {
                     alert("You cannot delete a reservation that has not started yet!");
                     valid = false;
                 }
-                if(valid == true){
-                    let result = confirm("Are you sure you want to delete this reservation?");
-                    if (result == true) {
-                        let data = {"reservationID": resID}
-                        console.log(data);
-                        let deleteData = fetch("/deleteReservation", {
+
+                if (valid) {
+                    const result = confirm("Are you sure you want to delete this reservation?");
+                    if (result) {
+                        const data = { "reservationID": resID };
+                        const response = await fetch("/deleteReservation", {
                             method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify(data),
-                        }).then((response) => {
-                            if (response.status == 201) {
-                                alert("Reservation deleted!")
-                                window.location.href = "/html/admin_profile.html";
-                            }
-                            else {
-                                alert("Error deleting reservation");
-                            }
                         });
+
+                        if (response.status == 201) {
+                            alert("Reservation deleted!");
+                            window.location.href = "/html/admin_profile.html";
+                        } else {
+                            alert("Error deleting reservation");
+                        }
                     }
                 }
-
             }
         }
     });
 }
-
-
-
-// // Confirm Delete Account Popup
-// const deleteBtn = document.getElementById("deleteBtn");
-
-// deleteBtn.addEventListener('click', function (e) {
-//     e.preventDefault();
-//     const res = confirm("Are you sure you want to delete your account?");
-//     console.log("clicked");
-    
-//     if(res == 1){
-//         let result = fetch("/deleteUser", {
-//             method: "DELETE",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ "email": credEmail }),
-//         }).then((response) => {
-//             if (response.status == 200) {
-//                 window.location.href = "/html/index.html";
-//             }
-//             else {
-//                 alert("Error deleting account");
-//             }
-//         });
-//     }
-
-
-// });
 
 logoutButton.addEventListener('click', function (e) {
     e.preventDefault();

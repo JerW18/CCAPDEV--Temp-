@@ -1,6 +1,5 @@
 let protou = await fetch("/getUsers");
 let users = await protou.json();
-console.log(users);
 
 // Animation of Forms
 $('#registerMessage a').click(function () {
@@ -41,15 +40,12 @@ loginButton.addEventListener("click", async (e) => {
         });
 
         const data = await response.json();
-        console.log("Response is " + response);
         if (response.ok) {
             // Login successful
-            console.log(data.message);
             window.location.href = 'reserve.html';
 
         } else {
             // Login failed
-            console.error(data.message);
             alert(data.message);
         }
 
@@ -91,7 +87,6 @@ registerButton.addEventListener("click", async (e) => {
     }
 
     if (isRegister) {
-        console.log("Registering...");
         let request = new Request("/addUser", {
             method: "post",
             body: JSON.stringify({ name: name, email: username, password: password, isAdmin: false }),
@@ -102,7 +97,6 @@ registerButton.addEventListener("click", async (e) => {
         });
 
         let result = await fetch(request);
-        console.log(result);
 
         if (result.status == 201) {
             alert("You have successfully registered.");

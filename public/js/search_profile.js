@@ -19,8 +19,6 @@ if (username != null) {
     document.getElementById("userinfo").setAttribute("style", "display: block;");
 }
 
-console.log(document.getElementById("textSearch").value);
-
 // Main JS
 
 updateResTable();
@@ -174,7 +172,6 @@ async function displayUsers() {
             const email = user.email;
 
             let viewProfile = "viewProfile" + count.toString();
-            console.log(viewProfile);
 
             document.getElementById(viewProfile).addEventListener("click", async (e) => {
                 e.preventDefault();

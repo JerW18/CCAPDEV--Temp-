@@ -20,8 +20,6 @@ let labs = await protol.json();
 let protor = await fetch("/getReservations");
 let reservations = await protor.json();
 
-console.log(reservations);
-
 const urlParams = new URLSearchParams(window.location.search);
 const editID = urlParams.get("edit");
 
@@ -54,13 +52,12 @@ async function pageStartUp() {
         const date = editReservation.reservedDateAndTime.date;
         const startTime = editReservation.reservedDateAndTime.startTime;
         const endTime = editReservation.reservedDateAndTime.endTime;
-        console.log(lab, seat, date, startTime, endTime);
+        
         document.getElementById("labForm").value = lab;
         document.getElementById("dateForm").value = date;
-        console.log("HERE")
-        console.log(document.getElementById("timeForm").value)
+        
         document.getElementById("timeForm").value = startTime;
-        console.log(document.getElementById("timeForm").value)
+        
         document.getElementById("timeFormEnd").value = endTime;
         await updateCenter([seat.substring(0, 1), seat.substring(1, 2), seat.substring(2, 3)]);
         updateBottom((new FormData(topForm).get("timeForm")), (new FormData(topForm).get("timeFormEnd")));
@@ -307,7 +304,6 @@ function updateCenterClicked(clickedPosition) {
     // -1 is a special value indicating to remove the currently clicked seat.
     // 0 is a special value indicating to do nothing.
 
-    console.log(clickedPosition)
     if (clickedPosition == -1) {
         const pastClicked = document.querySelectorAll("clickedSeat");
         pastClicked.forEach((element) => {
@@ -449,8 +445,7 @@ function updateBottomListeners() {
         });
     });
 }
-console.log("honk")
-console.log(credLevel)
+
 function updateBottomConfirmListener() {
     if (credLevel == 1 || credLevel == 2) {
         document.getElementById("submit").addEventListener("click", async (e) => {
@@ -522,8 +517,6 @@ function updateBottomConfirmListener() {
                     walkInStudent
                 };
 
-                console.log(walkInValid);
-
                 if (walkInValid != -1) {
                     if (editID == null) {
                         let response = await fetch("/addReservation", {
@@ -570,7 +563,7 @@ function updateBottomConfirmListener() {
                 //TODO: Add Check for valid time for delete reservation here (also check if they are admin or user cuz that will affect when they can edit).
                 let rID = 0;
                 const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
-                console.log(slot);
+
                 let valid=true;
                 for (let r of reservations) {
                     if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
@@ -636,10 +629,9 @@ function updateBottomConfirmListener() {
                                 startTimeResMin = 40;
                             }
                             startTimeRes= startTimeRes;
-                            console.log(startTimeResHour);
-                            console.log(startTimeResMin);
+                            
                             resDate= new Date(yearRes, monthRes-1, dayRes, startTimeResHour, startTimeResMin);
-                            console.log(resDate);
+                            
                             if(resDate>today){
                                 alert("You cannot delete a reservation that has not started yet!");
                                 valid = false;
@@ -677,7 +669,7 @@ function updateBottomConfirmListener() {
             e.preventDefault();
             let rID = 0;
             const slot = document.querySelector(".reservedSlot.clickedSlot").id.substring(1);
-            console.log(slot);
+            
             let valid=true;
             for (let r of reservations) {
                 if (document.querySelector(".clickedSeat").id == r.labSeat.seat) {
@@ -702,13 +694,7 @@ function updateBottomConfirmListener() {
                     let yearRes = resDate.getFullYear();
                     let dayRes = resDate.getDate();
                     let monthRes = resDate.getMonth()+1;
-                    console.log("honk for checking")
-                    console.log(yearRes)
-                    console.log(yearNow)
-                    console.log(monthRes)
-                    console.log(monthNow)
-                    console.log(dayRes)
-                    console.log(dayNow)
+                    
                     if (yearRes < yearNow) {
                         alert("You cannot edit a reservation that has already passed!");
                         valid = false;
@@ -722,7 +708,6 @@ function updateBottomConfirmListener() {
                         valid = false;
                     }
                 }
-                console.log(valid)
             }
             if(valid==true){
                 let result=confirm("Are you sure you want to edit this reservation?");
@@ -732,15 +717,12 @@ function updateBottomConfirmListener() {
             }
         })
     } else if (credLevel == 0) {
-        console.log("i got here");
         const resLogin = document.getElementById("submit");
         resLogin.addEventListener("click", (e) => {
             e.preventDefault();
             window.location.assign("index.html");
         })
     }
-    console.log("honk");
-    console.log(credLevel);
 }
 
 
@@ -806,8 +788,6 @@ async function updateBottomClicked(clickedSlot) {
         if (credLevel == 0)
             document.getElementById("submit").disabled = true;
         else if (credLevel == 1) {
-            console.log(email)
-            console.log(credEmail)
             if (email != credEmail)
                 document.getElementById("submit").disabled = true;
             else {

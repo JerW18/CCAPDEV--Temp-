@@ -73,26 +73,6 @@ router.get('/getLab', (req, res) => {
     });
 });
 
-/*
-router.post('/addUser', (req, res) => {
-    password = req.password;
-    bcrypt.hash(req.password, Number(saltRounds)).then((hashedPassword) => {
-        req.password = hashedPassword;
-        const user = new User(req.body);
-        console.log(user)
-        user.save().then((data) => {
-            Image.create({ email: req.body.email, image: "0"});
-            res.status(201).json(data);
-        }
-        ).catch((error) => {
-            res.status(500).json(error);
-        }
-        );
-    }).catch((error) => {
-        res.status(500).json(error);
-    });
-});*/
-
 router.post('/addUser', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, Number(saltRounds));

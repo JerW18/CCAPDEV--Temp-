@@ -86,16 +86,12 @@ saveChangesPwButton.addEventListener("click", (e) => {
     if (oldPw == newPw & valid == true) {
         alert("New password cannot be the same as the old password!");
         valid = false;
-    }/*
-    if (oldPw != user.password & valid == true) {
-        alert("Current password is incorrect!");
-        valid = false;
-    }*/
+    }
     if (newPw != confirmPw & valid == true) {
         alert("Passwords do not match!");
         valid = false;
     }
-    console.log(valid);
+
     if (valid == true) {
         let data = {"oldPassword": oldPw, "newPassword": newPw, "email": credEmail };
         fetch("/updatePassword", {
@@ -127,7 +123,6 @@ bioText.addEventListener("click", (e) => {
     cancelButton.removeAttribute("hidden");
     logoutButton.setAttribute("hidden", true);
     deleteButton.setAttribute("hidden", true);
-    console.log("clicked");
 });
 
 document.getElementById("image").addEventListener("change", (e) => {
@@ -135,7 +130,6 @@ document.getElementById("image").addEventListener("change", (e) => {
     cancelButton.removeAttribute("hidden");
     logoutButton.setAttribute("hidden", true);
     deleteButton.setAttribute("hidden", true);
-    console.log("clicked");
 });
 
 cancelButton.addEventListener("click", (e) => {
@@ -148,8 +142,6 @@ cancelButton.addEventListener("click", (e) => {
 });
 
 // Print Reservations
-console.log(credLevel);
-
 updateResTable();
 
 function updateResTable() {
@@ -238,12 +230,6 @@ for (let i = 0; i < editButtons.length; i++) {
                 let yearRes = resDate.getFullYear();
                 let dayRes = resDate.getDate();
                 let monthRes = resDate.getMonth() + 1;
-                console.log(yearRes);
-                console.log(monthRes);
-                console.log(dayRes);
-                console.log(yearNow);
-                console.log(monthNow);
-                console.log(dayNow);
 
                 if (yearRes < yearNow) {
                     alert("You cannot edit a reservation that has already passed!");
@@ -312,7 +298,7 @@ for (let i = 0; i < deleteButtons.length; i++) {
         if (result == true && valid == true) {
             let reservationID = deleteButtons[i].id;
             let data = { "reservationID": reservationID };
-            console.log(data);
+
             fetch("/deleteReservation", {
                 method: "DELETE",
                 headers: {
@@ -336,12 +322,10 @@ for (let i = 0; i < deleteButtons.length; i++) {
 
 // Confirm Delete Account Popup
 const deleteBtn = document.getElementById("deleteBtn");
-console.log(credEmail);
 
 deleteBtn.addEventListener('click', function (e) {
     e.preventDefault();
     const res = confirm("Are you sure you want to delete your account?");
-    console.log("clicked");
     if (res == 1) {
         let result = fetch("/deleteUser", {
             method: "DELETE",
